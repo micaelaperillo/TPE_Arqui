@@ -10,4 +10,4 @@
 #Object files
 *.o
 
-run.sh
+build.sh
