@@ -8,7 +8,7 @@
 
 ;CONFIG
 cfg_smpinit:		db 1	; By default SMP is enabled. Set to 0 to disable.
-cfg_vesa:		db 0	; By default VESA is disabled. Set to 1 to enable.
+cfg_vesa:		db 1	; By default VESA is disabled. Set to 1 to enable.
 cfg_default:		db 0	; By default we don't need a config file so set to 0. If a config file is found set to 1.
 cfg_e820:		db 1	; By default E820 should be present. Pure64 will set this to 0 if not found/usable.
 cfg_mbr:		db 0	; Did we boot off of a disk with a proper MBR
@@ -104,7 +104,9 @@ VBEModeInfoBlock.DirectColorModeInfo	equ VBEModeInfoBlock + 39	; DB - direct col
 VBEModeInfoBlock.PhysBasePtr		equ VBEModeInfoBlock + 40	; DD - physical address for flat memory frame buffer
 VBEModeInfoBlock.Reserved1		equ VBEModeInfoBlock + 44	; DD - Reserved - always set to 0
 VBEModeInfoBlock.Reserved2		equ VBEModeInfoBlock + 48	; DD - Reserved - always set to 0
-
+; cambiar e l modo 13h
+mov ax , 0x13
+int 0x10
 
 ; -----------------------------------------------------------------------------
 align 16
