@@ -107,6 +107,9 @@ int main()
 	ncPrint("[Finished]");
     */
 
-    putCharAt(4, 4, 'c');
+    putCharAt(23, 4, 'a');
+    putCharAt(24, 4, 'b');
+    putCharAt(23, 5, 'c');
+    putCharAt(24, 5, 'd');
 	return 0;
 }
