@@ -27,6 +27,9 @@ void cPrint(const char * string)
 
 void cPrintChar(char character)
 {
+    if(cursor >= width * height) {
+        return;
+    }
     uint32_t xPos = cursor % width;
     uint32_t yPos = cursor / width;
     putCharAt(xPos, yPos, character);

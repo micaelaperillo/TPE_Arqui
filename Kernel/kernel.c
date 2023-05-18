@@ -6,6 +6,7 @@
 #include <time.h>
 #include <idtLoader.h>
 #include <console.h>
+#include <videoDriver.h>
 
 extern uint8_t text;
 extern uint8_t rodata;
@@ -106,6 +107,8 @@ int main()
 	cNewline();
 
 	cPrint("[Finished]");
+
+    drawEmptyColoredCircle(255, 255, 255, 500, 500, 40);
 
 	return 0;
 }
