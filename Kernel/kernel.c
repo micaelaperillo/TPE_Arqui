@@ -5,7 +5,7 @@
 #include <naiveConsole.h>
 #include <time.h>
 #include <idtLoader.h>
-#include <videoDriver.h>
+#include <console.h>
 
 extern uint8_t text;
 extern uint8_t rodata;
@@ -107,9 +107,6 @@ int main()
 	ncPrint("[Finished]");
     */
 
-    putCharAt(23, 4, 'a');
-    putCharAt(24, 4, 'b');
-    putCharAt(23, 5, 'c');
-    putCharAt(24, 5, 'd');
+    cPrint("!\"#$&/()=?0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz");
 	return 0;
 }

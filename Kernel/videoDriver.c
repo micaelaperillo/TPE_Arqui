@@ -2,7 +2,6 @@
 #include <stdint.h>
 #include <videoDriver.h>
 
-
 //###
 //Este pedazo de codigo fue dado por la cátedra de Arquitectura de Computadoras
 
@@ -51,11 +50,11 @@ VBEInfoPtr VBE_mode_info = (VBEInfoPtr) 0x0000000000005C00;
 #define CHAR_WIDTH 6
 #define CHAR_HEIGHT 8
 #define SIZE_MULT 2
-#define X_PADDING 2      //empty pixels next to each char
-#define Y_PADDING 2
+#define X_PADDING 1      //empty pixels next to each char
+#define Y_PADDING 1
 
-#define XDIM ((VBE_mode_info->width - (X_PADDING * 2)) / (CHAR_WIDTH * SIZE_MULT))
-#define YDIM ((VBE_mode_info->height - (Y_PADDING * 2)) / (CHAR_HEIGHT * SIZE_MULT))
+#define XDIM ((VBE_mode_info->width) / ((CHAR_WIDTH + X_PADDING) * SIZE_MULT))
+#define YDIM ((VBE_mode_info->height) / ((CHAR_HEIGHT + Y_PADDING) * SIZE_MULT))
 
 void putPixel(uint8_t r, uint8_t g, uint8_t b, uint32_t x, uint32_t y) {
     uint8_t * videoPtr = VBE_mode_info->framebuffer;
@@ -109,10 +108,12 @@ void _drawChar(uint32_t r, uint32_t g, uint32_t b, uint32_t xPixel, uint32_t yPi
             if(chr[j] & (1<<i)) {
                 drawColoredRectangle(r, g, b, (xPixel + j) * SIZE_MULT, (yPixel + i) * SIZE_MULT, SIZE_MULT, SIZE_MULT);
             }
+            else {
+                drawColoredRectangle(0, 0, 0, (xPixel + j) * SIZE_MULT, (yPixel + i) * SIZE_MULT, SIZE_MULT, SIZE_MULT);    //turns the pixel off
+            }
         }
     }
 }
-
 
 void putColoredCharAt(uint8_t r, uint8_t g, uint8_t b, uint32_t x, uint32_t y, char c) {
     if (x > XDIM || y > YDIM || x < 0 || y < 0) {
@@ -125,4 +126,12 @@ void putColoredCharAt(uint8_t r, uint8_t g, uint8_t b, uint32_t x, uint32_t y, c
 
 void putCharAt(uint32_t x, uint32_t y, char c) {
     putColoredCharAt(255, 255, 255, x, y, c);
+}
+
+uint32_t getXCharSlots() {
+    return XDIM;
+}
+
+uint32_t getYCharSlots() {
+    return YDIM;
 }
