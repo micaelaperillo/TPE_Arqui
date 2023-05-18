@@ -5,6 +5,7 @@
 #include <naiveConsole.h>
 #include <time.h>
 #include <idtLoader.h>
+#include <videoDriver.h>
 
 extern uint8_t text;
 extern uint8_t rodata;
@@ -83,7 +84,8 @@ void * initializeKernelBinary()
 }
 
 int main()
-{	
+{
+    /*
 	ncPrint("[Kernel Main]");
     load_idt();
 	ncNewline();
@@ -103,5 +105,8 @@ int main()
 	ncNewline();
 
 	ncPrint("[Finished]");
+    */
+
+    putPixelHex(0x00FFFFFF, 10, 10);
 	return 0;
 }
