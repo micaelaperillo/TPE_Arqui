@@ -48,6 +48,15 @@ typedef struct vbe_mode_info_structure * VBEInfoPtr;
 
 VBEInfoPtr VBE_mode_info = (VBEInfoPtr) 0x0000000000005C00;
 
+#define CHAR_WIDTH 6
+#define CHAR_HEIGHT 8
+#define SIZE_MULT 2
+#define X_PADDING 4      //pixels on each side of the screen
+#define Y_PADDING 0
+
+#define XDIM ((VBE_mode_info->width - (X_PADDING * 2)) / (CHAR_WIDTH * SIZE_MULT))
+#define YDIM ((VBE_mode_info->height - (Y_PADDING * 2)) / (CHAR_HEIGHT * SIZE_MULT))
+
 void putPixel(uint8_t r, uint8_t g, uint8_t b, uint32_t x, uint32_t y) {
     uint8_t * videoPtr = VBE_mode_info->framebuffer;
     int offset = y * VBE_mode_info->pitch + x * (VBE_mode_info->bpp / 8);
@@ -64,4 +73,51 @@ void putPixelHex(uint32_t hexColor, uint32_t x, uint32_t y) {
     g = (hexColor >> 8) & 255;
     r = (hexColor >> 16) & 255;
     putPixel(r, g, b, x, y);
+}
+
+//code taken from https://jared.geek.nz/2014/jan/custom-fonts-for-microcontrollers and modified
+void _drawChar(uint32_t xPixel, uint32_t yPixel, char c) {
+    uint8_t i,j;
+
+    // Convert the character to an index
+    c = c & 0x7F;
+    if (c < ' ') {
+        c = 0;
+    } else {
+        c -= ' ';
+    }
+
+    // 'font' is a multidimensional array of [96][char_width]
+    // which is really just a 1D array of size 96*char_width.
+    const uint8_t* chr = font[c*CHAR_WIDTH];
+
+    // Draw pixels
+    for (j=0; j<CHAR_WIDTH; j++) {
+        for (i=0; i<CHAR_HEIGHT; i++) {
+
+            if (chr[j] & (1<<i)) {
+                for(int width=0, height=0; height < SIZE_MULT;) {
+                    putPixel(255, 255, 255, (xPixel + j * CHAR_WIDTH) + width, (yPixel + i * CHAR_HEIGHT) + height);
+                    if(width + 1 == SIZE_MULT) {
+                        height++;
+                        width = 0;
+                    }
+                    else {
+                        width++;
+                    }
+                }
+            }
+        }
+    }
+    putPixel(255, 255, 255, 40, 40);
+}
+
+void putCharAt(uint32_t x, uint32_t y, char c) {
+    if(x > XDIM || y > YDIM || x < 0 || y < 0) {
+        return;
+    }
+    putPixel(255, 255, 255, 20, 20);
+    uint32_t xCoord = (x * CHAR_WIDTH * SIZE_MULT) + X_PADDING;
+    uint32_t yCoord = (y * CHAR_HEIGHT * SIZE_MULT) + Y_PADDING;
+    _drawChar(xCoord, yCoord, c);
 }

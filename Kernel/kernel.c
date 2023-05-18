@@ -107,6 +107,6 @@ int main()
 	ncPrint("[Finished]");
     */
 
-    putPixelHex(0x00FFFFFF, 10, 10);
+    putCharAt(4, 4, 'c');
 	return 0;
 }

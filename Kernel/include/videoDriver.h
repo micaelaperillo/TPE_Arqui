@@ -4,5 +4,6 @@
 
 void putPixel(uint8_t r, uint8_t g, uint8_t b, uint32_t x, uint32_t y);
 void putPixelHex(uint32_t hexColor, uint32_t x, uint32_t y);
+void putCharAt(uint32_t x, uint32_t y, char c);
 
 #endif //TPE_ARQUI_VIDEODRIVER_H
