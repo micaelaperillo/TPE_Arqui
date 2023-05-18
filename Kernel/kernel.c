@@ -109,6 +109,7 @@ int main()
 	cPrint("[Finished]");
 
     drawEmptyColoredCircle(255, 255, 255, 500, 500, 40);
+    drawColoredCircle(255, 255, 0, 300, 250, 60);
 
 	return 0;
 }

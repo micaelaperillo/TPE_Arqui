@@ -144,6 +144,23 @@ void drawEmptyColoredCircle(uint8_t r, uint8_t g, uint8_t b, uint32_t xi, uint32
     }
 }
 
+//TODO MEJORAR ESTE ALGORITMO
+void drawColoredCircle(uint8_t r, uint8_t g, uint8_t b, uint32_t xi, uint32_t yi, uint32_t radius) {
+    //function written by kmillen, taken from https://stackoverflow.com/questions/1201200/fast-algorithm-for-drawing-filled-circles
+    int r2 = radius * radius;
+    int area = r2 << 2;
+    int rr = radius << 1;
+
+    for (int i = 0; i < area; i++)
+    {
+        int tx = (i % rr) - radius;
+        int ty = (i / rr) - radius;
+
+        if (tx * tx + ty * ty <= r2)
+            putPixel(r, g, b, xi + tx, yi + ty);
+    }
+}
+
 
 void drawColoredRectangle(uint8_t r, uint8_t g, uint8_t b, uint32_t x, uint32_t y, uint32_t width, uint32_t height) {
     for(int i=0; i<height; i++) {

@@ -78,6 +78,7 @@ void cClear()
     cursor = 0;
 }
 
+//TODO mover uintToBase a una libreria aparte (utils.h?)
 static uint32_t uintToBase(uint64_t value, char * buffer, uint32_t base)
 {
     char *p = buffer;
