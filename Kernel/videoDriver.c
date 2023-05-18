@@ -208,9 +208,10 @@ void putCharAt(uint32_t x, uint32_t y, char character) {
     putColoredCharAt(WHITE, x, y, character);
 }
 
+//TODO hacer el 3 menos hardcodeado
 void clearScreen() {
     uint8_t * videoPtr = VBE_mode_info->framebuffer;
-    for(int i=0; i < VBE_mode_info->height * VBE_mode_info->width; i++) {
+    for(int i=0; i < VBE_mode_info->height * VBE_mode_info->width * 3; i++) {
         videoPtr[i] = 0;
     }
 }
