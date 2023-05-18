@@ -75,16 +75,20 @@ void putPixelHex(uint32_t hexColor, uint32_t x, uint32_t y) {
     putPixel(r, g, b, x, y);
 }
 
-void drawRectangle(uint32_t x, uint32_t y, uint32_t width, uint32_t height) {
+void drawColoredRectangle(uint8_t r, uint8_t g, uint8_t b, uint32_t x, uint32_t y, uint32_t width, uint32_t height) {
     for(int i=0; i<height; i++) {
         for(int j=0; j<width; j++) {
-            putPixel(255, 255, 255, x+j, y+i);
+            putPixel(r, g, b, x+j, y+i);
         }
     }
 }
 
+void drawRectangle(uint32_t x, uint32_t y, uint32_t width, uint32_t height) {
+    drawColoredRectangle(255, 255, 255, x, y, width, height);
+}
+
 //code taken from https://jared.geek.nz/2014/jan/custom-fonts-for-microcontrollers and modified
-void _drawChar(uint32_t xPixel, uint32_t yPixel, char c) {
+void _drawChar(uint32_t r, uint32_t g, uint32_t b, uint32_t xPixel, uint32_t yPixel, char c) {
     uint8_t i, j;
 
     // Convert the character to an index
@@ -103,17 +107,22 @@ void _drawChar(uint32_t xPixel, uint32_t yPixel, char c) {
     for (j = 0; j < CHAR_WIDTH; j++) {
         for (i = 0; i < CHAR_HEIGHT; i++) {
             if(chr[j] & (1<<i)) {
-                drawRectangle((xPixel + j) * SIZE_MULT, (yPixel + i) * SIZE_MULT, SIZE_MULT, SIZE_MULT);
+                drawColoredRectangle(r, g, b, (xPixel + j) * SIZE_MULT, (yPixel + i) * SIZE_MULT, SIZE_MULT, SIZE_MULT);
             }
         }
     }
 }
 
-void putCharAt(uint32_t x, uint32_t y, char c) {
+
+void putColoredCharAt(uint8_t r, uint8_t g, uint8_t b, uint32_t x, uint32_t y, char c) {
     if (x > XDIM || y > YDIM || x < 0 || y < 0) {
         return;
     }
     uint32_t xCoord = (x * (CHAR_WIDTH + X_PADDING));
     uint32_t yCoord = (y * (CHAR_HEIGHT + Y_PADDING));
-    _drawChar(xCoord, yCoord, c);
+    _drawChar(r, g, b, xCoord, yCoord, c);
+}
+
+void putCharAt(uint32_t x, uint32_t y, char c) {
+    putColoredCharAt(255, 255, 255, x, y, c);
 }
