@@ -85,28 +85,27 @@ void * initializeKernelBinary()
 
 int main()
 {
-    /*
-	ncPrint("[Kernel Main]");
+    initializeConsole();
+    cNewline();
+	cPrint("[Kernel Main]");
     load_idt();
-	ncNewline();
-	ncPrint("  Sample code module at 0x");
-	ncPrintHex((uint64_t)sampleCodeModuleAddress);
-	ncNewline();
-	ncPrint("  Calling the sample code module returned: ");
-	ncPrintHex(((EntryPoint)sampleCodeModuleAddress)());
-	ncNewline();
-	ncNewline();
+	cNewline();
+	cPrint("  Sample code module at 0x");
+	cPrintHex((uint64_t)sampleCodeModuleAddress);
+	cNewline();
+	cPrint("  Calling the sample code module returned: ");
+	cPrintHex(((EntryPoint)sampleCodeModuleAddress)());
+	cNewline();
+	cNewline();
 
-	ncPrint("  Sample data module at 0x");
-	ncPrintHex((uint64_t)sampleDataModuleAddress);
-	ncNewline();
-	ncPrint("  Sample data module contents: ");
-	ncPrint((char*)sampleDataModuleAddress);
-	ncNewline();
+	cPrint("  Sample data module at 0x");
+	cPrintHex((uint64_t)sampleDataModuleAddress);
+	cNewline();
+	cPrint("  Sample data module contents: ");
+	cPrint((char*)sampleDataModuleAddress);
+	cNewline();
 
-	ncPrint("[Finished]");
-    */
+	cPrint("[Finished]");
 
-    cPrint("!\"#$&/()=?0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz");
 	return 0;
 }

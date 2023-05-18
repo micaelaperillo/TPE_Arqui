@@ -47,11 +47,13 @@ typedef struct vbe_mode_info_structure * VBEInfoPtr;
 
 VBEInfoPtr VBE_mode_info = (VBEInfoPtr) 0x0000000000005C00;
 
-#define CHAR_WIDTH 6
+#define CHAR_WIDTH 8
 #define CHAR_HEIGHT 8
-#define SIZE_MULT 2
-#define X_PADDING 1      //empty pixels next to each char
+#define SIZE_MULT 1
+#define X_PADDING 0      //empty pixels next to each char
 #define Y_PADDING 1
+#define X_BORDER_PADDING 1
+#define Y_BORDER_PADDING 1
 
 #define XDIM ((VBE_mode_info->width) / ((CHAR_WIDTH + X_PADDING) * SIZE_MULT))
 #define YDIM ((VBE_mode_info->height) / ((CHAR_HEIGHT + Y_PADDING) * SIZE_MULT))
@@ -92,24 +94,24 @@ void _drawChar(uint32_t r, uint32_t g, uint32_t b, uint32_t xPixel, uint32_t yPi
 
     // Convert the character to an index
     c = c & 0x7F;
-    if (c < ' ') {
+    /*if (c < ' ') {
         c = 0;
     } else {
         c -= ' ';
     }
-
+    */
     // 'font' is a multidimensional array of [96][char_width]
     // which is really just a 1D array of size 96*char_width.
     const uint8_t *chr = font[c];
 
     // Draw pixels
-    for (j = 0; j < CHAR_WIDTH; j++) {
-        for (i = 0; i < CHAR_HEIGHT; i++) {
+    for (j = 0; j < CHAR_HEIGHT; j++) {
+        for (i = 0; i < CHAR_WIDTH; i++) {
             if(chr[j] & (1<<i)) {
-                drawColoredRectangle(r, g, b, (xPixel + j) * SIZE_MULT, (yPixel + i) * SIZE_MULT, SIZE_MULT, SIZE_MULT);
+                drawColoredRectangle(r, g, b, (xPixel + i) * SIZE_MULT, (yPixel + j) * SIZE_MULT, SIZE_MULT, SIZE_MULT);
             }
             else {
-                drawColoredRectangle(0, 0, 0, (xPixel + j) * SIZE_MULT, (yPixel + i) * SIZE_MULT, SIZE_MULT, SIZE_MULT);    //turns the pixel off
+                drawColoredRectangle(0, 0, 0, (xPixel + i) * SIZE_MULT, (yPixel + j) * SIZE_MULT, SIZE_MULT, SIZE_MULT);    //turns the pixel off
             }
         }
     }
@@ -119,8 +121,8 @@ void putColoredCharAt(uint8_t r, uint8_t g, uint8_t b, uint32_t x, uint32_t y, c
     if (x > XDIM || y > YDIM || x < 0 || y < 0) {
         return;
     }
-    uint32_t xCoord = (x * (CHAR_WIDTH + X_PADDING));
-    uint32_t yCoord = (y * (CHAR_HEIGHT + Y_PADDING));
+    uint32_t xCoord = (x * (CHAR_WIDTH + X_PADDING)) + X_BORDER_PADDING;
+    uint32_t yCoord = (y * (CHAR_HEIGHT + Y_PADDING)) + Y_BORDER_PADDING;
     _drawChar(r, g, b, xCoord, yCoord, c);
 }
 

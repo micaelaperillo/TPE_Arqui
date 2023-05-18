@@ -2,6 +2,8 @@
 #define TPE_ARQUI_CONSOLE_H
 #include <stdint.h>
 
+void initializeConsole();
+
 void cPrint(const char * string);
 void cPrintChar(char character);
 void cNewline();

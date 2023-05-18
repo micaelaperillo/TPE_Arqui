@@ -6,8 +6,16 @@ static uint32_t uintToBase(uint64_t value, char * buffer, uint32_t base);
 
 static char buffer[64] = { '0' };
 static uint32_t cursor = 0;
-static const uint32_t width = 78;
-static const uint32_t height = 45;
+uint32_t width = 0;
+uint32_t height = 0;
+
+void initializeConsole() {
+    width = getXCharSlots();
+    height = getYCharSlots();
+    cPrint("[Console initialized]");
+    cNewline();
+
+}
 
 void cPrint(const char * string)
 {
@@ -31,7 +39,7 @@ void cNewline()
     {
         cPrintChar(' ');
     }
-    while(cursor % width != 0);
+    while(cursor % (width * 2) != 0);
 }
 
 void cPrintDec(uint64_t value)
