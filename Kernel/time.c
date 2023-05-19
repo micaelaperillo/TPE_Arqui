@@ -6,7 +6,7 @@ void timer_handler() {
 	ticks++;
 }
 
-int ticks_elapsed() {
+unsigned long ticks_elapsed() {
 	return ticks;
 }
 
@@ -14,13 +14,9 @@ int seconds_elapsed() {
 	return ticks / 18;
 }
 
-void wait(float seconds) {
-    float aux1, aux2;
-    aux1 = aux2 =(float) seconds_elapsed();
-    while(1) {
-        if((aux1 > aux2 && (aux1 - aux2) > seconds) || (aux2 > aux1 && (aux2 - aux1) > seconds)) {
-            return;
-        }
-        aux2 = seconds_elapsed();
+void wait(unsigned long milliseconds) {
+    unsigned int initTicks = ticks;
+    while ((ticks - initTicks) < (milliseconds / 55)) {
+
     }
 }

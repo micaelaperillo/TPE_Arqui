@@ -2,8 +2,8 @@
 #define _TIME_H_
 
 void timer_handler();
-int ticks_elapsed();
+unsigned long ticks_elapsed();
 int seconds_elapsed();
-void wait(float seconds);
+void wait(unsigned long milliseconds);
 
 #endif
