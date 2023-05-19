@@ -108,10 +108,5 @@ int main()
 
 	cPrint("[Finished]");
 
-    drawEmptyColoredCircle(WHITE, 500, 500, 40);
-    drawColoredCircle(WHITE, 300, 250, 60);
-
-    clearScreen();
-
 	return 0;
 }

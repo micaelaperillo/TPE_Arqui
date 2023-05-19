@@ -79,32 +79,20 @@ void putPixelHex(uint32_t hexColor, uint32_t x, uint32_t y) {
     putPixel(c, x, y);
 }
 
-//using Bresenham's line drawing algorithm, taken from https://www.javatpoint.com/computer-graphics-bresenhams-line-algorithm and modified
-void drawColoredLine(Color c, uint32_t xi, uint32_t yi, uint32_t xf, uint32_t yf) {
-    int dx, dy, p, x, y;
-    if(xf < xi) {
-        int aux = xi;
-        xi = xf;
-        xf = aux;
-    }
-    dx=xf-xi;
-    dy=yf-yi;
-    x=xi;
-    y=yi;
-    p=2*dy-dx;
-    while(x<xf)
-    {
-        if(p>=0)
-        {
-            putPixel(c, x, y);
-            y=y+1;
-            p=p+2*dy-2*dx;
-        }
-        else
-        {
-            putPixel(c, x, y);
-            p=p+2*dy;}
-        x=x+1;
+//TODO repasarlo y reescribirlo para sacar un par de cosas feas (for loop) y de paso hacerlo mas propio
+void drawColoredLine(Color c, uint32_t x0, uint32_t y0, uint32_t x1, uint32_t y1) {
+    //code written by bert, taken from https://gist.github.com/bert/1085538 and modified
+    int aux1 = (x1 > x0)?(x1-x0):(x0 - x1), aux2 = (y1 > y0)?(y0-y1):(y1 - y0);
+    int dx =  aux1, sx = x0 < x1 ? 1 : -1;
+    int dy = aux2, sy = y0 < y1 ? 1 : -1;
+    int err = dx + dy, e2; /* error value e_xy */
+
+    for (;;){  /* loop */
+        putPixel(WHITE, x0, y0);
+        if (x0 == x1 && y0 == y1) break;
+        e2 = 2 * err;
+        if (e2 >= dy) { err += dy; x0 += sx; } /* e_xy+e_x > 0 */
+        if (e2 <= dx) { err += dx; y0 += sy; } /* e_xy+e_y < 0 */
     }
 }
 
@@ -147,6 +135,7 @@ void drawEmptyColoredCircle(Color c, uint32_t xi, uint32_t yi, uint32_t radius) 
 //TODO MEJORAR ESTE ALGORITMO
 void drawColoredCircle(Color c, uint32_t xi, uint32_t yi, uint32_t radius) {
     //function written by kmillen, taken from https://stackoverflow.com/questions/1201200/fast-algorithm-for-drawing-filled-circles
+    //currently being used because it doesn't need the sqrt() function
     int r2 = radius * radius;
     int area = r2 << 2;
     int rr = radius << 1;
@@ -174,13 +163,13 @@ void drawRectangle(uint32_t x, uint32_t y, uint32_t width, uint32_t height) {
     drawColoredRectangle(WHITE, x, y, width, height);
 }
 
-//code taken from https://jared.geek.nz/2014/jan/custom-fonts-for-microcontrollers and modified
-void _drawChar(Color c, uint32_t xPixel, uint32_t yPixel, char character) {
+void _drawChar(Color c, uint32_t xPixel, uint32_t yPixel, unsigned char character) {
+    //code taken from https://jared.geek.nz/2014/jan/custom-fonts-for-microcontrollers and modified
     uint8_t i, j;
 
     // Convert the character to an index
     character = character & 0x7F;
-    const uint8_t *chr = font[character];
+    const char *chr = font[character];
 
     // Draw pixels
     for (j = 0; j < CHAR_HEIGHT; j++) {
