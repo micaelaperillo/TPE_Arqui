@@ -10,8 +10,13 @@ typedef struct Color{
 
 static struct Color WHITE = {255, 255, 255};
 static struct Color BLACK = {0, 0, 0};
+static struct Color RED = {255, 0, 0};
+static struct Color GREEN = {0, 255, 0};
+static struct Color BLUE = {0, 0, 255};
+static struct Color YELLOW = {255, 255, 0};
+static struct Color PINK = {255, 0, 255};
+static struct Color CYAN = {0, 255, 255};
 
-void initializeVideoBuffer();
 void enableDoubleBuffering();
 void disableDoubleBuffering();
 void drawBuffer();

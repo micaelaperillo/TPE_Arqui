@@ -52,25 +52,21 @@ VBEInfoPtr VBE_mode_info = (VBEInfoPtr) 0x0000000000005C00;
 
 #define CHAR_WIDTH 8
 #define CHAR_HEIGHT 8
-#define SIZE_MULT 1
-
-#define XDIM 128        //amount of characters that fit in the x axis
-#define YDIM 96         // " y axis
-
-#define TRUE 1
-#define FALSE 0
+#define SIZE_MULT 2
 
 #define SCREEN_WIDTH 1024
 #define SCREEN_HEIGHT 768
 #define BYTES_PER_PIXEL 3
 #define BUFFER_SIZE SCREEN_HEIGHT * SCREEN_WIDTH * BYTES_PER_PIXEL
 
-int doubleBufferingEnabled = FALSE;
-static uint8_t videoBuffer[BUFFER_SIZE];
+#define XDIM SCREEN_WIDTH / CHAR_WIDTH        //(1024 / 8 = 128)  amount of characters that fit in the x axis
+#define YDIM SCREEN_WIDTH / CHAR_HEIGHT       //(768 / 8 = 96)    " y axis
 
-void initializeVideoBuffer() {
-   clearBuffer();
-}
+#define TRUE 1
+#define FALSE 0
+
+int doubleBufferingEnabled = FALSE;
+static uint8_t videoBuffer[BUFFER_SIZE] = {0};
 
 void enableDoubleBuffering() {
     doubleBufferingEnabled = TRUE;
@@ -125,7 +121,7 @@ void drawColoredLine(Color c, uint32_t x0, uint32_t y0, uint32_t x1, uint32_t y1
     int err = dx + dy, e2; /* error value e_xy */
 
     for (;;){  /* loop */
-        putPixel(WHITE, x0, y0);
+        putPixel(c, x0, y0);
         if (x0 == x1 && y0 == y1) break;
         e2 = 2 * err;
         if (e2 >= dy) { err += dy; x0 += sx; } /* e_xy+e_x > 0 */
@@ -212,10 +208,11 @@ void _drawChar(Color c, uint32_t xPixel, uint32_t yPixel, unsigned char characte
     for (j = 0; j < CHAR_HEIGHT; j++) {
         for (i = 0; i < CHAR_WIDTH; i++) {
             if(chr[j] & (1<<i)) {
-                drawColoredRectangle(WHITE, (xPixel + i) * SIZE_MULT, (yPixel + j) * SIZE_MULT, SIZE_MULT, SIZE_MULT);
+                drawColoredRectangle(c, (xPixel + i) * SIZE_MULT, (yPixel + j) * SIZE_MULT, SIZE_MULT, SIZE_MULT);
             }
             else {
-                drawColoredRectangle(BLACK, (xPixel + i) * SIZE_MULT, (yPixel + j) * SIZE_MULT, SIZE_MULT, SIZE_MULT);    //turns the pixel "off"
+                drawColoredRectangle(BLACK, (xPixel + i) * SIZE_MULT, (yPixel + j) * SIZE_MULT, SIZE_MULT, SIZE_MULT);
+                //turns the pixel "off"
             }
         }
     }

@@ -1,9 +1,7 @@
 #include <stdint.h>
-#include <string.h>
 #include <lib.h>
 #include <moduleLoader.h>
 #include <naiveConsole.h>
-#include <time.h>
 #include <idtLoader.h>
 #include <console.h>
 #include <videoDriver.h>
@@ -84,27 +82,46 @@ void * initializeKernelBinary()
 	return getStackBase();
 }
 
+void updateBubblePosition(int* x, int* y, int* xDir, int* yDir, int width) {
+    if(*x + *xDir - width <= 0) {
+        *xDir = (*xDir < 0)?(-*xDir):(*xDir);
+    } else if(*x + *xDir + width >= 1024) {
+        *xDir = (*xDir > 0)?(-*xDir):(*xDir);
+    }
+    if(*y + *yDir - width <= 0) {
+        *yDir = (*yDir < 0)?(-*yDir):(*yDir);
+    } else if(*y + *yDir + width >= 768) {
+        *yDir = (*yDir > 0)?(-*yDir):(*yDir);
+    }
+    *x += *xDir;
+    *y += *yDir;
+}
+
 void screenSaver() {
     enableDoubleBuffering();
-    int x=40;
-    int y=360;
-    int xDir=1;
-    int yDir=1;
+    int x1=40, x2=60, x3=600, x4=460, x5=510, x6=30;
+    int y1=360, y2=0, y3=700, y4=500, y5=80, y6=600;
+    int xDir1=1, xDir2=2, xDir3=3, xDir4=1, xDir5=3, xDir6=2;
+    int yDir1=3, yDir2=2, yDir3=2, yDir4=2, yDir5=1, yDir6=1;
     int width = 20;
+    //TODO cambiar para que termine cuando detecta input
+
     while(1) {
-        if(x + xDir - width <= 0) {
-            xDir = (xDir < 0)?(-xDir):(xDir);
-        } else if(x + xDir + width >= 1024) {
-            xDir = (xDir > 0)?(-xDir):(xDir);
-        }
-        if(y + yDir - width <= 0) {
-            yDir = (yDir < 0)?(-yDir):(yDir);
-        } else if(y + yDir + width >= 768) {
-            yDir = (yDir > 0)?(-yDir):(yDir);
-        }
-        x += xDir;
-        y += yDir;
-        drawColoredCircle(WHITE, x, y, width);
+
+        updateBubblePosition(&x1, &y1, &xDir1, &yDir1, width);
+        updateBubblePosition(&x2, &y2, &xDir2, &yDir2, width);
+        updateBubblePosition(&x3, &y3, &xDir3, &yDir3, width);
+        updateBubblePosition(&x4, &y4, &xDir4, &yDir4, width);
+        updateBubblePosition(&x5, &y5, &xDir5, &yDir5, width);
+        updateBubblePosition(&x6, &y6, &xDir6, &yDir6, width);
+
+        drawColoredCircle(RED, x1, y1, width);
+        drawColoredCircle(GREEN, x2, y2, width);
+        drawColoredCircle(BLUE, x3, y3, width);
+        drawColoredCircle(YELLOW, x4, y4, width);
+        drawColoredCircle(PINK, x5, y5, width);
+        drawColoredCircle(CYAN, x6, y6, width);
+
         drawBuffer();
     }
 }
@@ -112,7 +129,6 @@ void screenSaver() {
 int main()
 {
     initializeConsole();
-    initializeVideoBuffer();
     cNewline();
 	cPrint("[Kernel Main]");
     load_idt();
@@ -131,8 +147,7 @@ int main()
 	cPrint("  Sample data module contents: ");
 	cPrint((char*)sampleDataModuleAddress);
 	cNewline();
-
 	cPrint("[Finished]");
-
+    //screenSaver();
 	return 0;
 }
