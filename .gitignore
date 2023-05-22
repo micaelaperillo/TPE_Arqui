@@ -11,3 +11,4 @@
 *.o
 
 build.sh
+maker.sh
