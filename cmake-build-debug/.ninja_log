@@ -7,3 +7,5 @@
 51	1552	7064708011192262	CMakeFiles/TPE_Arqui.dir/Kernel/moduleLoader.c.obj	f146bd66511e854e
 1080	1721	7064708014801081	CMakeFiles/TPE_Arqui.dir/Kernel/lib.c.obj	992cb8667eef653d
 1114	1728	7064708014801081	CMakeFiles/TPE_Arqui.dir/Kernel/time.c.obj	29d85109b25c6c2e
+13	581	7064712845556243	CMakeFiles/TPE_Arqui.dir/Kernel/kernel.c.obj	21264bd181641a5c
+6	268	7064718098338410	CMakeFiles/TPE_Arqui.dir/Kernel/kernel.c.obj	21264bd181641a5c

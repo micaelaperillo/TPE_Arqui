@@ -11,10 +11,11 @@ typedef struct Color{
 static struct Color WHITE = {255, 255, 255};
 static struct Color BLACK = {0, 0, 0};
 
-void initializeBuffer();
+void initializeVideoBuffer();
 void enableDoubleBuffering();
 void disableDoubleBuffering();
-void bufferToScreen();
+void drawBuffer();
+void clearBuffer();
 
 void putPixel(Color c, uint32_t x, uint32_t y);
 void putPixelHex(uint32_t hexColor, uint32_t x, uint32_t y);

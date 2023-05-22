@@ -1,6 +1,7 @@
 #include <bitmapFont.h>
 #include <stdint.h>
 #include <videoDriver.h>
+#include <lib.h>
 
 //################################################
 //Este pedazo de codigo fue dado por la cátedra de Arquitectura de Computadoras
@@ -59,15 +60,16 @@ VBEInfoPtr VBE_mode_info = (VBEInfoPtr) 0x0000000000005C00;
 #define TRUE 1
 #define FALSE 0
 
+#define SCREEN_WIDTH 1280
+#define SCREEN_HEIGHT 720
+#define BYTES_PER_PIXEL 3
+#define BUFFER_SIZE SCREEN_HEIGHT * SCREEN_WIDTH * BYTES_PER_PIXEL
+
 int doubleBufferingEnabled = FALSE;
-static Color videoBuffer[1280][720];    //somewhat hardcoded, but the resolution won't change
+static uint8_t videoBuffer[BUFFER_SIZE];
 
 void initializeVideoBuffer() {
-    for(int i=0; i<VBE_mode_info->width; i++) {
-        for(int j=0; j<VBE_mode_info->height; j++) {
-            videoBuffer[i][j] = BLACK;
-        }
-    }
+    clearBuffer();
 }
 
 void enableDoubleBuffering() {
@@ -78,21 +80,15 @@ void disableDoubleBuffering() {
     doubleBufferingEnabled = FALSE;
 }
 
-void bufferToScreen() {
-    uint8_t * videoPtr = VBE_mode_info->framebuffer;
-    Color pixel;
-    int offset;
-    for(int x=0; x<VBE_mode_info->width; x++) {
-        for(int y=0; y<VBE_mode_info->height; y++) {
-            offset = y * VBE_mode_info->pitch + x * (VBE_mode_info->bpp / 8);
-            pixel = videoBuffer[x][y];
-            //changes the screen pixel to the buffer pixel
-            videoPtr[offset] = pixel.b;
-            videoPtr[offset+1] = pixel.g;
-            videoPtr[offset+2] = pixel.r;
-            //resets the buffer
-            pixel = BLACK;
-        }
+void drawBuffer() {
+    memcpy(VBE_mode_info->framebuffer, videoBuffer,
+           VBE_mode_info->width * (VBE_mode_info->bpp / 8) * VBE_mode_info->height);
+    clearBuffer();
+}
+
+void clearBuffer() {
+    for(int i=0; i<BUFFER_SIZE; i++) {
+        videoBuffer[i] = 0;
     }
 }
 
@@ -102,10 +98,10 @@ void putPixel(Color c, uint32_t x, uint32_t y) {
     }
     if(doubleBufferingEnabled) {
         //changes the pixel in the buffer and finishes, no need to change anything else
-        Color pixel = videoBuffer[x][y];
-        pixel.r = c.r;
-        pixel.g = c.g;
-        pixel.b = c.b;
+        int offset = y * VBE_mode_info->pitch + x * (VBE_mode_info->bpp / 8);
+        videoBuffer[offset] = c.b;
+        videoBuffer[offset+1] = c.g;
+        videoBuffer[offset+2] = c.r;
         return;
     }
     uint8_t * videoPtr = VBE_mode_info->framebuffer;
@@ -241,10 +237,9 @@ void putCharAt(uint32_t x, uint32_t y, char character) {
     putColoredCharAt(WHITE, x, y, character);
 }
 
-//TODO hacer el 3 menos hardcodeado
 void clearScreen() {
     uint8_t * videoPtr = VBE_mode_info->framebuffer;
-    for(int i=0; i < VBE_mode_info->height * VBE_mode_info->width * 3; i++) {
+    for(int i=0; i < VBE_mode_info->height * VBE_mode_info->width * (VBE_mode_info->bpp / 8); i++) {
         videoPtr[i] = 0;
     }
 }
