@@ -47,19 +47,65 @@ typedef struct vbe_mode_info_structure * VBEInfoPtr;
 
 VBEInfoPtr VBE_mode_info = (VBEInfoPtr) 0x0000000000005C00;
 
+//################################################
+
 #define CHAR_WIDTH 8
 #define CHAR_HEIGHT 8
 #define SIZE_MULT 1
-#define X_PADDING 0      //empty pixels next to each char
-#define Y_PADDING 0
-#define X_BORDER_PADDING 1
-#define Y_BORDER_PADDING 1
 
-#define XDIM ((VBE_mode_info->width) / ((CHAR_WIDTH + X_PADDING) * SIZE_MULT))
-#define YDIM ((VBE_mode_info->height) / ((CHAR_HEIGHT + Y_PADDING) * SIZE_MULT))
+#define XDIM 160        //amount of characters that fit in the x axis
+#define YDIM 90         // " y axis
+
+#define TRUE 1
+#define FALSE 0
+
+int doubleBufferingEnabled = FALSE;
+static Color videoBuffer[1280][720];    //somewhat hardcoded, but the resolution won't change
+
+void initializeVideoBuffer() {
+    for(int i=0; i<VBE_mode_info->width; i++) {
+        for(int j=0; j<VBE_mode_info->height; j++) {
+            videoBuffer[i][j] = BLACK;
+        }
+    }
+}
+
+void enableDoubleBuffering() {
+    doubleBufferingEnabled = TRUE;
+}
+
+void disableDoubleBuffering() {
+    doubleBufferingEnabled = FALSE;
+}
+
+void bufferToScreen() {
+    uint8_t * videoPtr = VBE_mode_info->framebuffer;
+    Color pixel;
+    int offset;
+    for(int x=0; x<VBE_mode_info->width; x++) {
+        for(int y=0; y<VBE_mode_info->height; y++) {
+            offset = y * VBE_mode_info->pitch + x * (VBE_mode_info->bpp / 8);
+            pixel = videoBuffer[x][y];
+            //changes the screen pixel to the buffer pixel
+            videoPtr[offset] = pixel.b;
+            videoPtr[offset+1] = pixel.g;
+            videoPtr[offset+2] = pixel.r;
+            //resets the buffer
+            pixel = BLACK;
+        }
+    }
+}
 
 void putPixel(Color c, uint32_t x, uint32_t y) {
     if(x >= VBE_mode_info->width || x < 0 || y >= VBE_mode_info->height || y < 0) {
+        return;
+    }
+    if(doubleBufferingEnabled) {
+        //changes the pixel in the buffer and finishes, no need to change anything else
+        Color pixel = videoBuffer[x][y];
+        pixel.r = c.r;
+        pixel.g = c.g;
+        pixel.b = c.b;
         return;
     }
     uint8_t * videoPtr = VBE_mode_info->framebuffer;
@@ -68,8 +114,6 @@ void putPixel(Color c, uint32_t x, uint32_t y) {
     videoPtr[offset+1] = c.g;
     videoPtr[offset+2] = c.r;
 }
-
-//################################################
 
 void putPixelHex(uint32_t hexColor, uint32_t x, uint32_t y) {
     Color c;
@@ -188,8 +232,8 @@ void putColoredCharAt(Color c, uint32_t x, uint32_t y, char character) {
     if (x > XDIM || y > YDIM || x < 0 || y < 0) {
         return;
     }
-    uint32_t xCoord = (x * (CHAR_WIDTH + X_PADDING)) + X_BORDER_PADDING;
-    uint32_t yCoord = (y * (CHAR_HEIGHT + Y_PADDING)) + Y_BORDER_PADDING;
+    uint32_t xCoord = (x * CHAR_WIDTH);
+    uint32_t yCoord = (y * CHAR_HEIGHT);
     _drawChar(c, xCoord, yCoord, character);
 }
 

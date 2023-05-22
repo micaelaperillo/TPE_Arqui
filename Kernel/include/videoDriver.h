@@ -8,8 +8,13 @@ typedef struct Color{
     uint8_t b;
 }Color;
 
-static const Color WHITE = {255, 255, 255};
-static const Color BLACK = {0, 0, 0};
+static struct Color WHITE = {255, 255, 255};
+static struct Color BLACK = {0, 0, 0};
+
+void initializeBuffer();
+void enableDoubleBuffering();
+void disableDoubleBuffering();
+void bufferToScreen();
 
 void putPixel(Color c, uint32_t x, uint32_t y);
 void putPixelHex(uint32_t hexColor, uint32_t x, uint32_t y);
