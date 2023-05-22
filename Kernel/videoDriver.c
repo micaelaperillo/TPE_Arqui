@@ -69,7 +69,7 @@ int doubleBufferingEnabled = FALSE;
 static uint8_t videoBuffer[BUFFER_SIZE];
 
 void initializeVideoBuffer() {
-    memset(videoBuffer, 0, BUFFER_SIZE);
+   clearBuffer();
 }
 
 void enableDoubleBuffering() {
@@ -86,9 +86,7 @@ void drawBuffer() {
 }
 
 void clearBuffer() {
-    for(int i=0; i<BUFFER_SIZE; i++) {
-        videoBuffer[i] = 0;
-    }
+    memset(videoBuffer, 0, BUFFER_SIZE);
 }
 
 void putPixel(Color c, uint32_t x, uint32_t y) {
