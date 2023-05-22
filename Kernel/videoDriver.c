@@ -1,0 +1,214 @@
+#include <bitmapFont.h>
+#include <stdint.h>
+#include <videoDriver.h>
+
+//################################################
+//Este pedazo de codigo fue dado por la cátedra de Arquitectura de Computadoras
+
+struct vbe_mode_info_structure {
+    uint16_t attributes;		// deprecated, only bit 7 should be of interest to you, and it indicates the mode supports a linear frame buffer.
+    uint8_t window_a;			// deprecated
+    uint8_t window_b;			// deprecated
+    uint16_t granularity;		// deprecated; used while calculating bank numbers
+    uint16_t window_size;
+    uint16_t segment_a;
+    uint16_t segment_b;
+    uint32_t win_func_ptr;		// deprecated; used to switch banks from protected mode without returning to real mode
+    uint16_t pitch;			// number of bytes per horizontal line
+    uint16_t width;			// width in pixels
+    uint16_t height;			// height in pixels
+    uint8_t w_char;			// unused...
+    uint8_t y_char;			// ...
+    uint8_t planes;
+    uint8_t bpp;			// bits per pixel in this mode
+    uint8_t banks;			// deprecated; total number of banks in this mode
+    uint8_t memory_model;
+    uint8_t bank_size;		// deprecated; size of a bank, almost always 64 KB but may be 16 KB...
+    uint8_t image_pages;
+    uint8_t reserved0;
+
+    uint8_t red_mask;
+    uint8_t red_position;
+    uint8_t green_mask;
+    uint8_t green_position;
+    uint8_t blue_mask;
+    uint8_t blue_position;
+    uint8_t reserved_mask;
+    uint8_t reserved_position;
+    uint8_t direct_color_attributes;
+
+    uint32_t framebuffer;		// physical address of the linear frame buffer; write here to draw to the screen
+    uint32_t off_screen_mem_off;
+    uint16_t off_screen_mem_size;	// size of memory in the framebuffer but not being displayed on the screen
+    uint8_t reserved1[206];
+} __attribute__ ((packed));
+
+typedef struct vbe_mode_info_structure * VBEInfoPtr;
+
+VBEInfoPtr VBE_mode_info = (VBEInfoPtr) 0x0000000000005C00;
+
+#define CHAR_WIDTH 8
+#define CHAR_HEIGHT 8
+#define SIZE_MULT 1
+#define X_PADDING 0      //empty pixels next to each char
+#define Y_PADDING 0
+#define X_BORDER_PADDING 1
+#define Y_BORDER_PADDING 1
+
+#define XDIM ((VBE_mode_info->width) / ((CHAR_WIDTH + X_PADDING) * SIZE_MULT))
+#define YDIM ((VBE_mode_info->height) / ((CHAR_HEIGHT + Y_PADDING) * SIZE_MULT))
+
+void putPixel(Color c, uint32_t x, uint32_t y) {
+    if(x >= VBE_mode_info->width || x < 0 || y >= VBE_mode_info->height || y < 0) {
+        return;
+    }
+    uint8_t * videoPtr = VBE_mode_info->framebuffer;
+    int offset = y * VBE_mode_info->pitch + x * (VBE_mode_info->bpp / 8);
+    videoPtr[offset] = c.b;
+    videoPtr[offset+1] = c.g;
+    videoPtr[offset+2] = c.r;
+}
+
+//################################################
+
+void putPixelHex(uint32_t hexColor, uint32_t x, uint32_t y) {
+    Color c;
+    c.b = hexColor & 255;
+    c.g = (hexColor >> 8) & 255;
+    c.r = (hexColor >> 16) & 255;
+    putPixel(c, x, y);
+}
+
+//TODO repasarlo y reescribirlo para sacar un par de cosas feas (for loop) y de paso hacerlo mas propio
+void drawColoredLine(Color c, uint32_t x0, uint32_t y0, uint32_t x1, uint32_t y1) {
+    //code written by bert, taken from https://gist.github.com/bert/1085538 and modified
+    int aux1 = (x1 > x0)?(x1-x0):(x0 - x1), aux2 = (y1 > y0)?(y0-y1):(y1 - y0);
+    int dx =  aux1, sx = x0 < x1 ? 1 : -1;
+    int dy = aux2, sy = y0 < y1 ? 1 : -1;
+    int err = dx + dy, e2; /* error value e_xy */
+
+    for (;;){  /* loop */
+        putPixel(WHITE, x0, y0);
+        if (x0 == x1 && y0 == y1) break;
+        e2 = 2 * err;
+        if (e2 >= dy) { err += dy; x0 += sx; } /* e_xy+e_x > 0 */
+        if (e2 <= dx) { err += dx; y0 += sy; } /* e_xy+e_y < 0 */
+    }
+}
+
+void drawLine(uint32_t xi, uint32_t yi, uint32_t xf, uint32_t yf) {
+    drawColoredLine(WHITE, xi, yi, xf, yf);
+}
+
+void _eightWaySymmetryLine(Color c, uint32_t xc, uint32_t yc, uint32_t x, uint32_t y) {
+    putPixel(c, x+xc, y+yc);
+    putPixel(c, x+xc, -y+yc);
+    putPixel(c, -x+xc, -y+yc);
+    putPixel(c, -x+xc, y+yc);
+    putPixel(c, y+xc, x+yc);
+    putPixel(c, y+xc, -x+yc);
+    putPixel(c, -y+xc, x+yc);
+    putPixel(c, -y+xc, -x+yc);
+}
+
+void drawEmptyColoredCircle(Color c, uint32_t xi, uint32_t yi, uint32_t radius) {
+    //using Bresenham's circle drawing algorithm, taken from https://www.javatpoint.com/computer-graphics-bresenhams-circle-algorithm and modified
+    int x=0,y=radius,d=3-(2*radius);
+    _eightWaySymmetryLine(c, xi, yi, x, y);
+
+    while(x<=y)
+    {
+        if(d<=0)
+        {
+            d=d+(4*x)+6;
+        }
+        else
+        {
+            d=d+(4*x)-(4*y)+10;
+            y=y-1;
+        }
+        x=x+1;
+        _eightWaySymmetryLine(c, xi, yi, x, y);
+    }
+}
+
+//TODO MEJORAR ESTE ALGORITMO
+void drawColoredCircle(Color c, uint32_t xi, uint32_t yi, uint32_t radius) {
+    //function written by kmillen, taken from https://stackoverflow.com/questions/1201200/fast-algorithm-for-drawing-filled-circles
+    //currently being used because it doesn't need the sqrt() function
+    int r2 = radius * radius;
+    int area = r2 << 2;
+    int rr = radius << 1;
+
+    for (int i = 0; i < area; i++)
+    {
+        int tx = (i % rr) - radius;
+        int ty = (i / rr) - radius;
+
+        if (tx * tx + ty * ty <= r2)
+            putPixel(c, xi + tx, yi + ty);
+    }
+}
+
+
+void drawColoredRectangle(Color c, uint32_t x, uint32_t y, uint32_t width, uint32_t height) {
+    for(int i=0; i<height; i++) {
+        for(int j=0; j<width; j++) {
+            putPixel(c, x+j, y+i);
+        }
+    }
+}
+
+void drawRectangle(uint32_t x, uint32_t y, uint32_t width, uint32_t height) {
+    drawColoredRectangle(WHITE, x, y, width, height);
+}
+
+void _drawChar(Color c, uint32_t xPixel, uint32_t yPixel, unsigned char character) {
+    //code taken from https://jared.geek.nz/2014/jan/custom-fonts-for-microcontrollers and modified
+    uint8_t i, j;
+
+    // Convert the character to an index
+    character = character & 0x7F;
+    const char *chr = font[character];
+
+    // Draw pixels
+    for (j = 0; j < CHAR_HEIGHT; j++) {
+        for (i = 0; i < CHAR_WIDTH; i++) {
+            if(chr[j] & (1<<i)) {
+                drawColoredRectangle(WHITE, (xPixel + i) * SIZE_MULT, (yPixel + j) * SIZE_MULT, SIZE_MULT, SIZE_MULT);
+            }
+            else {
+                drawColoredRectangle(BLACK, (xPixel + i) * SIZE_MULT, (yPixel + j) * SIZE_MULT, SIZE_MULT, SIZE_MULT);    //turns the pixel "off"
+            }
+        }
+    }
+}
+
+void putColoredCharAt(Color c, uint32_t x, uint32_t y, char character) {
+    if (x > XDIM || y > YDIM || x < 0 || y < 0) {
+        return;
+    }
+    uint32_t xCoord = (x * (CHAR_WIDTH + X_PADDING)) + X_BORDER_PADDING;
+    uint32_t yCoord = (y * (CHAR_HEIGHT + Y_PADDING)) + Y_BORDER_PADDING;
+    _drawChar(c, xCoord, yCoord, character);
+}
+
+void putCharAt(uint32_t x, uint32_t y, char character) {
+    putColoredCharAt(WHITE, x, y, character);
+}
+
+//TODO hacer el 3 menos hardcodeado
+void clearScreen() {
+    uint8_t * videoPtr = VBE_mode_info->framebuffer;
+    for(int i=0; i < VBE_mode_info->height * VBE_mode_info->width * 3; i++) {
+        videoPtr[i] = 0;
+    }
+}
+
+uint32_t getXCharSlots() {
+    return XDIM;
+}
+
+uint32_t getYCharSlots() {
+    return YDIM;
+}
