@@ -84,9 +84,35 @@ void * initializeKernelBinary()
 	return getStackBase();
 }
 
+void screenSaver() {
+    enableDoubleBuffering();
+    int x=40;
+    int y=360;
+    int xDir=1;
+    int yDir=1;
+    int width = 20;
+    while(1) {
+        if(x + xDir - width <= 0) {
+            xDir = (xDir < 0)?(-xDir):(xDir);
+        } else if(x + xDir + width >= 1024) {
+            xDir = (xDir > 0)?(-xDir):(xDir);
+        }
+        if(y + yDir - width <= 0) {
+            yDir = (yDir < 0)?(-yDir):(yDir);
+        } else if(y + yDir + width >= 768) {
+            yDir = (yDir > 0)?(-yDir):(yDir);
+        }
+        x += xDir;
+        y += yDir;
+        drawColoredCircle(WHITE, x, y, width);
+        drawBuffer();
+    }
+}
+
 int main()
 {
     initializeConsole();
+    initializeVideoBuffer();
     cNewline();
 	cPrint("[Kernel Main]");
     load_idt();

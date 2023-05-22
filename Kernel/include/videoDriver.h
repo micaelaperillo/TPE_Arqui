@@ -27,6 +27,7 @@ void drawEmptyColoredCircle(Color c, uint32_t xi, uint32_t yi, uint32_t radius);
 void drawColoredCircle(Color c, uint32_t xi, uint32_t yi, uint32_t radius);
 void drawRectangle(uint32_t x, uint32_t y, uint32_t width, uint32_t height);
 void drawColoredRectangle(Color c, uint32_t x, uint32_t y, uint32_t width, uint32_t height);
+void clearScreen();
 
 uint32_t getXCharSlots();
 uint32_t getYCharSlots();

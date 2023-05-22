@@ -48,3 +48,36 @@ void * memcpy(void * destination, const void * source, uint64_t length)
 
 	return destination;
 }
+
+void * memcut(void * destination, void * source, uint64_t length)
+{
+    /*
+    * like memcpy, but sets the source to 0
+    */
+    uint64_t i;
+
+    if ((uint64_t)destination % sizeof(uint32_t) == 0 &&
+        (uint64_t)source % sizeof(uint32_t) == 0 &&
+        length % sizeof(uint32_t) == 0)
+    {
+        uint32_t *d = (uint32_t *) destination;
+        uint32_t *s = (uint32_t *)source;
+
+        for (i = 0; i < length / sizeof(uint32_t); i++) {
+            d[i] = s[i];
+            s[i] = 0;
+        }
+    }
+    else
+    {
+        uint8_t * d = (uint8_t*)destination;
+        uint8_t * s = (uint8_t*)source;
+
+        for (i = 0; i < length; i++) {
+            d[i] = s[i];
+            s[i] = 0;
+        }
+    }
+
+    return destination;
+}

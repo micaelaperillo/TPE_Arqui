@@ -54,14 +54,14 @@ VBEInfoPtr VBE_mode_info = (VBEInfoPtr) 0x0000000000005C00;
 #define CHAR_HEIGHT 8
 #define SIZE_MULT 1
 
-#define XDIM 160        //amount of characters that fit in the x axis
-#define YDIM 90         // " y axis
+#define XDIM 128        //amount of characters that fit in the x axis
+#define YDIM 96         // " y axis
 
 #define TRUE 1
 #define FALSE 0
 
-#define SCREEN_WIDTH 1280
-#define SCREEN_HEIGHT 720
+#define SCREEN_WIDTH 1024
+#define SCREEN_HEIGHT 768
 #define BYTES_PER_PIXEL 3
 #define BUFFER_SIZE SCREEN_HEIGHT * SCREEN_WIDTH * BYTES_PER_PIXEL
 
@@ -69,7 +69,7 @@ int doubleBufferingEnabled = FALSE;
 static uint8_t videoBuffer[BUFFER_SIZE];
 
 void initializeVideoBuffer() {
-    clearBuffer();
+    memset(videoBuffer, 0, BUFFER_SIZE);
 }
 
 void enableDoubleBuffering() {
@@ -81,9 +81,8 @@ void disableDoubleBuffering() {
 }
 
 void drawBuffer() {
-    memcpy(VBE_mode_info->framebuffer, videoBuffer,
+    memcut(VBE_mode_info->framebuffer, videoBuffer,
            VBE_mode_info->width * (VBE_mode_info->bpp / 8) * VBE_mode_info->height);
-    clearBuffer();
 }
 
 void clearBuffer() {
@@ -239,9 +238,7 @@ void putCharAt(uint32_t x, uint32_t y, char character) {
 
 void clearScreen() {
     uint8_t * videoPtr = VBE_mode_info->framebuffer;
-    for(int i=0; i < VBE_mode_info->height * VBE_mode_info->width * (VBE_mode_info->bpp / 8); i++) {
-        videoPtr[i] = 0;
-    }
+    memset(videoPtr, 0, VBE_mode_info->width * VBE_mode_info->height * (VBE_mode_info->bpp / 8));
 }
 
 uint32_t getXCharSlots() {
