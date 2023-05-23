@@ -68,6 +68,8 @@ VBEInfoPtr VBE_mode_info = (VBEInfoPtr) 0x0000000000005C00;
 int doubleBufferingEnabled = FALSE;
 static uint8_t videoBuffer[BUFFER_SIZE] = {0};
 
+void hexToColor(uint32_t hexColor, Color* c);
+
 void enableDoubleBuffering() {
     doubleBufferingEnabled = TRUE;
 }
@@ -104,11 +106,9 @@ void putPixel(Color c, uint32_t x, uint32_t y) {
     videoPtr[offset+2] = c.r;
 }
 
-void putPixelHex(uint32_t hexColor, uint32_t x, uint32_t y) {
+void putHexPixel(uint32_t hexColor, uint32_t x, uint32_t y) {
     Color c;
-    c.b = hexColor & 255;
-    c.g = (hexColor >> 8) & 255;
-    c.r = (hexColor >> 16) & 255;
+    hexToColor(hexColor, &c);
     putPixel(c, x, y);
 }
 
@@ -129,8 +129,14 @@ void drawColoredLine(Color c, uint32_t x0, uint32_t y0, uint32_t x1, uint32_t y1
     }
 }
 
-void drawLine(uint32_t xi, uint32_t yi, uint32_t xf, uint32_t yf) {
-    drawColoredLine(WHITE, xi, yi, xf, yf);
+void drawHexLine(uint32_t hexColor, uint32_t x0, uint32_t y0, uint32_t x1, uint32_t y1) {
+    Color c;
+    hexToColor(hexColor, &c);
+    drawColoredLine(c, x0, y0, x1, y1);
+}
+
+void drawLine(uint32_t x0, uint32_t y0, uint32_t x1, uint32_t y1) {
+    drawColoredLine(WHITE, x0, y0, x1, y1);
 }
 
 void _eightWaySymmetryLine(Color c, uint32_t xc, uint32_t yc, uint32_t x, uint32_t y) {
@@ -144,10 +150,10 @@ void _eightWaySymmetryLine(Color c, uint32_t xc, uint32_t yc, uint32_t x, uint32
     putPixel(c, -y+xc, -x+yc);
 }
 
-void drawEmptyColoredCircle(Color c, uint32_t xi, uint32_t yi, uint32_t radius) {
+void drawEmptyColoredCircle(Color c, uint32_t x0, uint32_t y0, uint32_t radius) {
     //using Bresenham's circle drawing algorithm, taken from https://www.javatpoint.com/computer-graphics-bresenhams-circle-algorithm and modified
     int x=0,y=radius,d=3-(2*radius);
-    _eightWaySymmetryLine(c, xi, yi, x, y);
+    _eightWaySymmetryLine(c, x0, y0, x, y);
 
     while(x<=y)
     {
@@ -161,12 +167,18 @@ void drawEmptyColoredCircle(Color c, uint32_t xi, uint32_t yi, uint32_t radius) 
             y=y-1;
         }
         x=x+1;
-        _eightWaySymmetryLine(c, xi, yi, x, y);
+        _eightWaySymmetryLine(c, x0, y0, x, y);
     }
 }
 
+void drawEmptyHexCircle(uint32_t hexColor, uint32_t x0, uint32_t y0, uint32_t radius) {
+    Color c;
+    hexToColor(hexColor, &c);
+    drawEmptyColoredCircle(c, x0, y0, radius);
+}
+
 //TODO MEJORAR ESTE ALGORITMO
-void drawColoredCircle(Color c, uint32_t xi, uint32_t yi, uint32_t radius) {
+void drawColoredCircle(Color c, uint32_t x1, uint32_t y1, uint32_t radius) {
     //function written by kmillen, taken from https://stackoverflow.com/questions/1201200/fast-algorithm-for-drawing-filled-circles
     //currently being used because it doesn't need the sqrt() function
     int r2 = radius * radius;
@@ -179,10 +191,15 @@ void drawColoredCircle(Color c, uint32_t xi, uint32_t yi, uint32_t radius) {
         int ty = (i / rr) - radius;
 
         if (tx * tx + ty * ty <= r2)
-            putPixel(c, xi + tx, yi + ty);
+            putPixel(c, x1 + tx, y1 + ty);
     }
 }
 
+void drawHexCircle(uint32_t hexColor, uint32_t x1, uint32_t y1, uint32_t radius) {
+    Color c;
+    hexToColor(hexColor, &c);
+    drawColoredCircle(c, x1, y1, radius);
+}
 
 void drawColoredRectangle(Color c, uint32_t x, uint32_t y, uint32_t width, uint32_t height) {
     for(int i=0; i<height; i++) {
@@ -190,6 +207,35 @@ void drawColoredRectangle(Color c, uint32_t x, uint32_t y, uint32_t width, uint3
             putPixel(c, x+j, y+i);
         }
     }
+}
+
+void drawHexRectangle(uint32_t hexColor, uint32_t x, uint32_t y, uint32_t width, uint32_t height) {
+    Color c;
+    hexToColor(hexColor, &c);
+    drawColoredRectangle(c, x, y, width, height);
+}
+
+void drawEmptyColoredRectangle(Color c, uint32_t x, uint32_t y, uint32_t width, uint32_t height) {
+    int drawing = 1;
+    for(int i=0, j=0;drawing; i++, j++) {
+        drawing = 0;
+        if(i<width) {
+            putPixel(c, x + i, y);
+            putPixel(c, x + i, y + height);
+            drawing = 1;
+        }
+        if(j<height) {
+            putPixel(c, x, y + j);
+            putPixel(c, x + width, y + j);
+            drawing = 1;
+        }
+    }
+}
+
+void drawEmptyHexRectangle(uint32_t hexColor, uint32_t x, uint32_t y, uint32_t width, uint32_t height) {
+    Color c;
+    hexToColor(hexColor, &c);
+    drawEmptyColoredRectangle(c, x, y, width, height);
 }
 
 void drawRectangle(uint32_t x, uint32_t y, uint32_t width, uint32_t height) {
@@ -234,6 +280,12 @@ void putCharAt(uint32_t x, uint32_t y, char character) {
 void clearScreen() {
     uint8_t * videoPtr = VBE_mode_info->framebuffer;
     memset(videoPtr, 0, VBE_mode_info->width * VBE_mode_info->height * (VBE_mode_info->bpp / 8));
+}
+
+void hexToColor(uint32_t hexColor, Color* c) {
+    c->b = hexColor & 255;
+    c->g = (hexColor >> 8) & 255;
+    c->r = (hexColor >> 16) & 255;
 }
 
 uint32_t getXCharSlots() {
