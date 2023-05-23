@@ -5,7 +5,7 @@
 #include <idtLoader.h>
 #include <console.h>
 #include <videoDriver.h>
-#include <time.h>
+#include "keyboard.h"
 
 extern uint8_t text;
 extern uint8_t rodata;
@@ -136,6 +136,7 @@ void screenSaver() {
 int main()
 {
     initializeConsole();
+    initializeVideoBuffer();
     cNewline();
 	cPrint("[Kernel Main]");
     load_idt();
@@ -154,7 +155,20 @@ int main()
 	cPrint("  Sample data module contents: ");
 	cPrint((char*)sampleDataModuleAddress);
 	cNewline();
+
+	load_idt();
+
+
+	int i = 100;
+	unsigned char key;
+
+	while (i--) {
+		key = keyboard_handler();
+		cPrintChar(key);
+		//ncNewline();
+	}
+
 	cPrint("[Finished]");
-    screenSaver();
+
 	return 0;
 }
