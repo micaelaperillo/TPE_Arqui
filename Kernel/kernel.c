@@ -21,6 +21,8 @@ static void * const sampleDataModuleAddress = (void*)0x500000;
 
 typedef int (*EntryPoint)();
 
+extern void interrupt(uint64_t rdi, uint64_t rsi, uint64_t rdx, uint64_t rcx, uint64_t r8, uint64_t r9);
+
 
 void clearBSS(void * bssAddress, uint64_t bssSize)
 {
@@ -155,19 +157,6 @@ int main()
 	cPrint((char*)sampleDataModuleAddress);
 	cNewline();
 
-	load_idt();
-
-
-	int i = 100;
-	unsigned char key;
-
-	while (i--) {
-		key = keyboard_handler();
-		cPrintChar(key);
-		//ncNewline();
-	}
-
 	cPrint("[Finished]");
-
 	return 0;
 }

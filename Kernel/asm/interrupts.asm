@@ -13,10 +13,13 @@ GLOBAL _irq03Handler
 GLOBAL _irq04Handler
 GLOBAL _irq05Handler
 
+GLOBAL _swInterruptHandler
+
 GLOBAL _exception0Handler
 
 EXTERN irqDispatcher
 EXTERN exceptionDispatcher
+EXTERN swInterruptDispatcher
 
 SECTION .text
 
@@ -81,6 +84,15 @@ SECTION .text
 	popState
 	iretq
 %endmacro
+
+
+;Software Interruption Handler
+_swInterruptHandler:
+    pushState
+    call swInterruptDispatcher
+
+    popState
+    iretq
 
 
 _hlt:
