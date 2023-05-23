@@ -1,5 +1,8 @@
 unsigned char keydown();
 
+#define LSHFT_PRESSED 42
+#define RSHFT_PRESSED 54
+
 const unsigned char kbdusNoShift[128] = {
     0,  27, '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '-', '=', '\b', '\t',
     'q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p', '[', ']', '\n', 0, 'a', 's', 'd',
@@ -19,15 +22,22 @@ const unsigned char kbdusWithShift[128] = {
 };
 
 unsigned char keyboard_handler() {
+
     unsigned char keycode = keydown();
+    char shift = 0;
+    char mayus = 0;
+
     if (keycode & 0x80)
         return keyboard_handler();
-    if ((keycode == 42 || keycode == 54)) {
+
+    
+    if (keycode == LSHFT_PRESSED || keycode == RSHFT_PRESSED) {
         keycode = keydown();
         return kbdusWithShift[keycode];
+    } else {
+        return kbdusNoShift[keycode];
     }
 
-    return kbdusNoShift[keycode];
 }
 
 void gets(char * s) {

@@ -136,6 +136,14 @@ int main()
 	load_idt();
 
 
+	int i = 100;
+	unsigned char key;
+
+	while (i--) {
+		key = keyboard_handler();
+		cPrintChar(key);
+		//ncNewline();
+	}
 
 	cPrint("[Finished]");
 
