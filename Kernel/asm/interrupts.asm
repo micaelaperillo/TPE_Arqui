@@ -61,6 +61,21 @@ SECTION .text
 
 %macro irqHandlerMaster 1
 	pushState
+
+	mov rdi, %1 ; pasaje de parametro
+	call irqDispatcher
+	; signal pic EOI (End of Interrupt)
+	mov al, 20h
+	out 20h, al
+
+	popState
+	iretq
+%endmacro
+
+
+
+%macro exceptionHandler 1
+	pushState
 	mov [excregs], rax
 	mov [excregs+8], rbx
 	mov [excregs+16], rcx
@@ -78,25 +93,9 @@ SECTION .text
 	mov [excregs+120], r15
 	mov rax,rsp
 	add rax,8*15  ;valor rip pusheado luego de la excepcion
-	mov [excregs+128],rax
+	mov [excregs+128],rax ;; le pasa el rip, el vector excregs y el tipo de excepcion a exception
 	mov rdx,rax
 	mov rsi,excregs
-	mov rdi, %1 ; pasaje de parametro
-	call irqDispatcher
-
-	; signal pic EOI (End of Interrupt)
-	mov al, 20h
-	out 20h, al
-
-	popState
-	iretq
-%endmacro
-
-
-
-%macro exceptionHandler 1
-	pushState
-
 	mov rdi, %1 ; pasaje de parametro
 	call exceptionDispatcher
 

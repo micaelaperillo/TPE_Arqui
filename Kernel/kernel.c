@@ -135,7 +135,9 @@ void screenSaver() {
         drawBuffer();
     }
 }
-
+void div(){
+	int i=1/0;
+}
 int main()
 {
     initializeConsole();
@@ -156,8 +158,8 @@ int main()
 	cNewline();
 	cPrint("  Sample data module contents: ");
 	cPrint((char*)sampleDataModuleAddress);
+	div(); // testeo la division por cero.Creo que es un testeo valido xd
 	cNewline();
-
 	cPrint("[Finished]");
 	return 0;
 }
