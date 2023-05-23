@@ -5,6 +5,7 @@
 #include <idtLoader.h>
 #include <console.h>
 #include <videoDriver.h>
+#include <time.h>
 
 extern uint8_t text;
 extern uint8_t rodata;
@@ -82,45 +83,51 @@ void * initializeKernelBinary()
 	return getStackBase();
 }
 
-void updateBubblePosition(int* x, int* y, int* xDir, int* yDir, int width) {
-    if(*x + *xDir - width <= 0) {
-        *xDir = (*xDir < 0)?(-*xDir):(*xDir);
-    } else if(*x + *xDir + width >= 1024) {
-        *xDir = (*xDir > 0)?(-*xDir):(*xDir);
+
+//TODO mover todas las funciones de bubble a userspace cuando lo tengamos implementado
+struct Bubble {
+    int x, y;
+    int xDir, yDir;
+    int width;
+    Color c;
+}Bubble;
+
+void updateBubblePosition(struct Bubble *bubble) {
+    if(bubble->x + bubble->xDir - bubble->width <= 0) {
+        bubble->xDir = (bubble->xDir < 0)?(-bubble->xDir):(bubble->xDir);
+    } else if(bubble->x + bubble->xDir + bubble->width >= 1024) {
+        bubble->xDir = (bubble->xDir > 0)?(-bubble->xDir):(bubble->xDir);
     }
-    if(*y + *yDir - width <= 0) {
-        *yDir = (*yDir < 0)?(-*yDir):(*yDir);
-    } else if(*y + *yDir + width >= 768) {
-        *yDir = (*yDir > 0)?(-*yDir):(*yDir);
+    if(bubble->y + bubble->yDir - bubble->width <= 0) {
+        bubble->yDir = (bubble->yDir < 0)?(-bubble->yDir):(bubble->yDir);
+    } else if(bubble->y + bubble->yDir + bubble->width >= 768) {
+        bubble->yDir = (bubble->yDir > 0)?(-bubble->yDir):(bubble->yDir);
     }
-    *x += *xDir;
-    *y += *yDir;
+    bubble->x += bubble->xDir;
+    bubble->y += bubble->yDir;
+}
+
+void drawBubble(struct Bubble bubble) {
+    drawEmptyColoredCircle(bubble.c, bubble.x, bubble.y, bubble.width);
 }
 
 void screenSaver() {
     enableDoubleBuffering();
-    int x1=40, x2=60, x3=600, x4=460, x5=510, x6=30;
-    int y1=360, y2=0, y3=700, y4=500, y5=80, y6=600;
-    int xDir1=1, xDir2=2, xDir3=3, xDir4=1, xDir5=3, xDir6=2;
-    int yDir1=3, yDir2=2, yDir3=2, yDir4=2, yDir5=1, yDir6=1;
-    int width = 20;
+    int size = 21;
+    struct Bubble bbs[] = {{100, 0, 1, 3, 20, WHITE},  {500, 10, 2, 1, 20, RED},  {1000, 50, 2, 2, 20, BLUE},  {800, 125, -2, 1, 20, YELLOW},
+                             {100, 700, -1, -3, 20, CYAN}, {9, 700, 2, -1, 20, GREEN}, {100, 700, -1, -3, 20, PINK},
+                           {100, 768, -2, 2, 20, WHITE},  {5, 10, 2, -3, 20, RED},  {370, 500, 2, -2, 20, BLUE},  {1200, 600, 2, -1, 20, YELLOW},
+                           {100, 300, -1, 3, 20, CYAN}, {90, 70, -3, 1, 20, GREEN}, {1000, 700, -1, -2, 20, PINK},
+            {1000, 50, -3, 1, 20, WHITE},  {5, 10, 2, -2, 20, RED},  {100, 100, 2, -1, 20, BLUE},  {1200, 620, 2, -2, 20, YELLOW},
+            {100, 367, -3, 2, 20, CYAN}, {990, 701, -2, -1, 20, GREEN}, {150, 610, -1, -1, 20, PINK}};
     //TODO cambiar para que termine cuando detecta input
-
+    int i;
     while(1) {
 
-        updateBubblePosition(&x1, &y1, &xDir1, &yDir1, width);
-        updateBubblePosition(&x2, &y2, &xDir2, &yDir2, width);
-        updateBubblePosition(&x3, &y3, &xDir3, &yDir3, width);
-        updateBubblePosition(&x4, &y4, &xDir4, &yDir4, width);
-        updateBubblePosition(&x5, &y5, &xDir5, &yDir5, width);
-        updateBubblePosition(&x6, &y6, &xDir6, &yDir6, width);
-
-        drawColoredCircle(RED, x1, y1, width);
-        drawColoredCircle(GREEN, x2, y2, width);
-        drawColoredCircle(BLUE, x3, y3, width);
-        drawColoredCircle(YELLOW, x4, y4, width);
-        drawColoredCircle(PINK, x5, y5, width);
-        drawColoredCircle(CYAN, x6, y6, width);
+        for(i = 0; i<size; i++) {
+            updateBubblePosition(&bbs[i]);
+            drawBubble(bbs[i]);
+        }
 
         drawBuffer();
     }
@@ -148,6 +155,6 @@ int main()
 	cPrint((char*)sampleDataModuleAddress);
 	cNewline();
 	cPrint("[Finished]");
-    //screenSaver();
+    screenSaver();
 	return 0;
 }
