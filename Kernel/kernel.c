@@ -5,7 +5,7 @@
 #include <idtLoader.h>
 #include <console.h>
 #include <videoDriver.h>
-#include "keyboard.h"
+#include <keyboard.h>
 
 extern uint8_t text;
 extern uint8_t rodata;
@@ -136,7 +136,6 @@ void screenSaver() {
 int main()
 {
     initializeConsole();
-    initializeVideoBuffer();
     cNewline();
 	cPrint("[Kernel Main]");
     load_idt();
