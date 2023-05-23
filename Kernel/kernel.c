@@ -7,6 +7,7 @@
 #include <idtLoader.h>
 #include <console.h>
 #include <videoDriver.h>
+#include "keyboard.h"
 
 extern uint8_t text;
 extern uint8_t rodata;
@@ -131,6 +132,10 @@ int main()
 	cPrint("  Sample data module contents: ");
 	cPrint((char*)sampleDataModuleAddress);
 	cNewline();
+
+	load_idt();
+
+
 
 	cPrint("[Finished]");
 
