@@ -1,6 +1,7 @@
 GLOBAL cpuVendor
 GLOBAL keydown
 GLOBAL interrupt
+GLOBAL clock
 
 section .text
 
@@ -39,6 +40,19 @@ section .text
 	pop rbx
 	pop rax
 %endmacro
+
+clock:
+	push rbp
+	mov rbp, rsp
+
+	mov al, dil 
+	out 70h, al
+	xor rax, rax
+	in al, 71h
+		
+	mov rsp, rbp
+	pop rbp
+	ret
 
 keydown:
 	push rbp

@@ -158,8 +158,20 @@ int main()
 	cNewline();
 	cPrint("  Sample data module contents: ");
 	cPrint((char*)sampleDataModuleAddress);
-	div(); // testeo la division por cero.Creo que es un testeo valido xd
+	//div(); testeo la division por cero.Creo que es un testeo valido xd
 	cNewline();
+
+
+	char * time;
+	char * date;
+	timeToStr(time);
+	cPrint(time);
+	cNewline();
+	dateToStr(date);
+	cPrint(date);
+	cNewline();	
+
+
 	cPrint("[Finished]");
 	return 0;
 }
