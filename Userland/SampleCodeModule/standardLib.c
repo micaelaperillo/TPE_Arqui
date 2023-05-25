@@ -1,4 +1,4 @@
-/*#include <standardLib.h>
+#include <standardLib.h>
 #define SYSWRITE 0
 #define SYSREAD 1
 
@@ -58,6 +58,3 @@ char* getS(){
     s[i]='\0';
     return s;
 }
-
-
-*/

@@ -1,17 +1,19 @@
 include ../Makefile.inc
 
-MODULE=../0000-sampleCodeModule.bin
-SOURCES=$(wildcard *.c)
+MODULE=0000-sampleCodeModule.bin
+SOURCES=$(wildcard [^_]*.c)
 SOURCES_ASM=$(wildcard asm/*.asm)
 OBJECTS=$(SOURCES:.c=.o)
 OBJECTS_ASM=$(SOURCES_ASM:.asm=.o)
+LOADERSRC=_loader.c
 
+LOADEROBJECT=$(LOADERSRC:.c=.o)
 STATICLIBS=
 
 all: $(MODULE)
 
-$(MODULE): $(OBJECTS) $(STATICLIBS) $(OBJECTS_ASM)
-	$(LD) $(LDFLAGS) -T sampleCodeModule.ld -o $(MODULE) $(OBJECTS) $(OBJECTS_ASM) $(STATICLIBS)
+$(MODULE): $(LOADEROBJECT) $(OBJECTS) $(STATICLIBS) $(OBJECTS_ASM)
+	$(LD) $(LDFLAGS) -T sampleCodeModule.ld -o ../$(MODULE) $(LOADEROBJECT) $(OBJECTS) $(OBJECTS_ASM) $(STATICLIBS)
 
 %.o: %.c
 	$(GCC) $(GCCFLAGS) -I./include -c $< -o $@
@@ -19,7 +21,10 @@ $(MODULE): $(OBJECTS) $(STATICLIBS) $(OBJECTS_ASM)
 %.o : %.asm
 	$(ASM) $(ASMFLAGS) $< -o $@
 
-clean:
-	rm -rf asm/*.o *.o *.bin
+$(LOADEROBJECT):
+	$(GCC) $(GCCFLAGS) $(LOADERSRC) -c -o $(LOADEROBJECT)
 
-.PHONY: all clean
+clean:
+	rm -rf asm/*.o *.o
+
+.PHONY: all clean print
