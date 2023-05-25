@@ -3,7 +3,6 @@
 #include <standardLib.h>
 #include <graphics.h>
 #include <programs.h>
-
 int main() {
 
     //DIBUJA UN CUADRADO EN LA PANTALLA CON UNA SYS_CALL COMO EJEMPLO
@@ -15,10 +14,8 @@ int main() {
     wh = ((uint64_t) height << 32) | width;
     interrupt(2, 3, coord, 0, wh, 0xFFFFFF);
     //Desupues lo pueden sacar
-
     //Lo mismo pero con graphics.h
     drawEmptyRectangle(WHITE, 900, 600, 10, 50);
-
     enableDoubleBuffering();
     screenSaver();
     return 0;
