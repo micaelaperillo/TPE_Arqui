@@ -19,12 +19,17 @@ void swInterruptDispatcher(COMPLETE_PARAMS) {
 }
 
 void sys_write(BASE_PARAMS) {
-    //TODO mejorarla
-    cPrint((char*)rsi);
+  char* s=(char*)rsi;
+  for(int i=0;i<rdx ;i++){
+    if(s[i]=='\0')
+        return;
+    cPrintChar(s[i]);
+  }
+
 }
 
 void sys_read(BASE_PARAMS) {
-
+    gets((char*)rsi);
 }
 
 

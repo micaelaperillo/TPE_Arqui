@@ -1,5 +1,6 @@
 unsigned char keydown();
 
+
 #define LSHFT_PRESSED 42
 #define RSHFT_PRESSED 54
 
@@ -26,11 +27,8 @@ unsigned char keyboard_handler() {
     unsigned char keycode = keydown();
     char shift = 0;
     char mayus = 0;
-
     if (keycode & 0x80)
         return keyboard_handler();
-
-    
     if (keycode == LSHFT_PRESSED || keycode == RSHFT_PRESSED) {
         keycode = keydown();
         return kbdusWithShift[keycode];
@@ -42,9 +40,10 @@ unsigned char keyboard_handler() {
 
 void gets(char * s) {
     int i = 0;
-    while (i != 8) {
-        s[i] = keyboard_handler();
-        keyboard_handler();           // empty buffer
+    char c;
+    while((c=keyboard_handler())!='\n') {
+        s[i] = c; //lee hasta el enter supuestamente
         i++;
     }
+    s[i]='\0';
 }
