@@ -16,6 +16,7 @@ int main() {
     //Desupues lo pueden sacar
     //Lo mismo pero con graphics.h
     drawEmptyRectangle(WHITE, 900, 600, 10, 50);
+
     enableDoubleBuffering();
     screenSaver();
     return 0;
