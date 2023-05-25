@@ -2,6 +2,7 @@
 #include <stdint.h>
 #include <standardLib.h>
 #include <graphics.h>
+#include <programs.h>
 
 int main() {
 
@@ -16,7 +17,9 @@ int main() {
     //Desupues lo pueden sacar
 
     //Lo mismo pero con graphics.h
-    drawEmptyRectangle(0xFFFFFF, 900, 600, 10, 50);
+    drawEmptyRectangle(WHITE, 900, 600, 10, 50);
 
+    enableDoubleBuffering();
+    screenSaver();
     return 0;
 }

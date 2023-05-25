@@ -10,8 +10,9 @@ typedef void (*FunctionPtr)(uint64_t, uint64_t, uint64_t, uint64_t, uint64_t);
 void sys_write(BASE_PARAMS);//code 0
 void sys_read(BASE_PARAMS);//code 1
 void sys_draw(BASE_PARAMS);//code 2
+void sys_buffer(BASE_PARAMS);//code 3
 
-FunctionPtr  interruptions[] = {sys_write, sys_read, sys_draw};
+FunctionPtr  interruptions[] = {sys_write, sys_read, sys_draw, sys_buffer};
 
 void swInterruptDispatcher(COMPLETE_PARAMS) {
     interruptions[rdi](rsi, rdx, rcx, r8, r9);
@@ -62,6 +63,23 @@ void sys_draw(BASE_PARAMS) {
         case 5:
             drawHexCircle(hexColor, x0, y0, width);
             break;
+        default:
+            return;
+    }
+}
+
+//ID=3
+//rsi = INSTRUCTION :: 0 -> disables double buffering || 1 -> enables double buffering || 2 -> swaps buffers
+void sys_buffer(BASE_PARAMS) {
+    switch(rsi) {
+        case 0:
+            disableDoubleBuffering();
+            break;
+        case 1:
+            enableDoubleBuffering();
+            break;
+        case 2:
+            drawBuffer();
         default:
             return;
     }

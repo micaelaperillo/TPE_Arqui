@@ -29,7 +29,7 @@ void drawBubble(struct Bubble bubble) {
 void screenSaver() {
     int size = 21;
     struct Bubble bbs[] = {{100, 0, 1, 3, 20, WHITE},  {500, 10, 2, 1, 20, RED},  {1000, 50, 2, 2, 20, BLUE},  {800, 125, -2, 1, 20, YELLOW},
-                           {100, 700, -1, -3, 20, CYAN}, {9, 700, 2, -1, 20, GREEN}, {100, 700, -1, -3, 20, PINK},
+                           {100, 600, -1, -3, 20, CYAN}, {9, 700, 2, -1, 20, GREEN}, {100, 700, -1, -3, 20, PINK},
                            {100, 768, -2, 2, 20, WHITE},  {5, 10, 2, -3, 20, RED},  {370, 500, 2, -2, 20, BLUE},  {1200, 600, 2, -1, 20, YELLOW},
                            {100, 300, -1, 3, 20, CYAN}, {90, 70, -3, 1, 20, GREEN}, {1000, 700, -1, -2, 20, PINK},
                            {1000, 50, -3, 1, 20, WHITE},  {5, 10, 2, -2, 20, RED},  {100, 100, 2, -1, 20, BLUE},  {1200, 620, 2, -2, 20, YELLOW},
@@ -37,12 +37,12 @@ void screenSaver() {
     //TODO cambiar para que termine cuando detecta input
     int i;
     while(1) {
-
+        //animation loop
         for(i = 0; i<size; i++) {
             updateBubblePosition(&bbs[i]);
             drawBubble(bbs[i]);
         }
 
-        drawBuffer();
+        swapBuffer();//double buffering needs to be enabled previously
     }
 }

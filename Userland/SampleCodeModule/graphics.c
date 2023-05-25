@@ -2,6 +2,7 @@
 #include <stdint.h>
 
 #define SYS_DRAW_ID 2
+#define SYS_BUFFER_ID 3
 
 enum SHAPE_ID {
     PIXEL,
@@ -10,6 +11,12 @@ enum SHAPE_ID {
     RCT,
     EMPTY_CRCL,
     CRCL
+};
+
+enum BUFFER_ID {
+    DISABLE_BUFF,
+    ENABLE_BUFF,
+    SWAP_BUFF
 };
 
 uint64_t join(uint32_t upper, uint32_t lower) {
@@ -45,4 +52,16 @@ void drawRectangle(uint32_t hexColor, uint32_t x, uint32_t y, uint32_t width, ui
     uint64_t coords = join(x, y);
     uint64_t dim = join(height, width);
     interrupt(SYS_DRAW_ID, RCT, coords, 0, dim, hexColor);
+}
+
+void enableDoubleBuffering() {
+    interrupt(SYS_BUFFER_ID, ENABLE_BUFF, 0, 0, 0, 0);
+}
+
+void disableDoubleBuffering() {
+    interrupt(SYS_BUFFER_ID, DISABLE_BUFF, 0, 0, 0, 0);
+}
+
+void swapBuffer() {
+    interrupt(SYS_BUFFER_ID, SWAP_BUFF, 0, 0, 0, 0);
 }
