@@ -111,3 +111,13 @@ static uint32_t uintToBase(uint64_t value, char * buffer, uint32_t base)
 
     return digits;
 }
+
+unsigned long cGetCursor() {
+    return cursor;
+}
+
+void cSetCursor(unsigned long pos) {
+    if(pos < getXCharSlots() * getYCharSlots()) {
+        cursor = pos;
+    }
+}
