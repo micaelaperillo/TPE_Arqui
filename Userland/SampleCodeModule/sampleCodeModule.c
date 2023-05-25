@@ -1,6 +1,7 @@
 /* sampleCodeModule.c */
 #include <stdint.h>
 #include <standardLib.h>
+#include <graphics.h>
 
 int main() {
 
@@ -13,6 +14,9 @@ int main() {
     wh = ((uint64_t) height << 32) | width;
     interrupt(2, 3, coord, 0, wh, 0xFFFFFF);
     //Desupues lo pueden sacar
+
+    //Lo mismo pero con graphics.h
+    drawEmptyRectangle(0xFFFFFF, 900, 600, 10, 50);
 
     return 0;
 }

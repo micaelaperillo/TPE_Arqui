@@ -1,0 +1,48 @@
+#include <standardLib.h>
+#include <stdint.h>
+
+#define SYS_DRAW_ID 2
+
+enum SHAPE_ID {
+    PIXEL,
+    LINE,
+    EMPTY_RCT,
+    RCT,
+    EMPTY_CRCL,
+    CRCL
+};
+
+uint64_t join(uint32_t upper, uint32_t lower) {
+    return ((uint64_t) upper << 32) | lower;
+}
+
+void drawPixel(uint32_t hexColor, uint32_t x, uint32_t y) {
+    uint64_t coords = join(x, y);
+    interrupt(SYS_DRAW_ID, PIXEL, coords, 0, 0, hexColor);
+}
+void drawLine( uint32_t hexColor, uint32_t x0, uint32_t y0, uint32_t x1, uint32_t y1) {
+    uint64_t coords0 = join(x0, y0);
+    uint64_t coords1 = join(x1, y1);
+    interrupt(SYS_DRAW_ID, LINE, coords0, coords1, 0, hexColor);
+}
+
+void drawEmptyCircle(uint32_t hexColor, uint32_t x, uint32_t y, uint32_t radius) {
+    uint64_t coords = join(x, y);
+    interrupt(SYS_DRAW_ID, EMPTY_CRCL, coords, 0, radius, hexColor);
+}
+void drawCircle(uint32_t hexColor, uint32_t x, uint32_t y, uint32_t radius) {
+    uint64_t coords = join(x, y);
+    interrupt(SYS_DRAW_ID, CRCL, coords, 0, radius, hexColor);
+}
+
+void drawEmptyRectangle(uint32_t hexColor, uint32_t x, uint32_t y, uint32_t width, uint32_t height) {
+    uint64_t coords = join(x, y);
+    uint64_t dim = join(height, width);
+    interrupt(SYS_DRAW_ID, EMPTY_RCT, coords, 0, dim, hexColor);
+}
+
+void drawRectangle(uint32_t hexColor, uint32_t x, uint32_t y, uint32_t width, uint32_t height) {
+    uint64_t coords = join(x, y);
+    uint64_t dim = join(height, width);
+    interrupt(SYS_DRAW_ID, RCT, coords, 0, dim, hexColor);
+}
