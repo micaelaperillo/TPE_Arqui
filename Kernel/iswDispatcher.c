@@ -62,5 +62,7 @@ void sys_draw(BASE_PARAMS) {
         case 5:
             drawHexCircle(hexColor, x0, y0, width);
             break;
+        default:
+            return;
     }
 }
