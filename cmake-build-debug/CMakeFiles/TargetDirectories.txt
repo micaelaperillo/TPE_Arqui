@@ -1,3 +1,4 @@
-C:/Users/timos/Documents/Timo/ITBA/Arqui/TPE/TPE_Arqui/cmake-build-debug/CMakeFiles/TPE_Arqui.dir
+C:/Users/timos/Documents/Timo/ITBA/Arqui/TPE/TPE_Arqui/cmake-build-debug/CMakeFiles/KernelTarget.dir
+C:/Users/timos/Documents/Timo/ITBA/Arqui/TPE/TPE_Arqui/cmake-build-debug/CMakeFiles/UserlandTarget.dir
 C:/Users/timos/Documents/Timo/ITBA/Arqui/TPE/TPE_Arqui/cmake-build-debug/CMakeFiles/edit_cache.dir
 C:/Users/timos/Documents/Timo/ITBA/Arqui/TPE/TPE_Arqui/cmake-build-debug/CMakeFiles/rebuild_cache.dir

@@ -41,87 +41,156 @@ include CMakeFiles/rules.ninja
 
 cmake_ninja_workdir = C$:/Users/timos/Documents/Timo/ITBA/Arqui/TPE/TPE_Arqui/cmake-build-debug/
 # =============================================================================
-# Object build statements for EXECUTABLE target TPE_Arqui
+# Object build statements for EXECUTABLE target KernelTarget
 
 
 #############################################
-# Order-only phony target for TPE_Arqui
+# Order-only phony target for KernelTarget
 
-build cmake_object_order_depends_target_TPE_Arqui: phony || CMakeFiles/TPE_Arqui.dir
+build cmake_object_order_depends_target_KernelTarget: phony || CMakeFiles/KernelTarget.dir
 
-build CMakeFiles/TPE_Arqui.dir/Kernel/exceptions.c.obj: C_COMPILER__TPE_Arqui_Debug C$:/Users/timos/Documents/Timo/ITBA/Arqui/TPE/TPE_Arqui/Kernel/exceptions.c || cmake_object_order_depends_target_TPE_Arqui
-  DEP_FILE = CMakeFiles\TPE_Arqui.dir\Kernel\exceptions.c.obj.d
+build CMakeFiles/KernelTarget.dir/Kernel/console.c.obj: C_COMPILER__KernelTarget_Debug C$:/Users/timos/Documents/Timo/ITBA/Arqui/TPE/TPE_Arqui/Kernel/console.c || cmake_object_order_depends_target_KernelTarget
+  DEP_FILE = CMakeFiles\KernelTarget.dir\Kernel\console.c.obj.d
   FLAGS = -g -std=gnu11
-  INCLUDES = -IC:/Users/timos/Documents/Timo/ITBA/Arqui/TPE/TPE_Arqui/Kernel/include
-  OBJECT_DIR = CMakeFiles\TPE_Arqui.dir
-  OBJECT_FILE_DIR = CMakeFiles\TPE_Arqui.dir\Kernel
+  INCLUDES = -IC:/Users/timos/Documents/Timo/ITBA/Arqui/TPE/TPE_Arqui/Kernel/include -IC:/Users/timos/Documents/Timo/ITBA/Arqui/TPE/TPE_Arqui/Userland/SampleCodeModule/include -IC:/Users/timos/Documents/Timo/ITBA/Arqui/TPE/TPE_Arqui/Kernel/include/bitmapFont.h -IC:/Users/timos/Documents/Timo/ITBA/Arqui/TPE/TPE_Arqui/Kernel/include/console.h -IC:/Users/timos/Documents/Timo/ITBA/Arqui/TPE/TPE_Arqui/Kernel/include/defs.h -IC:/Users/timos/Documents/Timo/ITBA/Arqui/TPE/TPE_Arqui/Kernel/include/idtLoader.h -IC:/Users/timos/Documents/Timo/ITBA/Arqui/TPE/TPE_Arqui/Kernel/include/interrupts.h -IC:/Users/timos/Documents/Timo/ITBA/Arqui/TPE/TPE_Arqui/Kernel/include/keyboard.h -IC:/Users/timos/Documents/Timo/ITBA/Arqui/TPE/TPE_Arqui/Kernel/include/lib.h -IC:/Users/timos/Documents/Timo/ITBA/Arqui/TPE/TPE_Arqui/Kernel/include/moduleLoader.h -IC:/Users/timos/Documents/Timo/ITBA/Arqui/TPE/TPE_Arqui/Kernel/include/naiveConsole.h -IC:/Users/timos/Documents/Timo/ITBA/Arqui/TPE/TPE_Arqui/Kernel/include/time.h -IC:/Users/timos/Documents/Timo/ITBA/Arqui/TPE/TPE_Arqui/Kernel/include/videoDriver.h
+  OBJECT_DIR = CMakeFiles\KernelTarget.dir
+  OBJECT_FILE_DIR = CMakeFiles\KernelTarget.dir\Kernel
 
-build CMakeFiles/TPE_Arqui.dir/Kernel/idtLoader.c.obj: C_COMPILER__TPE_Arqui_Debug C$:/Users/timos/Documents/Timo/ITBA/Arqui/TPE/TPE_Arqui/Kernel/idtLoader.c || cmake_object_order_depends_target_TPE_Arqui
-  DEP_FILE = CMakeFiles\TPE_Arqui.dir\Kernel\idtLoader.c.obj.d
+build CMakeFiles/KernelTarget.dir/Kernel/exceptions.c.obj: C_COMPILER__KernelTarget_Debug C$:/Users/timos/Documents/Timo/ITBA/Arqui/TPE/TPE_Arqui/Kernel/exceptions.c || cmake_object_order_depends_target_KernelTarget
+  DEP_FILE = CMakeFiles\KernelTarget.dir\Kernel\exceptions.c.obj.d
   FLAGS = -g -std=gnu11
-  INCLUDES = -IC:/Users/timos/Documents/Timo/ITBA/Arqui/TPE/TPE_Arqui/Kernel/include
-  OBJECT_DIR = CMakeFiles\TPE_Arqui.dir
-  OBJECT_FILE_DIR = CMakeFiles\TPE_Arqui.dir\Kernel
+  INCLUDES = -IC:/Users/timos/Documents/Timo/ITBA/Arqui/TPE/TPE_Arqui/Kernel/include -IC:/Users/timos/Documents/Timo/ITBA/Arqui/TPE/TPE_Arqui/Userland/SampleCodeModule/include -IC:/Users/timos/Documents/Timo/ITBA/Arqui/TPE/TPE_Arqui/Kernel/include/bitmapFont.h -IC:/Users/timos/Documents/Timo/ITBA/Arqui/TPE/TPE_Arqui/Kernel/include/console.h -IC:/Users/timos/Documents/Timo/ITBA/Arqui/TPE/TPE_Arqui/Kernel/include/defs.h -IC:/Users/timos/Documents/Timo/ITBA/Arqui/TPE/TPE_Arqui/Kernel/include/idtLoader.h -IC:/Users/timos/Documents/Timo/ITBA/Arqui/TPE/TPE_Arqui/Kernel/include/interrupts.h -IC:/Users/timos/Documents/Timo/ITBA/Arqui/TPE/TPE_Arqui/Kernel/include/keyboard.h -IC:/Users/timos/Documents/Timo/ITBA/Arqui/TPE/TPE_Arqui/Kernel/include/lib.h -IC:/Users/timos/Documents/Timo/ITBA/Arqui/TPE/TPE_Arqui/Kernel/include/moduleLoader.h -IC:/Users/timos/Documents/Timo/ITBA/Arqui/TPE/TPE_Arqui/Kernel/include/naiveConsole.h -IC:/Users/timos/Documents/Timo/ITBA/Arqui/TPE/TPE_Arqui/Kernel/include/time.h -IC:/Users/timos/Documents/Timo/ITBA/Arqui/TPE/TPE_Arqui/Kernel/include/videoDriver.h
+  OBJECT_DIR = CMakeFiles\KernelTarget.dir
+  OBJECT_FILE_DIR = CMakeFiles\KernelTarget.dir\Kernel
 
-build CMakeFiles/TPE_Arqui.dir/Kernel/irqDispatcher.c.obj: C_COMPILER__TPE_Arqui_Debug C$:/Users/timos/Documents/Timo/ITBA/Arqui/TPE/TPE_Arqui/Kernel/irqDispatcher.c || cmake_object_order_depends_target_TPE_Arqui
-  DEP_FILE = CMakeFiles\TPE_Arqui.dir\Kernel\irqDispatcher.c.obj.d
+build CMakeFiles/KernelTarget.dir/Kernel/idtLoader.c.obj: C_COMPILER__KernelTarget_Debug C$:/Users/timos/Documents/Timo/ITBA/Arqui/TPE/TPE_Arqui/Kernel/idtLoader.c || cmake_object_order_depends_target_KernelTarget
+  DEP_FILE = CMakeFiles\KernelTarget.dir\Kernel\idtLoader.c.obj.d
   FLAGS = -g -std=gnu11
-  INCLUDES = -IC:/Users/timos/Documents/Timo/ITBA/Arqui/TPE/TPE_Arqui/Kernel/include
-  OBJECT_DIR = CMakeFiles\TPE_Arqui.dir
-  OBJECT_FILE_DIR = CMakeFiles\TPE_Arqui.dir\Kernel
+  INCLUDES = -IC:/Users/timos/Documents/Timo/ITBA/Arqui/TPE/TPE_Arqui/Kernel/include -IC:/Users/timos/Documents/Timo/ITBA/Arqui/TPE/TPE_Arqui/Userland/SampleCodeModule/include -IC:/Users/timos/Documents/Timo/ITBA/Arqui/TPE/TPE_Arqui/Kernel/include/bitmapFont.h -IC:/Users/timos/Documents/Timo/ITBA/Arqui/TPE/TPE_Arqui/Kernel/include/console.h -IC:/Users/timos/Documents/Timo/ITBA/Arqui/TPE/TPE_Arqui/Kernel/include/defs.h -IC:/Users/timos/Documents/Timo/ITBA/Arqui/TPE/TPE_Arqui/Kernel/include/idtLoader.h -IC:/Users/timos/Documents/Timo/ITBA/Arqui/TPE/TPE_Arqui/Kernel/include/interrupts.h -IC:/Users/timos/Documents/Timo/ITBA/Arqui/TPE/TPE_Arqui/Kernel/include/keyboard.h -IC:/Users/timos/Documents/Timo/ITBA/Arqui/TPE/TPE_Arqui/Kernel/include/lib.h -IC:/Users/timos/Documents/Timo/ITBA/Arqui/TPE/TPE_Arqui/Kernel/include/moduleLoader.h -IC:/Users/timos/Documents/Timo/ITBA/Arqui/TPE/TPE_Arqui/Kernel/include/naiveConsole.h -IC:/Users/timos/Documents/Timo/ITBA/Arqui/TPE/TPE_Arqui/Kernel/include/time.h -IC:/Users/timos/Documents/Timo/ITBA/Arqui/TPE/TPE_Arqui/Kernel/include/videoDriver.h
+  OBJECT_DIR = CMakeFiles\KernelTarget.dir
+  OBJECT_FILE_DIR = CMakeFiles\KernelTarget.dir\Kernel
 
-build CMakeFiles/TPE_Arqui.dir/Kernel/kernel.c.obj: C_COMPILER__TPE_Arqui_Debug C$:/Users/timos/Documents/Timo/ITBA/Arqui/TPE/TPE_Arqui/Kernel/kernel.c || cmake_object_order_depends_target_TPE_Arqui
-  DEP_FILE = CMakeFiles\TPE_Arqui.dir\Kernel\kernel.c.obj.d
+build CMakeFiles/KernelTarget.dir/Kernel/irqDispatcher.c.obj: C_COMPILER__KernelTarget_Debug C$:/Users/timos/Documents/Timo/ITBA/Arqui/TPE/TPE_Arqui/Kernel/irqDispatcher.c || cmake_object_order_depends_target_KernelTarget
+  DEP_FILE = CMakeFiles\KernelTarget.dir\Kernel\irqDispatcher.c.obj.d
   FLAGS = -g -std=gnu11
-  INCLUDES = -IC:/Users/timos/Documents/Timo/ITBA/Arqui/TPE/TPE_Arqui/Kernel/include
-  OBJECT_DIR = CMakeFiles\TPE_Arqui.dir
-  OBJECT_FILE_DIR = CMakeFiles\TPE_Arqui.dir\Kernel
+  INCLUDES = -IC:/Users/timos/Documents/Timo/ITBA/Arqui/TPE/TPE_Arqui/Kernel/include -IC:/Users/timos/Documents/Timo/ITBA/Arqui/TPE/TPE_Arqui/Userland/SampleCodeModule/include -IC:/Users/timos/Documents/Timo/ITBA/Arqui/TPE/TPE_Arqui/Kernel/include/bitmapFont.h -IC:/Users/timos/Documents/Timo/ITBA/Arqui/TPE/TPE_Arqui/Kernel/include/console.h -IC:/Users/timos/Documents/Timo/ITBA/Arqui/TPE/TPE_Arqui/Kernel/include/defs.h -IC:/Users/timos/Documents/Timo/ITBA/Arqui/TPE/TPE_Arqui/Kernel/include/idtLoader.h -IC:/Users/timos/Documents/Timo/ITBA/Arqui/TPE/TPE_Arqui/Kernel/include/interrupts.h -IC:/Users/timos/Documents/Timo/ITBA/Arqui/TPE/TPE_Arqui/Kernel/include/keyboard.h -IC:/Users/timos/Documents/Timo/ITBA/Arqui/TPE/TPE_Arqui/Kernel/include/lib.h -IC:/Users/timos/Documents/Timo/ITBA/Arqui/TPE/TPE_Arqui/Kernel/include/moduleLoader.h -IC:/Users/timos/Documents/Timo/ITBA/Arqui/TPE/TPE_Arqui/Kernel/include/naiveConsole.h -IC:/Users/timos/Documents/Timo/ITBA/Arqui/TPE/TPE_Arqui/Kernel/include/time.h -IC:/Users/timos/Documents/Timo/ITBA/Arqui/TPE/TPE_Arqui/Kernel/include/videoDriver.h
+  OBJECT_DIR = CMakeFiles\KernelTarget.dir
+  OBJECT_FILE_DIR = CMakeFiles\KernelTarget.dir\Kernel
 
-build CMakeFiles/TPE_Arqui.dir/Kernel/lib.c.obj: C_COMPILER__TPE_Arqui_Debug C$:/Users/timos/Documents/Timo/ITBA/Arqui/TPE/TPE_Arqui/Kernel/lib.c || cmake_object_order_depends_target_TPE_Arqui
-  DEP_FILE = CMakeFiles\TPE_Arqui.dir\Kernel\lib.c.obj.d
+build CMakeFiles/KernelTarget.dir/Kernel/iswDispatcher.c.obj: C_COMPILER__KernelTarget_Debug C$:/Users/timos/Documents/Timo/ITBA/Arqui/TPE/TPE_Arqui/Kernel/iswDispatcher.c || cmake_object_order_depends_target_KernelTarget
+  DEP_FILE = CMakeFiles\KernelTarget.dir\Kernel\iswDispatcher.c.obj.d
   FLAGS = -g -std=gnu11
-  INCLUDES = -IC:/Users/timos/Documents/Timo/ITBA/Arqui/TPE/TPE_Arqui/Kernel/include
-  OBJECT_DIR = CMakeFiles\TPE_Arqui.dir
-  OBJECT_FILE_DIR = CMakeFiles\TPE_Arqui.dir\Kernel
+  INCLUDES = -IC:/Users/timos/Documents/Timo/ITBA/Arqui/TPE/TPE_Arqui/Kernel/include -IC:/Users/timos/Documents/Timo/ITBA/Arqui/TPE/TPE_Arqui/Userland/SampleCodeModule/include -IC:/Users/timos/Documents/Timo/ITBA/Arqui/TPE/TPE_Arqui/Kernel/include/bitmapFont.h -IC:/Users/timos/Documents/Timo/ITBA/Arqui/TPE/TPE_Arqui/Kernel/include/console.h -IC:/Users/timos/Documents/Timo/ITBA/Arqui/TPE/TPE_Arqui/Kernel/include/defs.h -IC:/Users/timos/Documents/Timo/ITBA/Arqui/TPE/TPE_Arqui/Kernel/include/idtLoader.h -IC:/Users/timos/Documents/Timo/ITBA/Arqui/TPE/TPE_Arqui/Kernel/include/interrupts.h -IC:/Users/timos/Documents/Timo/ITBA/Arqui/TPE/TPE_Arqui/Kernel/include/keyboard.h -IC:/Users/timos/Documents/Timo/ITBA/Arqui/TPE/TPE_Arqui/Kernel/include/lib.h -IC:/Users/timos/Documents/Timo/ITBA/Arqui/TPE/TPE_Arqui/Kernel/include/moduleLoader.h -IC:/Users/timos/Documents/Timo/ITBA/Arqui/TPE/TPE_Arqui/Kernel/include/naiveConsole.h -IC:/Users/timos/Documents/Timo/ITBA/Arqui/TPE/TPE_Arqui/Kernel/include/time.h -IC:/Users/timos/Documents/Timo/ITBA/Arqui/TPE/TPE_Arqui/Kernel/include/videoDriver.h
+  OBJECT_DIR = CMakeFiles\KernelTarget.dir
+  OBJECT_FILE_DIR = CMakeFiles\KernelTarget.dir\Kernel
 
-build CMakeFiles/TPE_Arqui.dir/Kernel/moduleLoader.c.obj: C_COMPILER__TPE_Arqui_Debug C$:/Users/timos/Documents/Timo/ITBA/Arqui/TPE/TPE_Arqui/Kernel/moduleLoader.c || cmake_object_order_depends_target_TPE_Arqui
-  DEP_FILE = CMakeFiles\TPE_Arqui.dir\Kernel\moduleLoader.c.obj.d
+build CMakeFiles/KernelTarget.dir/Kernel/kernel.c.obj: C_COMPILER__KernelTarget_Debug C$:/Users/timos/Documents/Timo/ITBA/Arqui/TPE/TPE_Arqui/Kernel/kernel.c || cmake_object_order_depends_target_KernelTarget
+  DEP_FILE = CMakeFiles\KernelTarget.dir\Kernel\kernel.c.obj.d
   FLAGS = -g -std=gnu11
-  INCLUDES = -IC:/Users/timos/Documents/Timo/ITBA/Arqui/TPE/TPE_Arqui/Kernel/include
-  OBJECT_DIR = CMakeFiles\TPE_Arqui.dir
-  OBJECT_FILE_DIR = CMakeFiles\TPE_Arqui.dir\Kernel
+  INCLUDES = -IC:/Users/timos/Documents/Timo/ITBA/Arqui/TPE/TPE_Arqui/Kernel/include -IC:/Users/timos/Documents/Timo/ITBA/Arqui/TPE/TPE_Arqui/Userland/SampleCodeModule/include -IC:/Users/timos/Documents/Timo/ITBA/Arqui/TPE/TPE_Arqui/Kernel/include/bitmapFont.h -IC:/Users/timos/Documents/Timo/ITBA/Arqui/TPE/TPE_Arqui/Kernel/include/console.h -IC:/Users/timos/Documents/Timo/ITBA/Arqui/TPE/TPE_Arqui/Kernel/include/defs.h -IC:/Users/timos/Documents/Timo/ITBA/Arqui/TPE/TPE_Arqui/Kernel/include/idtLoader.h -IC:/Users/timos/Documents/Timo/ITBA/Arqui/TPE/TPE_Arqui/Kernel/include/interrupts.h -IC:/Users/timos/Documents/Timo/ITBA/Arqui/TPE/TPE_Arqui/Kernel/include/keyboard.h -IC:/Users/timos/Documents/Timo/ITBA/Arqui/TPE/TPE_Arqui/Kernel/include/lib.h -IC:/Users/timos/Documents/Timo/ITBA/Arqui/TPE/TPE_Arqui/Kernel/include/moduleLoader.h -IC:/Users/timos/Documents/Timo/ITBA/Arqui/TPE/TPE_Arqui/Kernel/include/naiveConsole.h -IC:/Users/timos/Documents/Timo/ITBA/Arqui/TPE/TPE_Arqui/Kernel/include/time.h -IC:/Users/timos/Documents/Timo/ITBA/Arqui/TPE/TPE_Arqui/Kernel/include/videoDriver.h
+  OBJECT_DIR = CMakeFiles\KernelTarget.dir
+  OBJECT_FILE_DIR = CMakeFiles\KernelTarget.dir\Kernel
 
-build CMakeFiles/TPE_Arqui.dir/Kernel/naiveConsole.c.obj: C_COMPILER__TPE_Arqui_Debug C$:/Users/timos/Documents/Timo/ITBA/Arqui/TPE/TPE_Arqui/Kernel/naiveConsole.c || cmake_object_order_depends_target_TPE_Arqui
-  DEP_FILE = CMakeFiles\TPE_Arqui.dir\Kernel\naiveConsole.c.obj.d
+build CMakeFiles/KernelTarget.dir/Kernel/keyboard.c.obj: C_COMPILER__KernelTarget_Debug C$:/Users/timos/Documents/Timo/ITBA/Arqui/TPE/TPE_Arqui/Kernel/keyboard.c || cmake_object_order_depends_target_KernelTarget
+  DEP_FILE = CMakeFiles\KernelTarget.dir\Kernel\keyboard.c.obj.d
   FLAGS = -g -std=gnu11
-  INCLUDES = -IC:/Users/timos/Documents/Timo/ITBA/Arqui/TPE/TPE_Arqui/Kernel/include
-  OBJECT_DIR = CMakeFiles\TPE_Arqui.dir
-  OBJECT_FILE_DIR = CMakeFiles\TPE_Arqui.dir\Kernel
+  INCLUDES = -IC:/Users/timos/Documents/Timo/ITBA/Arqui/TPE/TPE_Arqui/Kernel/include -IC:/Users/timos/Documents/Timo/ITBA/Arqui/TPE/TPE_Arqui/Userland/SampleCodeModule/include -IC:/Users/timos/Documents/Timo/ITBA/Arqui/TPE/TPE_Arqui/Kernel/include/bitmapFont.h -IC:/Users/timos/Documents/Timo/ITBA/Arqui/TPE/TPE_Arqui/Kernel/include/console.h -IC:/Users/timos/Documents/Timo/ITBA/Arqui/TPE/TPE_Arqui/Kernel/include/defs.h -IC:/Users/timos/Documents/Timo/ITBA/Arqui/TPE/TPE_Arqui/Kernel/include/idtLoader.h -IC:/Users/timos/Documents/Timo/ITBA/Arqui/TPE/TPE_Arqui/Kernel/include/interrupts.h -IC:/Users/timos/Documents/Timo/ITBA/Arqui/TPE/TPE_Arqui/Kernel/include/keyboard.h -IC:/Users/timos/Documents/Timo/ITBA/Arqui/TPE/TPE_Arqui/Kernel/include/lib.h -IC:/Users/timos/Documents/Timo/ITBA/Arqui/TPE/TPE_Arqui/Kernel/include/moduleLoader.h -IC:/Users/timos/Documents/Timo/ITBA/Arqui/TPE/TPE_Arqui/Kernel/include/naiveConsole.h -IC:/Users/timos/Documents/Timo/ITBA/Arqui/TPE/TPE_Arqui/Kernel/include/time.h -IC:/Users/timos/Documents/Timo/ITBA/Arqui/TPE/TPE_Arqui/Kernel/include/videoDriver.h
+  OBJECT_DIR = CMakeFiles\KernelTarget.dir
+  OBJECT_FILE_DIR = CMakeFiles\KernelTarget.dir\Kernel
 
-build CMakeFiles/TPE_Arqui.dir/Kernel/time.c.obj: C_COMPILER__TPE_Arqui_Debug C$:/Users/timos/Documents/Timo/ITBA/Arqui/TPE/TPE_Arqui/Kernel/time.c || cmake_object_order_depends_target_TPE_Arqui
-  DEP_FILE = CMakeFiles\TPE_Arqui.dir\Kernel\time.c.obj.d
+build CMakeFiles/KernelTarget.dir/Kernel/lib.c.obj: C_COMPILER__KernelTarget_Debug C$:/Users/timos/Documents/Timo/ITBA/Arqui/TPE/TPE_Arqui/Kernel/lib.c || cmake_object_order_depends_target_KernelTarget
+  DEP_FILE = CMakeFiles\KernelTarget.dir\Kernel\lib.c.obj.d
   FLAGS = -g -std=gnu11
-  INCLUDES = -IC:/Users/timos/Documents/Timo/ITBA/Arqui/TPE/TPE_Arqui/Kernel/include
-  OBJECT_DIR = CMakeFiles\TPE_Arqui.dir
-  OBJECT_FILE_DIR = CMakeFiles\TPE_Arqui.dir\Kernel
+  INCLUDES = -IC:/Users/timos/Documents/Timo/ITBA/Arqui/TPE/TPE_Arqui/Kernel/include -IC:/Users/timos/Documents/Timo/ITBA/Arqui/TPE/TPE_Arqui/Userland/SampleCodeModule/include -IC:/Users/timos/Documents/Timo/ITBA/Arqui/TPE/TPE_Arqui/Kernel/include/bitmapFont.h -IC:/Users/timos/Documents/Timo/ITBA/Arqui/TPE/TPE_Arqui/Kernel/include/console.h -IC:/Users/timos/Documents/Timo/ITBA/Arqui/TPE/TPE_Arqui/Kernel/include/defs.h -IC:/Users/timos/Documents/Timo/ITBA/Arqui/TPE/TPE_Arqui/Kernel/include/idtLoader.h -IC:/Users/timos/Documents/Timo/ITBA/Arqui/TPE/TPE_Arqui/Kernel/include/interrupts.h -IC:/Users/timos/Documents/Timo/ITBA/Arqui/TPE/TPE_Arqui/Kernel/include/keyboard.h -IC:/Users/timos/Documents/Timo/ITBA/Arqui/TPE/TPE_Arqui/Kernel/include/lib.h -IC:/Users/timos/Documents/Timo/ITBA/Arqui/TPE/TPE_Arqui/Kernel/include/moduleLoader.h -IC:/Users/timos/Documents/Timo/ITBA/Arqui/TPE/TPE_Arqui/Kernel/include/naiveConsole.h -IC:/Users/timos/Documents/Timo/ITBA/Arqui/TPE/TPE_Arqui/Kernel/include/time.h -IC:/Users/timos/Documents/Timo/ITBA/Arqui/TPE/TPE_Arqui/Kernel/include/videoDriver.h
+  OBJECT_DIR = CMakeFiles\KernelTarget.dir
+  OBJECT_FILE_DIR = CMakeFiles\KernelTarget.dir\Kernel
+
+build CMakeFiles/KernelTarget.dir/Kernel/moduleLoader.c.obj: C_COMPILER__KernelTarget_Debug C$:/Users/timos/Documents/Timo/ITBA/Arqui/TPE/TPE_Arqui/Kernel/moduleLoader.c || cmake_object_order_depends_target_KernelTarget
+  DEP_FILE = CMakeFiles\KernelTarget.dir\Kernel\moduleLoader.c.obj.d
+  FLAGS = -g -std=gnu11
+  INCLUDES = -IC:/Users/timos/Documents/Timo/ITBA/Arqui/TPE/TPE_Arqui/Kernel/include -IC:/Users/timos/Documents/Timo/ITBA/Arqui/TPE/TPE_Arqui/Userland/SampleCodeModule/include -IC:/Users/timos/Documents/Timo/ITBA/Arqui/TPE/TPE_Arqui/Kernel/include/bitmapFont.h -IC:/Users/timos/Documents/Timo/ITBA/Arqui/TPE/TPE_Arqui/Kernel/include/console.h -IC:/Users/timos/Documents/Timo/ITBA/Arqui/TPE/TPE_Arqui/Kernel/include/defs.h -IC:/Users/timos/Documents/Timo/ITBA/Arqui/TPE/TPE_Arqui/Kernel/include/idtLoader.h -IC:/Users/timos/Documents/Timo/ITBA/Arqui/TPE/TPE_Arqui/Kernel/include/interrupts.h -IC:/Users/timos/Documents/Timo/ITBA/Arqui/TPE/TPE_Arqui/Kernel/include/keyboard.h -IC:/Users/timos/Documents/Timo/ITBA/Arqui/TPE/TPE_Arqui/Kernel/include/lib.h -IC:/Users/timos/Documents/Timo/ITBA/Arqui/TPE/TPE_Arqui/Kernel/include/moduleLoader.h -IC:/Users/timos/Documents/Timo/ITBA/Arqui/TPE/TPE_Arqui/Kernel/include/naiveConsole.h -IC:/Users/timos/Documents/Timo/ITBA/Arqui/TPE/TPE_Arqui/Kernel/include/time.h -IC:/Users/timos/Documents/Timo/ITBA/Arqui/TPE/TPE_Arqui/Kernel/include/videoDriver.h
+  OBJECT_DIR = CMakeFiles\KernelTarget.dir
+  OBJECT_FILE_DIR = CMakeFiles\KernelTarget.dir\Kernel
+
+build CMakeFiles/KernelTarget.dir/Kernel/naiveConsole.c.obj: C_COMPILER__KernelTarget_Debug C$:/Users/timos/Documents/Timo/ITBA/Arqui/TPE/TPE_Arqui/Kernel/naiveConsole.c || cmake_object_order_depends_target_KernelTarget
+  DEP_FILE = CMakeFiles\KernelTarget.dir\Kernel\naiveConsole.c.obj.d
+  FLAGS = -g -std=gnu11
+  INCLUDES = -IC:/Users/timos/Documents/Timo/ITBA/Arqui/TPE/TPE_Arqui/Kernel/include -IC:/Users/timos/Documents/Timo/ITBA/Arqui/TPE/TPE_Arqui/Userland/SampleCodeModule/include -IC:/Users/timos/Documents/Timo/ITBA/Arqui/TPE/TPE_Arqui/Kernel/include/bitmapFont.h -IC:/Users/timos/Documents/Timo/ITBA/Arqui/TPE/TPE_Arqui/Kernel/include/console.h -IC:/Users/timos/Documents/Timo/ITBA/Arqui/TPE/TPE_Arqui/Kernel/include/defs.h -IC:/Users/timos/Documents/Timo/ITBA/Arqui/TPE/TPE_Arqui/Kernel/include/idtLoader.h -IC:/Users/timos/Documents/Timo/ITBA/Arqui/TPE/TPE_Arqui/Kernel/include/interrupts.h -IC:/Users/timos/Documents/Timo/ITBA/Arqui/TPE/TPE_Arqui/Kernel/include/keyboard.h -IC:/Users/timos/Documents/Timo/ITBA/Arqui/TPE/TPE_Arqui/Kernel/include/lib.h -IC:/Users/timos/Documents/Timo/ITBA/Arqui/TPE/TPE_Arqui/Kernel/include/moduleLoader.h -IC:/Users/timos/Documents/Timo/ITBA/Arqui/TPE/TPE_Arqui/Kernel/include/naiveConsole.h -IC:/Users/timos/Documents/Timo/ITBA/Arqui/TPE/TPE_Arqui/Kernel/include/time.h -IC:/Users/timos/Documents/Timo/ITBA/Arqui/TPE/TPE_Arqui/Kernel/include/videoDriver.h
+  OBJECT_DIR = CMakeFiles\KernelTarget.dir
+  OBJECT_FILE_DIR = CMakeFiles\KernelTarget.dir\Kernel
+
+build CMakeFiles/KernelTarget.dir/Kernel/time.c.obj: C_COMPILER__KernelTarget_Debug C$:/Users/timos/Documents/Timo/ITBA/Arqui/TPE/TPE_Arqui/Kernel/time.c || cmake_object_order_depends_target_KernelTarget
+  DEP_FILE = CMakeFiles\KernelTarget.dir\Kernel\time.c.obj.d
+  FLAGS = -g -std=gnu11
+  INCLUDES = -IC:/Users/timos/Documents/Timo/ITBA/Arqui/TPE/TPE_Arqui/Kernel/include -IC:/Users/timos/Documents/Timo/ITBA/Arqui/TPE/TPE_Arqui/Userland/SampleCodeModule/include -IC:/Users/timos/Documents/Timo/ITBA/Arqui/TPE/TPE_Arqui/Kernel/include/bitmapFont.h -IC:/Users/timos/Documents/Timo/ITBA/Arqui/TPE/TPE_Arqui/Kernel/include/console.h -IC:/Users/timos/Documents/Timo/ITBA/Arqui/TPE/TPE_Arqui/Kernel/include/defs.h -IC:/Users/timos/Documents/Timo/ITBA/Arqui/TPE/TPE_Arqui/Kernel/include/idtLoader.h -IC:/Users/timos/Documents/Timo/ITBA/Arqui/TPE/TPE_Arqui/Kernel/include/interrupts.h -IC:/Users/timos/Documents/Timo/ITBA/Arqui/TPE/TPE_Arqui/Kernel/include/keyboard.h -IC:/Users/timos/Documents/Timo/ITBA/Arqui/TPE/TPE_Arqui/Kernel/include/lib.h -IC:/Users/timos/Documents/Timo/ITBA/Arqui/TPE/TPE_Arqui/Kernel/include/moduleLoader.h -IC:/Users/timos/Documents/Timo/ITBA/Arqui/TPE/TPE_Arqui/Kernel/include/naiveConsole.h -IC:/Users/timos/Documents/Timo/ITBA/Arqui/TPE/TPE_Arqui/Kernel/include/time.h -IC:/Users/timos/Documents/Timo/ITBA/Arqui/TPE/TPE_Arqui/Kernel/include/videoDriver.h
+  OBJECT_DIR = CMakeFiles\KernelTarget.dir
+  OBJECT_FILE_DIR = CMakeFiles\KernelTarget.dir\Kernel
+
+build CMakeFiles/KernelTarget.dir/Kernel/videoDriver.c.obj: C_COMPILER__KernelTarget_Debug C$:/Users/timos/Documents/Timo/ITBA/Arqui/TPE/TPE_Arqui/Kernel/videoDriver.c || cmake_object_order_depends_target_KernelTarget
+  DEP_FILE = CMakeFiles\KernelTarget.dir\Kernel\videoDriver.c.obj.d
+  FLAGS = -g -std=gnu11
+  INCLUDES = -IC:/Users/timos/Documents/Timo/ITBA/Arqui/TPE/TPE_Arqui/Kernel/include -IC:/Users/timos/Documents/Timo/ITBA/Arqui/TPE/TPE_Arqui/Userland/SampleCodeModule/include -IC:/Users/timos/Documents/Timo/ITBA/Arqui/TPE/TPE_Arqui/Kernel/include/bitmapFont.h -IC:/Users/timos/Documents/Timo/ITBA/Arqui/TPE/TPE_Arqui/Kernel/include/console.h -IC:/Users/timos/Documents/Timo/ITBA/Arqui/TPE/TPE_Arqui/Kernel/include/defs.h -IC:/Users/timos/Documents/Timo/ITBA/Arqui/TPE/TPE_Arqui/Kernel/include/idtLoader.h -IC:/Users/timos/Documents/Timo/ITBA/Arqui/TPE/TPE_Arqui/Kernel/include/interrupts.h -IC:/Users/timos/Documents/Timo/ITBA/Arqui/TPE/TPE_Arqui/Kernel/include/keyboard.h -IC:/Users/timos/Documents/Timo/ITBA/Arqui/TPE/TPE_Arqui/Kernel/include/lib.h -IC:/Users/timos/Documents/Timo/ITBA/Arqui/TPE/TPE_Arqui/Kernel/include/moduleLoader.h -IC:/Users/timos/Documents/Timo/ITBA/Arqui/TPE/TPE_Arqui/Kernel/include/naiveConsole.h -IC:/Users/timos/Documents/Timo/ITBA/Arqui/TPE/TPE_Arqui/Kernel/include/time.h -IC:/Users/timos/Documents/Timo/ITBA/Arqui/TPE/TPE_Arqui/Kernel/include/videoDriver.h
+  OBJECT_DIR = CMakeFiles\KernelTarget.dir
+  OBJECT_FILE_DIR = CMakeFiles\KernelTarget.dir\Kernel
 
 
 # =============================================================================
-# Link build statements for EXECUTABLE target TPE_Arqui
+# Link build statements for EXECUTABLE target KernelTarget
 
 
 #############################################
-# Link the executable TPE_Arqui.exe
+# Link the executable KernelTarget.exe
 
-build TPE_Arqui.exe: C_EXECUTABLE_LINKER__TPE_Arqui_Debug CMakeFiles/TPE_Arqui.dir/Kernel/exceptions.c.obj CMakeFiles/TPE_Arqui.dir/Kernel/idtLoader.c.obj CMakeFiles/TPE_Arqui.dir/Kernel/irqDispatcher.c.obj CMakeFiles/TPE_Arqui.dir/Kernel/kernel.c.obj CMakeFiles/TPE_Arqui.dir/Kernel/lib.c.obj CMakeFiles/TPE_Arqui.dir/Kernel/moduleLoader.c.obj CMakeFiles/TPE_Arqui.dir/Kernel/naiveConsole.c.obj CMakeFiles/TPE_Arqui.dir/Kernel/time.c.obj
+build KernelTarget.exe: C_EXECUTABLE_LINKER__KernelTarget_Debug CMakeFiles/KernelTarget.dir/Kernel/console.c.obj CMakeFiles/KernelTarget.dir/Kernel/exceptions.c.obj CMakeFiles/KernelTarget.dir/Kernel/idtLoader.c.obj CMakeFiles/KernelTarget.dir/Kernel/irqDispatcher.c.obj CMakeFiles/KernelTarget.dir/Kernel/iswDispatcher.c.obj CMakeFiles/KernelTarget.dir/Kernel/kernel.c.obj CMakeFiles/KernelTarget.dir/Kernel/keyboard.c.obj CMakeFiles/KernelTarget.dir/Kernel/lib.c.obj CMakeFiles/KernelTarget.dir/Kernel/moduleLoader.c.obj CMakeFiles/KernelTarget.dir/Kernel/naiveConsole.c.obj CMakeFiles/KernelTarget.dir/Kernel/time.c.obj CMakeFiles/KernelTarget.dir/Kernel/videoDriver.c.obj
   FLAGS = -g
-  LINK_LIBRARIES = -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32
-  OBJECT_DIR = CMakeFiles\TPE_Arqui.dir
+  LINK_LIBRARIES = -nostdlib  -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32
+  OBJECT_DIR = CMakeFiles\KernelTarget.dir
   POST_BUILD = cd .
   PRE_LINK = cd .
-  TARGET_FILE = TPE_Arqui.exe
-  TARGET_IMPLIB = libTPE_Arqui.dll.a
-  TARGET_PDB = TPE_Arqui.exe.dbg
+  TARGET_FILE = KernelTarget.exe
+  TARGET_IMPLIB = libKernelTarget.dll.a
+  TARGET_PDB = KernelTarget.exe.dbg
+
+# =============================================================================
+# Object build statements for EXECUTABLE target UserlandTarget
+
+
+#############################################
+# Order-only phony target for UserlandTarget
+
+build cmake_object_order_depends_target_UserlandTarget: phony || CMakeFiles/UserlandTarget.dir
+
+build CMakeFiles/UserlandTarget.dir/Userland/SampleCodeModule/_loader.c.obj: C_COMPILER__UserlandTarget_Debug C$:/Users/timos/Documents/Timo/ITBA/Arqui/TPE/TPE_Arqui/Userland/SampleCodeModule/_loader.c || cmake_object_order_depends_target_UserlandTarget
+  DEP_FILE = CMakeFiles\UserlandTarget.dir\Userland\SampleCodeModule\_loader.c.obj.d
+  FLAGS = -g -std=gnu11
+  INCLUDES = -IC:/Users/timos/Documents/Timo/ITBA/Arqui/TPE/TPE_Arqui/Kernel/include -IC:/Users/timos/Documents/Timo/ITBA/Arqui/TPE/TPE_Arqui/Userland/SampleCodeModule/include -IC:/Users/timos/Documents/Timo/ITBA/Arqui/TPE/TPE_Arqui/Userland/SampleCodeModule/include/swInterrupt.h
+  OBJECT_DIR = CMakeFiles\UserlandTarget.dir
+  OBJECT_FILE_DIR = CMakeFiles\UserlandTarget.dir\Userland\SampleCodeModule
+
+build CMakeFiles/UserlandTarget.dir/Userland/SampleCodeModule/sampleCodeModule.c.obj: C_COMPILER__UserlandTarget_Debug C$:/Users/timos/Documents/Timo/ITBA/Arqui/TPE/TPE_Arqui/Userland/SampleCodeModule/sampleCodeModule.c || cmake_object_order_depends_target_UserlandTarget
+  DEP_FILE = CMakeFiles\UserlandTarget.dir\Userland\SampleCodeModule\sampleCodeModule.c.obj.d
+  FLAGS = -g -std=gnu11
+  INCLUDES = -IC:/Users/timos/Documents/Timo/ITBA/Arqui/TPE/TPE_Arqui/Kernel/include -IC:/Users/timos/Documents/Timo/ITBA/Arqui/TPE/TPE_Arqui/Userland/SampleCodeModule/include -IC:/Users/timos/Documents/Timo/ITBA/Arqui/TPE/TPE_Arqui/Userland/SampleCodeModule/include/swInterrupt.h
+  OBJECT_DIR = CMakeFiles\UserlandTarget.dir
+  OBJECT_FILE_DIR = CMakeFiles\UserlandTarget.dir\Userland\SampleCodeModule
+
+
+# =============================================================================
+# Link build statements for EXECUTABLE target UserlandTarget
+
+
+#############################################
+# Link the executable UserlandTarget.exe
+
+build UserlandTarget.exe: C_EXECUTABLE_LINKER__UserlandTarget_Debug CMakeFiles/UserlandTarget.dir/Userland/SampleCodeModule/_loader.c.obj CMakeFiles/UserlandTarget.dir/Userland/SampleCodeModule/sampleCodeModule.c.obj
+  FLAGS = -g
+  LINK_LIBRARIES = -nostdlib  -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32
+  OBJECT_DIR = CMakeFiles\UserlandTarget.dir
+  POST_BUILD = cd .
+  PRE_LINK = cd .
+  TARGET_FILE = UserlandTarget.exe
+  TARGET_IMPLIB = libUserlandTarget.dll.a
+  TARGET_PDB = UserlandTarget.exe.dbg
 
 
 #############################################
@@ -149,7 +218,9 @@ build rebuild_cache: phony CMakeFiles/rebuild_cache.util
 # =============================================================================
 # Target aliases.
 
-build TPE_Arqui: phony TPE_Arqui.exe
+build KernelTarget: phony KernelTarget.exe
+
+build UserlandTarget: phony UserlandTarget.exe
 
 # =============================================================================
 # Folder targets.
@@ -159,7 +230,7 @@ build TPE_Arqui: phony TPE_Arqui.exe
 #############################################
 # Folder: C:/Users/timos/Documents/Timo/ITBA/Arqui/TPE/TPE_Arqui/cmake-build-debug
 
-build all: phony TPE_Arqui.exe
+build all: phony KernelTarget.exe UserlandTarget.exe
 
 # =============================================================================
 # Built-in targets

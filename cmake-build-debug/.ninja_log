@@ -1,11 +1,9 @@
 # ninja log v5
 16	1072	7064708007112505	CMakeFiles/TPE_Arqui.dir/Kernel/irqDispatcher.c.obj	2c8a81a677537977
-89	1112	7064708007428338	CMakeFiles/TPE_Arqui.dir/Kernel/kernel.c.obj	21264bd181641a5c
-1	1141	7064708007601696	CMakeFiles/TPE_Arqui.dir/Kernel/exceptions.c.obj	c8157ae486293490
-33	1184	7064708008529461	CMakeFiles/TPE_Arqui.dir/Kernel/idtLoader.c.obj	7fdbc9bbf9301d22
 119	1201	7064708008372671	CMakeFiles/TPE_Arqui.dir/Kernel/naiveConsole.c.obj	24b1e811ad0154b7
+6	268	7064718098338410	CMakeFiles/TPE_Arqui.dir/Kernel/kernel.c.obj	21264bd181641a5c
+33	1184	7064708008529461	CMakeFiles/TPE_Arqui.dir/Kernel/idtLoader.c.obj	7fdbc9bbf9301d22
+1114	1728	7064708014801081	CMakeFiles/TPE_Arqui.dir/Kernel/time.c.obj	29d85109b25c6c2e
+1	1141	7064708007601696	CMakeFiles/TPE_Arqui.dir/Kernel/exceptions.c.obj	c8157ae486293490
 51	1552	7064708011192262	CMakeFiles/TPE_Arqui.dir/Kernel/moduleLoader.c.obj	f146bd66511e854e
 1080	1721	7064708014801081	CMakeFiles/TPE_Arqui.dir/Kernel/lib.c.obj	992cb8667eef653d
-1114	1728	7064708014801081	CMakeFiles/TPE_Arqui.dir/Kernel/time.c.obj	29d85109b25c6c2e
-13	581	7064712845556243	CMakeFiles/TPE_Arqui.dir/Kernel/kernel.c.obj	21264bd181641a5c
-6	268	7064718098338410	CMakeFiles/TPE_Arqui.dir/Kernel/kernel.c.obj	21264bd181641a5c

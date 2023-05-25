@@ -26,11 +26,13 @@ void sys_read(BASE_PARAMS) {
 
 }
 
+
+//ID=2
 //rsi = 0 -> pixel || 1 -> line || 2 -> empty rectangle || 3 -> rectangle || 4 -> empty circle || 5 -> filled circle
-//rdx = upper half -> x0 || lower half -> y0
-//rcx = upper half -> x1 || lower half -> y1 (used for lines)
-//r8 = upper half -> rectangle height || lower half -> rectangle width // circle radius (used by circles and rectangles)
-//r9 = Color in hex
+//rdx = INITIAL COORDINATES :: upper half -> x0 || lower half -> y0
+//rcx = FINAL COORDINATES (used for lines :: upper half -> x1 || lower half -> y1
+//r8 = DIMENSIONS (used by circles and rectangles) :: upper half -> rectangle height || lower half -> rectangle width // circle radius
+//r9 = COLOR :: in hex values
 void sys_draw(BASE_PARAMS) {
     uint32_t x0 = (uint32_t) (rdx >> 32);
     uint32_t y0 = (uint32_t) rdx;
