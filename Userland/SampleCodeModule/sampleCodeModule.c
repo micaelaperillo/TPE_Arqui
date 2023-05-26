@@ -20,7 +20,6 @@ int main() {
     //Lo mismo pero con graphics.h
     drawEmptyRectangle(WHITE, 900, 600, 10, 50);
 
-    clearScreen();
     startShell();
 
     return 0;

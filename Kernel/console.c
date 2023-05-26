@@ -3,9 +3,10 @@
 #include <videoDriver.h>
 
 static uint32_t uintToBase(uint64_t value, char * buffer, uint32_t base);
+void scrollUp();
 
 static char buffer[64] = { '0' };
-static uint32_t cursor = 0;
+static uint32_t consoleCursor = 0;
 uint32_t width = 0;
 uint32_t height = 0;
 
@@ -27,22 +28,17 @@ void cPrint(const char * string)
 
 void cPrintChar(char character)
 {
-    if(cursor >= width * height) {
-        return;
+    if(consoleCursor >= width || character == '\n') {
+        cNewline();
     }
-    uint32_t xPos = cursor % width;
-    uint32_t yPos = cursor / width;
-    putCharAt(xPos, yPos, character);
-    cursor++;
+    putCharAt(consoleCursor, height, character);
+    consoleCursor++;
 }
 
 void cNewline()
 {
-    do
-    {
-        cPrintChar(' ');
-    }
-    while(cursor % width != 0);
+    scrollUp();
+    consoleCursor = 0;
 }
 
 void cPrintDec(uint64_t value)
@@ -75,7 +71,11 @@ void cClear()
         uint32_t yPos = i / width;
         putCharAt(xPos, yPos, ' ');
     }
-    cursor = 0;
+    consoleCursor = 0;
+}
+
+void scrollUp() {
+    scrollCharArea();
 }
 
 //TODO mover uintToBase a una libreria aparte (utils.h?)
@@ -113,11 +113,11 @@ static uint32_t uintToBase(uint64_t value, char * buffer, uint32_t base)
 }
 
 unsigned long cGetCursor() {
-    return cursor;
+    return consoleCursor;
 }
 
 void cSetCursor(unsigned long pos) {
     if(pos < getXCharSlots() * getYCharSlots()) {
-        cursor = pos;
+        consoleCursor = pos;
     }
 }

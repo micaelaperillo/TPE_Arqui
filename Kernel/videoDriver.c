@@ -93,6 +93,22 @@ void clearBuffer() {
     memset(videoBuffer, 0, BUFFER_SIZE);
 }
 
+void scrollCharArea() {
+    //currently only scrolls up the area reserved by the chars, excluding the margins
+    uint32_t vPixels = CHAR_HEIGHT + HEIGHT_PADDING;
+    uint64_t xLen = (XDIM * (CHAR_WIDTH + WIDTH_PADDING)) * (VBE_mode_info->bpp / 8);
+    //goes to the first pixel in the char area
+    uint64_t currMem = VBE_mode_info->framebuffer + (VBE_mode_info->bpp/8) * (X_MARGIN + VBE_mode_info->width * Y_MARGIN);
+    uint64_t offset = VBE_mode_info->width * vPixels * (VBE_mode_info->bpp / 8);
+    for(int i=0; i<YDIM + 1; i++) {
+        for(int j=0; j<vPixels; j++) {
+            memcpy(currMem, currMem + offset, xLen);
+            currMem += VBE_mode_info->width * (VBE_mode_info->bpp / 8);//jumps to the pixels below
+        }
+        //once it finishes it has copied an entire block
+    }
+}
+
 void putPixel(Color c, uint32_t x, uint32_t y) {
     if(x >= VBE_mode_info->width || x < 0 || y >= VBE_mode_info->height || y < 0) {
         return;

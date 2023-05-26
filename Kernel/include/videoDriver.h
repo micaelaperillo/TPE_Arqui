@@ -49,6 +49,7 @@ void drawHexRectangle(uint32_t hexColor, uint32_t x, uint32_t y, uint32_t width,
 
 //UTILS
 void clearScreen();
+void scrollCharArea();
 
 uint32_t getXCharSlots();
 uint32_t getYCharSlots();

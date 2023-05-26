@@ -123,6 +123,6 @@ int main()
 	cPrint(date);
 	cNewline();
 	cPrint("[Finished]");
-    while(1);
+
 	return 0;
 }
