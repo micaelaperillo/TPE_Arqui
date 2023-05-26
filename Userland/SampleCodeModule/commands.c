@@ -14,12 +14,13 @@ typedef struct PROGRAM_STRUCT Program;
 Program pArr[20];
 static int pAmount = 0;
 
-void setupProgram();
+void setupProgram(), unknownCommand();
 
 void help(), testExceptions(), showRegisters(), playBubbles(), playPong();
 
 void parseCommand(char* str) {
     //TODO implementar
+    unknownCommand();
 }
 
 void loadCommands() {
@@ -38,11 +39,15 @@ void setupProgram(char* name_id, char* description, FunctionPtr program) {
     }
 }
 
+void unknownCommand() {
+
+}
+
 void help() {
     //TODO : recorre pList e imprime los comandos y su descripcion
 }
 
-void testExcpetions() {
+void testExceptions() {
     //TODO implementar
 }
 
@@ -54,3 +59,6 @@ void playBubbles() {
     bubbles();
 }
 
+void playPong() {
+    //TODO implementar
+}
