@@ -92,6 +92,20 @@ void div(){
 	int i=1/0;
 }
 
+void sys_get_time(BASE_PARAMS) {
+    char * date;
+    char * time;
+    timeToStr(time);
+    dateToStr(date);
+
+    cPrint("Time: ");
+    cPrint(time);
+    cNewline();
+    cPrint("Date: ");
+    cPrint(date);
+    cNewline();
+}
+
 int main()
 {
     initializeConsole();
@@ -102,11 +116,12 @@ int main()
     cPrint("  Sample code module at 0x");
 	cPrintHex((uint64_t)sampleCodeModuleAddress);
 	cNewline();
-	cPrint("  Calling the sample code module returned: ");
-	cPrintHex(((EntryPoint)sampleCodeModuleAddress)());
+	
 	cNewline();
 	cNewline();
-
+	
+	
+	
 	cPrint("  Sample data module at 0x");
 	cPrintHex((uint64_t)sampleDataModuleAddress);
 	cNewline();
@@ -114,16 +129,14 @@ int main()
 	cPrint((char*)sampleDataModuleAddress);
 	//div(); testeo la division por cero.Creo que es un testeo valido xd
 	cNewline();
+	
+	cNewline();
+
+	
 
 
-	char * time;
-	char * date;
-	timeToStr(time);
-	cPrint(time);
-	cNewline();
-	dateToStr(date);
-	cPrint(date);
-	cNewline();
+	cPrint("  Calling the sample code module returned: ");
+	cPrintHex(((EntryPoint)sampleCodeModuleAddress)());
 
 	cPrint("[Finished]");
 

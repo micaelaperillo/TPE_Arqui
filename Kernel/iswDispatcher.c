@@ -11,6 +11,7 @@ void sys_write(BASE_PARAMS);//code 0
 void sys_read(BASE_PARAMS);//code 1
 void sys_draw(BASE_PARAMS);//code 2
 void sys_doubleBuffer(BASE_PARAMS);//code 3
+extern char * current_regs();
 
 FunctionPtr interruptions[] = {sys_write, sys_read, sys_draw, sys_doubleBuffer};
 
@@ -91,4 +92,54 @@ void sys_doubleBuffer(BASE_PARAMS) {
         default:
             return;
     }
+}
+
+extern char * current_regs();
+
+static char * regs[]={"rax: ","rbx: ","rcx: ","rdx: ","rsi: ","rdi: ","rbp: ","r8: ","r9: ","r10: ","r11: ","r12: ","r13: ","r14: ","r15: ","rsp: ","rip: "};
+
+
+static void printregs(uint64_t* exregs){
+	for(int i=0;i<17;i++){
+		cPrint(regs[i]);
+		cPrintHex(exregs[i]);
+		cPrint(" ");
+	}
+}
+
+void sys_get_registers(BASE_PARAMS) {
+    printregs(current_regs);
+}
+
+static zero_div() {
+    int i = 1 / 0;
+}
+
+static invalid_op() {
+    // TODO hacer una operacion que tire invalid operation
+}
+
+void sys_get_exceptions(BASE_PARAMS) {
+    cPrint("Zero Division Exception");
+    cNewline();
+    zero_div();
+	cNewline();
+
+    cPrint("Invalid Operation Exception");
+    cNewline();
+    // TODO hacer saltar la invalid operation exceptino
+}
+
+void sys_get_time(BASE_PARAMS) {
+    char * date;
+    char * time;
+    timeToStr(time);
+    dateToStr(date);
+
+    cPrint("Time: ");
+    cPrint(time);
+    cNewline();
+    cPrint("Date: ");
+    cPrint(date);
+    cNewline();
 }

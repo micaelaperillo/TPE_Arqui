@@ -9,8 +9,8 @@ static char* regs[]={"rax:","rbx:","rcx:","rdx:","rsi:","rdi:","rbp:","r8:","r9:
 static void zero_division();
 static void opinvalid(uint64_t regs, uint64_t* rip);
 
-void printregs(uint64_t* exregs){
-	for(int i=0;i<17;i++){
+void printregs(uint64_t* exregs) {
+	for(int i=0;i<17;i++) {
 		cPrint(regs[i]);
 		cPrintHex(exregs[i]);
 		cPrint(" ");

@@ -5,6 +5,7 @@ GLOBAL clock
 GLOBAL play_sound
 GLOBAL stop_sound
 GLOBAL timer_wait
+GLOBAL current_regs
 
 section .text
 
@@ -173,3 +174,26 @@ wait_loop:
 
     pop rbp
     ret
+
+current_regs:
+	; gets current registers
+	mov [registers], rax
+	mov [registers+8], rax
+	mov [registers+8*2], rax
+	mov [registers+8*3], rax
+	mov [registers+8*4], rax
+	mov [registers+8*5], rax
+	mov [registers+8*6], rax
+	mov [registers+8*7], rax
+	mov [registers+8*8], rax
+	mov [registers+8*9], rax
+	mov [registers+8*10], rax
+	mov [registers+8*11], rax
+	mov [registers+8*12], rax
+	mov [registers+8*13], rax
+	mov [registers+8*14], rax
+	mov rax, registers
+	ret
+
+section .bss:
+	registers resb 8 * 18
