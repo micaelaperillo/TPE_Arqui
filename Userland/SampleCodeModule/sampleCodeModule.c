@@ -8,5 +8,6 @@
 
 int main() {
     startShell();
+    printEfe("holaaaaa %d ",49);
     return 0;
 }
