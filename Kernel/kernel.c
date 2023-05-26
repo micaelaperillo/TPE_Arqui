@@ -124,6 +124,6 @@ int main()
 	cPrint(date);
 	cNewline();
 	cPrint("[Finished]");
-	
+
 	return 0;
 }

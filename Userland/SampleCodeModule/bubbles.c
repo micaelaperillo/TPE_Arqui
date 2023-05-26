@@ -26,7 +26,7 @@ void drawBubble(struct Bubble bubble) {
     drawEmptyCircle(bubble.c, bubble.x, bubble.y, bubble.width);
 }
 
-void screenSaver() {
+void bubbles() {
     int size = 21;
     struct Bubble bbs[] = {{100, 0, 1, 3, 20, WHITE},  {500, 10, 2, 1, 20, RED},  {1000, 50, 2, 2, 20, BLUE},  {800, 125, -2, 1, 20, YELLOW},
                            {100, 600, -1, -3, 20, CYAN}, {9, 700, 2, -1, 20, GREEN}, {100, 700, -1, -3, 20, PINK},
