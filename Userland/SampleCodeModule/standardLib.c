@@ -73,6 +73,10 @@ void printFormat(const char* format, ...) {
                     char* value = va_arg(args, char*);
                     putStrn(value);
                     break;
+                } case 'x':{
+                    uint64_t value =va_arg(args,uint64_t);
+                    putStrn("0x");
+                    putStrn(itoa(value,buff,16));
                 }
 
                 default:
