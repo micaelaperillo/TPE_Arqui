@@ -37,7 +37,9 @@ unsigned char keyboard_handler() {
     }
 
 }
-
+char getc(){
+    return keyboard_handler();
+}
 void gets(char * s) {
     int i = 0;
     char c;

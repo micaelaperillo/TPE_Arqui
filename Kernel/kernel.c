@@ -90,6 +90,7 @@ void * initializeKernelBinary()
 void div(){
 	int i=1/0;
 }
+
 int main()
 {
     initializeConsole();
@@ -123,6 +124,6 @@ int main()
 	cPrint(date);
 	cNewline();
 	cPrint("[Finished]");
-
+	
 	return 0;
 }

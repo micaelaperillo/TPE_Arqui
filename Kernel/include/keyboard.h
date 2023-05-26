@@ -3,5 +3,5 @@
 
 unsigned char keyboard_handler();
 void gets(char * s);
-
+char getc();
 #endif
