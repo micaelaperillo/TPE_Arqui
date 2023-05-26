@@ -2,6 +2,9 @@ GLOBAL cpuVendor
 GLOBAL keydown
 GLOBAL interrupt
 GLOBAL clock
+GLOBAL play_sound
+GLOBAL stop_sound
+GLOBAL timer_wait
 
 section .text
 
@@ -93,4 +96,80 @@ interrupt:
     pushstate
     int 80h
     popstate
+    ret
+
+play_sound:
+	; code adapted from https://wiki.osdev.org/PC_Speaker
+    push rbp
+    mov rbp, rsp
+    push rbx
+    push rdx
+
+    mov ah, 2
+    mov dl, 7
+    int 21h
+
+    mov al, 0xB6
+    out 0x43, al
+
+    mov ebx, edi
+    mov al, byte [ebx]
+    out 0x42, al
+
+    shr ebx, 8
+    mov al, byte [ebx]
+    out 0x42, al
+
+    in al, 0x61
+    mov bl, al
+
+    or bl, 3
+    cmp al, bl
+    je .finish
+
+    mov al, bl
+    out 0x61, al
+
+.finish:
+    pop rdx
+    pop rbx
+    mov rsp, rbp
+    pop rbp
+    ret
+
+stop_sound:
+    push rbp
+    mov rbp, rsp
+
+    in al, 0x61
+    and al, 0xFC
+    out 0x61, al
+
+    mov rsp, rbp
+    pop rbp
+    ret
+
+timer_wait:
+    push rbp
+    mov rbp, rsp
+
+    mov eax, dword [rbp+16]    ; recibe el tiempo que espera
+    mov ebx, eax              	
+
+    ; calcula numero de ciclos que tiene que esperar
+    mov ecx, 0                	
+    mov edx, 1000000          
+    mul edx                   
+    mov ecx, eax              
+    xor edx, edx              
+    mov eax, ebx              
+    mul edx                   
+    add eax, ecx              
+	
+wait_loop:
+    rdtsc                     
+    cmp rax, rdx              
+    jb wait_loop              
+
+    pop rbp
     ret
