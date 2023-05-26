@@ -16,6 +16,6 @@ void dateToStr(char * dest);
 void timer_handler();
 int ticks_elapsed();
 int seconds_elapsed();
-void wait(int seconds);
+void wait(unsigned long milliseconds);
 
 #endif

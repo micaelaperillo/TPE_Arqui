@@ -7,6 +7,7 @@
 #include <videoDriver.h>
 #include <keyboard.h>
 #include <time.h>
+#include <sound.h>
 
 extern uint8_t text;
 extern uint8_t rodata;
@@ -98,7 +99,7 @@ int main()
 	cPrint("[Kernel Main]");
     load_idt();
 	cNewline();
-	cPrint("  Sample code module at 0x");
+    cPrint("  Sample code module at 0x");
 	cPrintHex((uint64_t)sampleCodeModuleAddress);
 	cNewline();
 	cPrint("  Calling the sample code module returned: ");
@@ -123,6 +124,7 @@ int main()
 	dateToStr(date);
 	cPrint(date);
 	cNewline();
+
 	cPrint("[Finished]");
 
 	return 0;
