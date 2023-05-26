@@ -124,5 +124,8 @@ int main()
 	cNewline();
 	cPrint("[Finished]");
 
+    while(1) {
+        cPrintChar(keyboard_handler());
+    }
 	return 0;
 }
