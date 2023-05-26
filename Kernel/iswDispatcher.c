@@ -9,11 +9,10 @@ typedef void (*FunctionPtr)(uint64_t, uint64_t, uint64_t, uint64_t, uint64_t);
 
 void sys_write(BASE_PARAMS);//code 0
 void sys_read(BASE_PARAMS);//code 1
-void sys_console(BASE_PARAMS);//code 2
-void sys_draw(BASE_PARAMS);//code 3
-void sys_doubleBuffer(BASE_PARAMS);//code 4
+void sys_draw(BASE_PARAMS);//code 2
+void sys_doubleBuffer(BASE_PARAMS);//code 3
 
-FunctionPtr interruptions[] = {sys_write, sys_read, sys_console, sys_draw, sys_doubleBuffer};
+FunctionPtr interruptions[] = {sys_write, sys_read, sys_draw, sys_doubleBuffer};
 
 void swInterruptDispatcher(COMPLETE_PARAMS) {
     interruptions[rdi](rsi, rdx, rcx, r8, r9);
@@ -35,21 +34,7 @@ void sys_read(BASE_PARAMS) {
     gets((char*)rsi);
 }
 
-
 //ID=2
-//rsi = 0 -> no assignment || !0 -> assignment
-//rdx = pointer to a value if rsi=0 || cursor value if rsi != 0
-void sys_console(BASE_PARAMS) {
-    if(rsi) {
-        cSetCursor(rdx);
-    } else {
-        uint32_t cursorValue = cGetCursor();
-        *(uint64_t*)rdx = cursorValue;
-    }
-}
-
-
-//ID=3
 //rsi = 0 -> pixel || 1 -> line || 2 -> empty rectangle || 3 -> rectangle || 4 -> empty circle || 5 -> filled circle || 6 -> clear screen
 //rdx = INITIAL COORDINATES :: upper half -> x0 || lower half -> y0
 //rcx = FINAL COORDINATES (used for lines :: upper half -> x1 || lower half -> y1
@@ -91,7 +76,7 @@ void sys_draw(BASE_PARAMS) {
     }
 }
 
-//ID=4
+//ID=3
 //rsi = INSTRUCTION :: 0 -> disables double buffering || 1 -> enables double buffering || 2 -> swaps buffers
 void sys_doubleBuffer(BASE_PARAMS) {
     switch(rsi) {

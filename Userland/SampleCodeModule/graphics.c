@@ -1,8 +1,8 @@
 #include <standardLib.h>
 #include <stdint.h>
 
-#define SYS_DRAW_ID 3
-#define SYS_BUFFER_ID 4
+#define SYS_DRAW_ID 2
+#define SYS_BUFFER_ID 3
 
 enum SHAPE_ID {
     PIXEL,

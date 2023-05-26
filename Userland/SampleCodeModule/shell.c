@@ -39,39 +39,18 @@ void help() {
 
 
 // ################## CONSOLE #####################
-#define SYS_CURSOR_ID 2
 
 #define CONSOLE_X_DIM 96
-#define CONSOLE_Y_DIM 47   // -1, as the last line is reserved for the command prompt
-
-#define CONSOLE_DIM CONSOLE_Y_DIM * CONSOLE_Y_DIM
 
 typedef char cLine[CONSOLE_X_DIM];
-
-static cLine* console[CONSOLE_Y_DIM];
-static cLine cPrompt;
-
-static unsigned int cursor = 0;
-
-void clearLine(int line);
-void reprintLine(int line);
-void reprintConsole();
-void _moveCursor(unsigned long pos);
-void swapLines();
+static cLine prompt;
 
 
-void setupConsole() {
-
-}
 
 void startShell() {
     //PROGRAMS SETUP
     setupProgram("help", "displays all available commands", help);
 
-    //INITIALIZATIONS
-    setupConsole();
-    //STARTS THE CONSOLE
-    putC('a');
 }
 
 

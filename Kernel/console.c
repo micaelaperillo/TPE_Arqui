@@ -30,6 +30,7 @@ void cPrintChar(char character)
 {
     if(consoleCursor >= width || character == '\n') {
         cNewline();
+        return;
     }
     putCharAt(consoleCursor, height, character);
     consoleCursor++;
@@ -60,6 +61,13 @@ void cPrintBase(uint64_t value, uint32_t base)
 {
     uintToBase(value, buffer, base);
     cPrint(buffer);
+}
+
+void cErase() {
+    if(consoleCursor > 0) {
+        consoleCursor--;
+        putCharAt(consoleCursor, height, ' ');
+    }
 }
 
 void cClear()
@@ -110,14 +118,4 @@ static uint32_t uintToBase(uint64_t value, char * buffer, uint32_t base)
     }
 
     return digits;
-}
-
-unsigned long cGetCursor() {
-    return consoleCursor;
-}
-
-void cSetCursor(unsigned long pos) {
-    if(pos < getXCharSlots() * getYCharSlots()) {
-        consoleCursor = pos;
-    }
 }
