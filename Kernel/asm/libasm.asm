@@ -195,5 +195,5 @@ current_regs:
 	mov rax, registers
 	ret
 
-section .bss:
+section .bss
 	registers resb 8 * 18
