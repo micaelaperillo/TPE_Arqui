@@ -17,8 +17,8 @@ void clearPrompt() {
 
 void writePromptIcon() {
     //TODO pasarlo a putS
-    putC('$');
-    putC('~');
+    putChar('$');
+    putChar('~');
 }
 
 void startShell() {
@@ -30,11 +30,11 @@ void startShell() {
 void shellLoop() {
     //waits for input and stores it in prompt
     char c;
-    while((c = getC()) != 27 ) {// 'esc'
+    while((c = getChar()) != 27 ) {// 'esc'
 
         if(c == '\n') {
             //executes the command
-            putC(c);
+            putChar(c);
             clearPrompt();
 
             parseCommand(prompt);
@@ -50,7 +50,7 @@ void shellLoop() {
         }
 
         else if(promptDim < CONSOLE_X_DIM){
-            putC(c);
+            putChar(c);
             prompt[promptDim++] = c;
         }
     }

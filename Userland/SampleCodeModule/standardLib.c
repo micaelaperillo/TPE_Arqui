@@ -40,7 +40,7 @@ static char * itoa( int value, char * str, int base ) //puede ser util para prin
     return rc;
 }
 void putChar(char c){ //a partir del segundo parametro no importa lo que le ponga
-char* aux={&c};
+    char* aux={&c};
     interrupt(SYSWRITE,aux,1,0,0,0);
 }
 
