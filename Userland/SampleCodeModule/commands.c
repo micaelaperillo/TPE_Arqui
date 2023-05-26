@@ -27,7 +27,12 @@ static Program pArr[] = {
 static int pAmount = 5;
 
 void parseCommand(char* str) {
-    //TODO implementar
+    for(int i=0;i<pAmount;i++){
+        if(compstring(str,pArr[i]->name_id)==0){
+            pArr[i]->program();
+            return;
+        }
+    }
     unknownCommand(str);
 }
 
@@ -36,7 +41,9 @@ void unknownCommand(char* str) {
 }
 
 void help() {
-    //TODO : recorre pList e imprime los comandos y su descripcion
+    for(int i=0;i<pAmount;i++){
+        printFormat("%s: %s \n",pArr[i]->name_id,pArr[i]->description);
+    }
 }
 
 void testExceptions() {
