@@ -7,6 +7,7 @@
 #include <videoDriver.h>
 #include <keyboard.h>
 #include <time.h>
+#include <sound.h>
 
 extern uint8_t text;
 extern uint8_t rodata;
@@ -122,6 +123,17 @@ int main()
 	dateToStr(date);
 	cPrint(date);
 	cNewline();
+
+	play_beep();
+
+	play_beep();
+
+	play_beep();
+
+	play_beep();
+
+	play_beep();
+
 	cPrint("[Finished]");
 
 	return 0;
