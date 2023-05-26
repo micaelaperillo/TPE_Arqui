@@ -26,7 +26,6 @@ void startShell() {
     shellLoop();
 }
 
-
 void shellLoop() {
     //waits for input and stores it in prompt
     char c;

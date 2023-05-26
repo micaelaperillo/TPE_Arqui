@@ -1,5 +1,6 @@
 #include <programs.h>
 #include <standardLib.h>
+#include <graphics.h>
 
 typedef void (*FunctionPtr)();
 
@@ -55,6 +56,7 @@ void showRegisters() {
 }
 
 void playBubbles() {
+    enableDoubleBuffering();
     bubbles();
 }
 
