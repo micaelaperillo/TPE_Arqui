@@ -31,7 +31,7 @@ void sys_write(BASE_PARAMS) {
 }
 
 void sys_read(BASE_PARAMS) {
-    gets((char*)rsi);
+    *(char*)rsi=getc();
 }
 
 //ID=2
