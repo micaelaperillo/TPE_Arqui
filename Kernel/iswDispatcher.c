@@ -13,7 +13,7 @@ void sys_draw(BASE_PARAMS);//code 2
 void sys_doubleBuffer(BASE_PARAMS);//code 3
 extern char * current_regs();
 
-FunctionPtr interruptions[] = {sys_write, sys_read, sys_draw, sys_doubleBuffer};
+FunctionPtr interruptions[] = {sys_write, sys_read, sys_draw, sys_doubleBuffer, sys_get_registers, sys_get_exceptions, sys_get_time};
 
 void swInterruptDispatcher(COMPLETE_PARAMS) {
     interruptions[rdi](rsi, rdx, rcx, r8, r9);
