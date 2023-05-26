@@ -55,7 +55,7 @@ char getChar(){
     interrupt(SYSREAD,&c,1,0,0,0);
     return c;
 }
-void printEfe(const char* format, ...) {
+void printFormat(const char* format, ...) {
     char* buff[9];
     va_list args;
     va_start(args, format);

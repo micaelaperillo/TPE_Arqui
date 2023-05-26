@@ -32,6 +32,18 @@ void cPrintChar(char character)
         cNewline();
         return;
     }
+    if(character == '\t') {
+        //tab
+        cPrintChar(' ');
+        cPrintChar(' ');
+        cPrintChar(' ');
+        return;
+    }
+    if(character == '\b' && consoleCursor > 0) {
+        //backspace
+        putCharAt(--consoleCursor, height, character);
+        return;
+    }
     putCharAt(consoleCursor, height, character);
     consoleCursor++;
 }

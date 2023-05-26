@@ -17,8 +17,7 @@ void clearPrompt() {
 
 void writePromptIcon() {
     //TODO pasarlo a putS
-    putChar('$');
-    putChar('~');
+    printFormat("$~");
 }
 
 void startShell() {
@@ -46,9 +45,11 @@ void shellLoop() {
             writePromptIcon();
         }
 
-        else if(c == '\b' && promptDim > 0) {
-            //borra
-            prompt[promptDim--] = '\0';
+        else if(c == '\b') {
+            if(promptDim > 0) {
+                putChar(c);
+                prompt[promptDim--] = '\0';
+            }
         }
 
         else if(promptDim < CONSOLE_X_DIM){

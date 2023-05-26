@@ -1,4 +1,5 @@
 #include <programs.h>
+#include <standardLib.h>
 
 #define MAX_PROGRAMS 20
 typedef void (*FunctionPtr)();
@@ -40,7 +41,7 @@ void setupProgram(char* name_id, char* description, FunctionPtr program) {
 }
 
 void unknownCommand() {
-
+    printFormat("Unkown command. Type 'help' for a list of available commands.\n");
 }
 
 void help() {
