@@ -28,6 +28,11 @@ void cPrint(const char * string)
 
 void cPrintChar(char character)
 {
+    if(character == '\b' && consoleCursor > 0) {
+        //backspace
+        putCharAt(--consoleCursor, height, character);
+        return;
+    }
     if(consoleCursor >= width || character == '\n') {
         cNewline();
         return;
@@ -37,11 +42,6 @@ void cPrintChar(char character)
         cPrintChar(' ');
         cPrintChar(' ');
         cPrintChar(' ');
-        return;
-    }
-    if(character == '\b' && consoleCursor > 0) {
-        //backspace
-        putCharAt(--consoleCursor, height, character);
         return;
     }
     putCharAt(consoleCursor, height, character);

@@ -42,7 +42,7 @@ void setupProgram(char* name_id, char* description, FunctionPtr program) {
 }
 
 void unknownCommand(char* str) {
-    printFormat("\tUnknown command '%s'. Type 'help' for a list of available commands.\n", str);
+    printFormat("\n\tUnknown command '%s'. Type 'help' for a list of available commands.\n\n", str);
 }
 
 void help() {

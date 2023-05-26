@@ -3,14 +3,14 @@
 #include <standardLib.h>
 #define CONSOLE_X_DIM 96
 
-typedef char cLine[CONSOLE_X_DIM + 1];
+typedef char cLine[CONSOLE_X_DIM];
 static cLine prompt;
 static int promptDim = 0;
 
 void shellLoop();
 
 void clearPrompt() {
-    for(int i=0; i<CONSOLE_X_DIM + 1; i++) {
+    for(int i=0; i<CONSOLE_X_DIM; i++) {
         prompt[i] = '\0';
     }
 }
@@ -50,7 +50,7 @@ void shellLoop() {
             }
         }
 
-        else if(promptDim < CONSOLE_X_DIM){
+        else if(promptDim < CONSOLE_X_DIM - 2){
             putChar(c);
             prompt[promptDim++] = c;
         }
