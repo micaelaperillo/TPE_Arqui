@@ -92,12 +92,8 @@ void printFormat(const char* format, ...) {
 }
 
 int compstring(const char*s1,const char*s2){
-    int i,j;
-    for (i=0,j=0;s1[i]!='\0' && s2[i]!='\0';i++,j++){
-        if(s1[i]!=s2[j])
-            return 0;
-    }
-    if(i!=j)
-        return 0;
-    return 1;
+while (*s1 == *s2++)
+		if (*s1++ == 0)
+			return (0);
+	return (*(unsigned char *)s1 - *(unsigned char *)--s2);
 }
