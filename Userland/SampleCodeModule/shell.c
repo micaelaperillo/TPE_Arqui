@@ -13,6 +13,7 @@ void clearPrompt() {
     for(int i=0; i<CONSOLE_X_DIM; i++) {
         prompt[i] = '\0';
     }
+    promptDim = 0;
 }
 
 void writePromptIcon() {
@@ -37,11 +38,9 @@ void shellLoop() {
         if(c == '\n') {
             //executes the command
             putChar(c);
-            clearPrompt();
 
             parseCommand(prompt);
-
-            //if the command used graphics, it's better to clear them out just in case
+            clearPrompt();
             writePromptIcon();
         }
 
@@ -52,7 +51,7 @@ void shellLoop() {
             }
         }
 
-        else if(promptDim < CONSOLE_X_DIM){
+        else if(promptDim < CONSOLE_X_DIM - 2){
             putChar(c);
             prompt[promptDim++] = c;
         }
