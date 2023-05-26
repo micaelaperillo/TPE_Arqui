@@ -11,6 +11,9 @@ void sys_write(BASE_PARAMS);//code 0
 void sys_read(BASE_PARAMS);//code 1
 void sys_draw(BASE_PARAMS);//code 2
 void sys_doubleBuffer(BASE_PARAMS);//code 3
+void sys_get_registers(BASE_PARAMS);
+void sys_get_exceptions(BASE_PARAMS);
+void sys_get_time(BASE_PARAMS);
 extern char * current_regs();
 
 FunctionPtr interruptions[] = {sys_write, sys_read, sys_draw, sys_doubleBuffer, sys_get_registers, sys_get_exceptions, sys_get_time};
@@ -97,7 +100,6 @@ void sys_doubleBuffer(BASE_PARAMS) {
 extern char * current_regs();
 
 static char * regs[]={"rax: ","rbx: ","rcx: ","rdx: ","rsi: ","rdi: ","rbp: ","r8: ","r9: ","r10: ","r11: ","r12: ","r13: ","r14: ","r15: ","rsp: ","rip: "};
-
 
 static void printregs(uint64_t* exregs){
 	for(int i=0;i<17;i++){
