@@ -15,13 +15,14 @@ typedef struct PROGRAM_STRUCT Program;
 Program pArr[20];
 static int pAmount = 0;
 
-void setupProgram(), unknownCommand();
+void setupProgram();
+void unknownCommand(char* str);
 
 void help(), testExceptions(), showRegisters(), playBubbles(), playPong();
 
 void parseCommand(char* str) {
     //TODO implementar
-    unknownCommand();
+    unknownCommand(str);
 }
 
 void loadCommands() {
@@ -40,8 +41,8 @@ void setupProgram(char* name_id, char* description, FunctionPtr program) {
     }
 }
 
-void unknownCommand() {
-    printFormat("Unkown command. Type 'help' for a list of available commands.\n");
+void unknownCommand(char* str) {
+    printFormat("\tUnknown command '%s'. Type 'help' for a list of available commands.\n", str);
 }
 
 void help() {

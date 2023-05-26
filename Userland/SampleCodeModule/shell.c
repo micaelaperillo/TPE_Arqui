@@ -3,14 +3,14 @@
 #include <standardLib.h>
 #define CONSOLE_X_DIM 96
 
-typedef char cLine[CONSOLE_X_DIM];
+typedef char cLine[CONSOLE_X_DIM + 1];
 static cLine prompt;
 static int promptDim = 0;
 
 void shellLoop();
 
 void clearPrompt() {
-    for(int i=0; i<CONSOLE_X_DIM; i++) {
+    for(int i=0; i<CONSOLE_X_DIM + 1; i++) {
         prompt[i] = '\0';
     }
 }
@@ -37,11 +37,9 @@ void shellLoop() {
         if(c == '\n') {
             //executes the command
             putChar(c);
-            clearPrompt();
 
             parseCommand(prompt);
-
-            //if the command used graphics, it's better to clear them out just in case
+            clearPrompt();
             writePromptIcon();
         }
 
