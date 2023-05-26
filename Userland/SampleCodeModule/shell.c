@@ -17,14 +17,12 @@ void clearPrompt() {
 }
 
 void writePromptIcon() {
-    //TODO pasarlo a putS
     printFormat("$~");
 }
 
 void startShell() {
     putChar('\n');
     clearScreen();
-    loadCommands();
     shellLoop();
 }
 
@@ -41,6 +39,7 @@ void shellLoop() {
 
             parseCommand(prompt);
             clearPrompt();
+
             writePromptIcon();
         }
 
