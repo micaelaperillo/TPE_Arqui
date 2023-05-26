@@ -22,6 +22,8 @@ void writePromptIcon() {
 }
 
 void startShell() {
+    putChar('\n');
+    clearScreen();
     loadCommands();
     shellLoop();
 }
@@ -30,6 +32,7 @@ void startShell() {
 void shellLoop() {
     //waits for input and stores it in prompt
     char c;
+    writePromptIcon();
     while((c = getChar()) != 27 ) {// 'esc'
 
         if(c == '\n') {
@@ -40,7 +43,6 @@ void shellLoop() {
             parseCommand(prompt);
 
             //if the command used graphics, it's better to clear them out just in case
-            clearScreen();
             writePromptIcon();
         }
 
