@@ -13,6 +13,7 @@ void clearPrompt() {
     for(int i=0; i<CONSOLE_X_DIM; i++) {
         prompt[i] = '\0';
     }
+    promptDim = 0;
 }
 
 void writePromptIcon() {
