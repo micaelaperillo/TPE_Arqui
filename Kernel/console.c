@@ -42,7 +42,7 @@ void cNewline()
     {
         cPrintChar(' ');
     }
-    while(cursor % (width * 2) != 0);
+    while(cursor % width != 0);
 }
 
 void cPrintDec(uint64_t value)

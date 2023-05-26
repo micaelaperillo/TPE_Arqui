@@ -13,4 +13,7 @@ void cPrintBin(uint64_t value);
 void cPrintBase(uint64_t value, uint32_t base);
 void cClear();
 
+unsigned long cGetCursor();
+void cSetCursor(unsigned long pos);
+
 #endif //TPE_ARQUI_CONSOLE_H

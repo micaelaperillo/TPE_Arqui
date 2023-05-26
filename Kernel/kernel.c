@@ -121,9 +121,8 @@ int main()
 	cNewline();
 	dateToStr(date);
 	cPrint(date);
-	cNewline();	
-
-
+	cNewline();
 	cPrint("[Finished]");
+    while(1);
 	return 0;
 }

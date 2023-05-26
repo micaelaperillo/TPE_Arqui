@@ -21,6 +21,8 @@ void drawCircle(uint32_t hexColor, uint32_t x0, uint32_t y0, uint32_t radius);
 void drawEmptyRectangle(uint32_t hexColor, uint32_t x, uint32_t y, uint32_t width, uint32_t height);
 void drawRectangle(uint32_t hexColor, uint32_t x, uint32_t y, uint32_t width, uint32_t height);
 
+void clearScreen();
+
 void enableDoubleBuffering();
 void disableDoubleBuffering();
 void swapBuffer();

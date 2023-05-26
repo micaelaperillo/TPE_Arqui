@@ -9,15 +9,19 @@ typedef void (*FunctionPtr)(uint64_t, uint64_t, uint64_t, uint64_t, uint64_t);
 
 void sys_write(BASE_PARAMS);//code 0
 void sys_read(BASE_PARAMS);//code 1
-void sys_draw(BASE_PARAMS);//code 2
-void sys_buffer(BASE_PARAMS);//code 3
+void sys_console(BASE_PARAMS);//code 2
+void sys_draw(BASE_PARAMS);//code 3
+void sys_doubleBuffer(BASE_PARAMS);//code 4
 
-FunctionPtr  interruptions[] = {sys_write, sys_read, sys_draw, sys_buffer};
+FunctionPtr interruptions[] = {sys_write, sys_read, sys_console, sys_draw, sys_doubleBuffer};
 
 void swInterruptDispatcher(COMPLETE_PARAMS) {
     interruptions[rdi](rsi, rdx, rcx, r8, r9);
 }
 
+//ID=0
+//rsi = char* pointing to the start of the string
+//rdx = amount of chars that should be written
 void sys_write(BASE_PARAMS) {
   char* s=(char*)rsi;
   for(int i=0;i<rdx ;i++){
@@ -25,7 +29,6 @@ void sys_write(BASE_PARAMS) {
         return;
     cPrintChar(s[i]);
   }
-
 }
 
 void sys_read(BASE_PARAMS) {
@@ -34,7 +37,20 @@ void sys_read(BASE_PARAMS) {
 
 
 //ID=2
-//rsi = 0 -> pixel || 1 -> line || 2 -> empty rectangle || 3 -> rectangle || 4 -> empty circle || 5 -> filled circle
+//rsi = 0 -> no assignment || !0 -> assignment
+//rdx = pointer to a value if rsi=0 || cursor value if rsi != 0
+void sys_console(BASE_PARAMS) {
+    if(rsi) {
+        cSetCursor(rdx);
+    } else {
+        uint32_t cursorValue = cGetCursor();
+        *(uint64_t*)rdx = cursorValue;
+    }
+}
+
+
+//ID=3
+//rsi = 0 -> pixel || 1 -> line || 2 -> empty rectangle || 3 -> rectangle || 4 -> empty circle || 5 -> filled circle || 6 -> clear screen
 //rdx = INITIAL COORDINATES :: upper half -> x0 || lower half -> y0
 //rcx = FINAL COORDINATES (used for lines :: upper half -> x1 || lower half -> y1
 //r8 = DIMENSIONS (used by circles and rectangles) :: upper half -> rectangle height || lower half -> rectangle width // circle radius
@@ -68,14 +84,16 @@ void sys_draw(BASE_PARAMS) {
         case 5:
             drawHexCircle(hexColor, x0, y0, width);
             break;
+        case 6:
+            clearScreen();
         default:
             return;
     }
 }
 
-//ID=3
+//ID=4
 //rsi = INSTRUCTION :: 0 -> disables double buffering || 1 -> enables double buffering || 2 -> swaps buffers
-void sys_buffer(BASE_PARAMS) {
+void sys_doubleBuffer(BASE_PARAMS) {
     switch(rsi) {
         case 0:
             disableDoubleBuffering();

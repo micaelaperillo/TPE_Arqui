@@ -1,16 +1,17 @@
 #include <standardLib.h>
 #include <stdint.h>
 
-#define SYS_DRAW_ID 2
-#define SYS_BUFFER_ID 3
+#define SYS_DRAW_ID 3
+#define SYS_BUFFER_ID 4
 
 enum SHAPE_ID {
     PIXEL,
     LINE,
     EMPTY_RCT,
     RCT,
-    EMPTY_CRCL,
-    CRCL
+    EMPTY_CIRCLE,
+    CIRCLE,
+    CLR
 };
 
 enum BUFFER_ID {
@@ -35,11 +36,11 @@ void drawLine( uint32_t hexColor, uint32_t x0, uint32_t y0, uint32_t x1, uint32_
 
 void drawEmptyCircle(uint32_t hexColor, uint32_t x, uint32_t y, uint32_t radius) {
     uint64_t coords = join(x, y);
-    interrupt(SYS_DRAW_ID, EMPTY_CRCL, coords, 0, radius, hexColor);
+    interrupt(SYS_DRAW_ID, EMPTY_CIRCLE, coords, 0, radius, hexColor);
 }
 void drawCircle(uint32_t hexColor, uint32_t x, uint32_t y, uint32_t radius) {
     uint64_t coords = join(x, y);
-    interrupt(SYS_DRAW_ID, CRCL, coords, 0, radius, hexColor);
+    interrupt(SYS_DRAW_ID, CIRCLE, coords, 0, radius, hexColor);
 }
 
 void drawEmptyRectangle(uint32_t hexColor, uint32_t x, uint32_t y, uint32_t width, uint32_t height) {
@@ -52,6 +53,10 @@ void drawRectangle(uint32_t hexColor, uint32_t x, uint32_t y, uint32_t width, ui
     uint64_t coords = join(x, y);
     uint64_t dim = join(height, width);
     interrupt(SYS_DRAW_ID, RCT, coords, 0, dim, hexColor);
+}
+
+void clearScreen() {
+    interrupt(SYS_DRAW_ID, CLR, 0, 0, 0, 0);
 }
 
 void enableDoubleBuffering() {

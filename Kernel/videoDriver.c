@@ -50,17 +50,23 @@ VBEInfoPtr VBE_mode_info = (VBEInfoPtr) 0x0000000000005C00;
 
 //################################################
 
-#define CHAR_WIDTH 8
-#define CHAR_HEIGHT 8
-#define SIZE_MULT 1
-
 #define SCREEN_WIDTH 1024
 #define SCREEN_HEIGHT 768
 #define BYTES_PER_PIXEL 3
 #define BUFFER_SIZE SCREEN_HEIGHT * SCREEN_WIDTH * BYTES_PER_PIXEL
 
-#define XDIM SCREEN_WIDTH / CHAR_WIDTH        //(1024 / 8 = 128)  amount of characters that fit in the x axis
-#define YDIM SCREEN_WIDTH / CHAR_HEIGHT       //(768 / 8 = 96)    " y axis
+#define CHAR_WIDTH 8
+#define CHAR_HEIGHT 8
+#define SIZE_MULT 1
+
+#define WIDTH_PADDING 2
+#define HEIGHT_PADDING 6
+
+#define XDIM 96
+#define YDIM 48
+
+#define X_MARGIN 32
+#define Y_MARGIN 48
 
 #define TRUE 1
 #define FALSE 0
@@ -268,8 +274,8 @@ void putColoredCharAt(Color c, uint32_t x, uint32_t y, char character) {
     if (x > XDIM || y > YDIM || x < 0 || y < 0) {
         return;
     }
-    uint32_t xCoord = (x * CHAR_WIDTH);
-    uint32_t yCoord = (y * CHAR_HEIGHT);
+    uint32_t xCoord = (x * (CHAR_WIDTH + WIDTH_PADDING)) + X_MARGIN;
+    uint32_t yCoord = (y * (CHAR_HEIGHT + HEIGHT_PADDING)) + Y_MARGIN;
     _drawChar(c, xCoord, yCoord, character);
 }
 
