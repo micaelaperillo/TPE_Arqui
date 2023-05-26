@@ -2,12 +2,12 @@
 #include <stdint.h>
 #include <standardLib.h>
 #include <graphics.h>
-#include <programs.h>
+#include <commands.h>
 #include <shell.h>
 
 
 int main() {
-
+    char buffer[1000];
     //DIBUJA UN CUADRADO EN LA PANTALLA CON UNA SYS_CALL COMO EJEMPLO
     uint32_t x,y, width, height;
     uint64_t coord, wh;
@@ -21,6 +21,9 @@ int main() {
     drawEmptyRectangle(WHITE, 900, 600, 10, 50);
 
     startShell();
-
+    for(int i=0;buffer[i]!='\n';i++){
+        buffer[i]=getChar();
+        putChar(buffer[i]);
+    }
     return 0;
 }

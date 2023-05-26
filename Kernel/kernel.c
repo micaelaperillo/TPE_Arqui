@@ -91,6 +91,7 @@ void * initializeKernelBinary()
 void div(){
 	int i=1/0;
 }
+
 int main()
 {
     initializeConsole();

@@ -39,22 +39,14 @@ static char * itoa( int value, char * str, int base ) //puede ser util para prin
     }
     return rc;
 }
-void putC(uint64_t c){ //a partir del segundo parametro no importa lo que le ponga
-    interrupt(SYSWRITE,c,1,0,0,0);
+void putChar(char c){ //a partir del segundo parametro no importa lo que le ponga
+    char* aux={&c};
+    interrupt(SYSWRITE,aux,1,0,0,0);
 }
 
-char getC(){
+char getChar(){
     char c;
     interrupt(SYSREAD,&c,1,0,0,0);
     return c;
 }
-char* getS(){
-    char*s;
-    int i=0;
-    while((s[i]=getC())!='\n'){
-       putC((uint64_t)(s+i));
-        i++;
-    }
-    s[i]='\0';
-    return s;
-}
+

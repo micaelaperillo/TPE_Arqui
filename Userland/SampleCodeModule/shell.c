@@ -1,57 +1,57 @@
-#include <stdint.h>
-#include <standardLib.h>
+#include <commands.h>
 #include <graphics.h>
-
-//TODO los programas podrian estar en su propio archivo
-
-// ################## PROGRAM DATA #####################
-#define MAX_PROGRAMS 20
-typedef void (*FunctionPtr)();
-
-struct PROGRAM_STRUCT {
-    char* name_id;
-    char* description;
-    FunctionPtr program;
-}PROGRAM_STRUCT;
-
-typedef struct PROGRAM_STRUCT Program;
-
-Program pList[20];
-static int pAmount = 0;
-
-void help();
-
-void setupProgram(char* name_id, char* description, FunctionPtr program) {
-    //TODO lanzar excepcion si se pasa (?)
-    if(pAmount < MAX_PROGRAMS){
-        Program newProgram = {name_id, description, program};
-        pList[pAmount++];
-    }
-}
-
-void help() {
-    //TODO : recorre pList e imprime los comandos y su descripcion
-}
-// ################## PROGRAM DATA #####################
-
-
-
-
-
-// ################## CONSOLE #####################
-
+#include <standardLib.h>
 #define CONSOLE_X_DIM 96
 
 typedef char cLine[CONSOLE_X_DIM];
 static cLine prompt;
+static int promptDim = 0;
 
+void shellLoop();
 
+void clearPrompt() {
+    for(int i=0; i<CONSOLE_X_DIM; i++) {
+        prompt[i] = '\0';
+    }
+}
+
+void writePromptIcon() {
+    //TODO pasarlo a putS
+    putChar('$');
+    putChar('~');
+}
 
 void startShell() {
-    //PROGRAMS SETUP
-    setupProgram("help", "displays all available commands", help);
-
+    loadCommands();
+    shellLoop();
 }
 
 
-// ################## CONSOLE #####################
+void shellLoop() {
+    //waits for input and stores it in prompt
+    char c;
+    while((c = getChar()) != 27 ) {// 'esc'
+
+        if(c == '\n') {
+            //executes the command
+            putChar(c);
+            clearPrompt();
+
+            parseCommand(prompt);
+
+            //if the command used graphics, it's better to clear them out just in case
+            clearScreen();
+            writePromptIcon();
+        }
+
+        else if(c == '\b' && promptDim > 0) {
+            //borra
+            prompt[promptDim--] = '\0';
+        }
+
+        else if(promptDim < CONSOLE_X_DIM){
+            putChar(c);
+            prompt[promptDim++] = c;
+        }
+    }
+}
