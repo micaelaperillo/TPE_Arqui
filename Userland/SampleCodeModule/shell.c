@@ -46,7 +46,7 @@ void shellLoop() {
         else if(c == '\b') {
             if(promptDim > 0) {
                 putChar(c);
-                prompt[promptDim--] = '\0';
+                prompt[--promptDim] = '\0';
             }
         }
 
