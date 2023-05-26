@@ -90,13 +90,9 @@ int seconds_elapsed() {
     return ticks / 18;
 }
 
-void wait(int seconds) {
-    int aux1, aux2;
-    aux1 = aux2 = seconds_elapsed();
-    while(1) {
-        if((aux1 > aux2 && (aux1 - aux2) > seconds) || (aux2 > aux1 && (aux2 - aux1) > seconds)) {
-            return;
-        }
-        aux2 = seconds_elapsed();
+void wait(unsigned long milliseconds) {
+    unsigned long initTicks = ticks;
+    while((ticks - initTicks) < (milliseconds / 55)) {
+
     }
 }

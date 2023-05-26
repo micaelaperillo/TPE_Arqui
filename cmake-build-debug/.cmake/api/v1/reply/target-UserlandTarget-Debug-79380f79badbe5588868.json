@@ -83,7 +83,23 @@
 				},
 				{
 					"backtrace" : 5,
-					"path" : "C:/Users/timos/Documents/Timo/ITBA/Arqui/TPE/TPE_Arqui/Userland/SampleCodeModule/include/swInterrupt.h"
+					"path" : "C:/Users/timos/Documents/Timo/ITBA/Arqui/TPE/TPE_Arqui/Userland/SampleCodeModule/include/commands.h"
+				},
+				{
+					"backtrace" : 5,
+					"path" : "C:/Users/timos/Documents/Timo/ITBA/Arqui/TPE/TPE_Arqui/Userland/SampleCodeModule/include/graphics.h"
+				},
+				{
+					"backtrace" : 5,
+					"path" : "C:/Users/timos/Documents/Timo/ITBA/Arqui/TPE/TPE_Arqui/Userland/SampleCodeModule/include/programs.h"
+				},
+				{
+					"backtrace" : 5,
+					"path" : "C:/Users/timos/Documents/Timo/ITBA/Arqui/TPE/TPE_Arqui/Userland/SampleCodeModule/include/shell.h"
+				},
+				{
+					"backtrace" : 5,
+					"path" : "C:/Users/timos/Documents/Timo/ITBA/Arqui/TPE/TPE_Arqui/Userland/SampleCodeModule/include/standardLib.h"
 				}
 			],
 			"language" : "C",
@@ -98,7 +114,12 @@
 			"sourceIndexes" : 
 			[
 				0,
-				1
+				1,
+				2,
+				3,
+				4,
+				5,
+				6
 			]
 		}
 	],
@@ -141,7 +162,12 @@
 			"sourceIndexes" : 
 			[
 				0,
-				1
+				1,
+				2,
+				3,
+				4,
+				5,
+				6
 			]
 		}
 	],
@@ -156,7 +182,37 @@
 		{
 			"backtrace" : 1,
 			"compileGroupIndex" : 0,
+			"path" : "Userland/SampleCodeModule/bubbles.c",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "Userland/SampleCodeModule/commands.c",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "Userland/SampleCodeModule/graphics.c",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
 			"path" : "Userland/SampleCodeModule/sampleCodeModule.c",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "Userland/SampleCodeModule/shell.c",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "Userland/SampleCodeModule/standardLib.c",
 			"sourceGroupIndex" : 0
 		}
 	],

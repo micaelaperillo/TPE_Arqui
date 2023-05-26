@@ -1,4 +1,5 @@
 #include <sound.h>
+#include <time.h>
 #include <stdint.h>
 
 extern void play_sound(unsigned int frequency);
@@ -11,6 +12,6 @@ void play_beep() {
     uint32_t div = 1193180/freq;
 
     play_sound(div);
-    timer_wait(80);
+    wait(80);
     stop_sound();
 }
