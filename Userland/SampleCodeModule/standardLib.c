@@ -3,6 +3,8 @@
 #define SYSWRITE 0
 #define SYSREAD 1
 
+
+//TODO si esto salio de internet hay que linkearlo
 static char * itoa( int value, char * str, int base ) //puede ser util para printf
 {
     char * rc;

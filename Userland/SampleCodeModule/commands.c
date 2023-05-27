@@ -59,13 +59,11 @@ void showRegisters() {
 }
 
 void displayTime() {
-    putChar('\n');
     printTime();
     putChar('\n');
 }
 
 void displayDate() {
-    putChar('\n');
     printDate();
     putChar('\n');
 }
