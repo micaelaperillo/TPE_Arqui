@@ -99,6 +99,7 @@ void scrollUp() {
 }
 
 //TODO mover uintToBase a una libreria aparte (utils.h?)
+// intente de hacerlo, pero por alguna razon no compila al no ser que uintToBase se defina en el mismo archivo
 static uint32_t uintToBase(uint64_t value, char * buffer, uint32_t base)
 {
     char *p = buffer;

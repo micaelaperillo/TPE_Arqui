@@ -134,7 +134,6 @@ void putHexPixel(uint32_t hexColor, uint32_t x, uint32_t y) {
     putPixel(c, x, y);
 }
 
-//TODO repasarlo y reescribirlo para sacar un par de cosas feas (for loop) y de paso hacerlo mas propio
 void drawColoredLine(Color c, uint32_t x0, uint32_t y0, uint32_t x1, uint32_t y1) {
     //code written by bert, taken from https://gist.github.com/bert/1085538 and modified
     int aux1 = (x1 > x0)?(x1-x0):(x0 - x1), aux2 = (y1 > y0)?(y0-y1):(y1 - y0);
@@ -199,22 +198,14 @@ void drawEmptyHexCircle(uint32_t hexColor, uint32_t x0, uint32_t y0, uint32_t ra
     drawEmptyColoredCircle(c, x0, y0, radius);
 }
 
-//TODO MEJORAR ESTE ALGORITMO
 void drawColoredCircle(Color c, uint32_t x1, uint32_t y1, uint32_t radius) {
-    //function written by kmillen, taken from https://stackoverflow.com/questions/1201200/fast-algorithm-for-drawing-filled-circles
+    //function written by palm3D, taken from https://stackoverflow.com/questions/1201200/fast-algorithm-for-drawing-filled-circles
     //currently being used because it doesn't need the sqrt() function
-    int r2 = radius * radius;
-    int area = r2 << 2;
-    int rr = radius << 1;
-
-    for (int i = 0; i < area; i++)
-    {
-        int tx = (i % rr) - radius;
-        int ty = (i / rr) - radius;
-
-        if (tx * tx + ty * ty <= r2)
-            putPixel(c, x1 + tx, y1 + ty);
-    }
+    int r = (int)radius;
+    for(int y=-r; y<=r; y++)
+        for(int x=-r; x<=r; x++)
+            if(x*x+y*y <= r*r)
+                putPixel(c, x1+x, y1+y);
 }
 
 void drawHexCircle(uint32_t hexColor, uint32_t x1, uint32_t y1, uint32_t radius) {

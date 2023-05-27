@@ -54,4 +54,5 @@ void shellLoop() {
             prompt[promptDim++] = c;
         }
     }
+    clearScreen();
 }
