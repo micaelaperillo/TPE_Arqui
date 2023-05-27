@@ -3,8 +3,10 @@
 unsigned char keydown();
 
 
-#define LSHFT_PRESSED 42
-#define RSHFT_PRESSED 54
+#define LSHIFT 0x2A
+#define RSHIFT 0x36
+#define CAPS_LOCK 0x3A
+
 #define UINT16_MAX 65535
 #define NO_INPUT UINT16_MAX
 
@@ -12,6 +14,7 @@ unsigned char keydown();
 #define FALSE 0
 
 static uint8_t shift = FALSE;
+static uint8_t caps_lock = FALSE;
 
 const unsigned char kbdusNoShift[128] = {
     0,  27, '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '-', '=', '\b', '\t',
@@ -36,31 +39,41 @@ uint8_t keyPressed() {
 }
 
 unsigned char retrieveChar(uint8_t keycode) {
-    if(shift) {
+    unsigned char c = kbdusNoShift[keycode];
+    uint8_t isLetter = (c >= 'a' && c <= 'z');
+    uint8_t auxShift = (caps_lock && isLetter)?(!shift):(shift);
+
+    if(auxShift) {
         return kbdusWithShift[keycode];
     }
-    return kbdusNoShift[keycode];
+    return c;
 }
 
 uint16_t keyboard_handler() {
     unsigned char code = keydown();
     uint8_t keyRelease = FALSE;
     unsigned char keycode = code & 0x7F;//no diferencia entre release o no
+
     if(code & 0x80) {
         keyRelease = TRUE;
     }
-    if(keycode == LSHFT_PRESSED || keycode == RSHFT_PRESSED) {
+    if(keycode == LSHIFT || keycode == RSHIFT) {
         shift = (keyRelease)?(FALSE):(TRUE);
         return NO_INPUT;
     }
+    if(keycode == CAPS_LOCK) {
+        caps_lock = (keyRelease)?(caps_lock):(!caps_lock);
+        return NO_INPUT;
+    }
     if(!keyRelease) {
-        return (shift)?(kbdusWithShift[keycode]):(kbdusNoShift[keycode]);
+        return retrieveChar(keycode);
     }
     return NO_INPUT;
 }
 
 char getc(){
     uint16_t c = keyboard_handler();
+
     while( c == NO_INPUT) {
         c = keyboard_handler();
     }
