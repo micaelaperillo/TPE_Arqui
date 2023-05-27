@@ -2,6 +2,7 @@
 #include <videoDriver.h>
 #include <keyboard.h>
 #include <console.h>
+#include <time.h>
 #define BASE_PARAMS uint64_t rsi, uint64_t rdx, uint64_t rcx, uint64_t r8, uint64_t r9
 #define COMPLETE_PARAMS uint64_t rdi, BASE_PARAMS
 
@@ -11,12 +12,13 @@ void sys_write(BASE_PARAMS);//code 0
 void sys_read(BASE_PARAMS);//code 1
 void sys_draw(BASE_PARAMS);//code 2
 void sys_doubleBuffer(BASE_PARAMS);//code 3
-void sys_get_registers(BASE_PARAMS);
-void sys_get_exceptions(BASE_PARAMS);
-void sys_get_time(BASE_PARAMS);
+void sys_get_registers(BASE_PARAMS);//code 4
+void sys_get_exceptions(BASE_PARAMS);//code 5
+void sys_get_time(BASE_PARAMS);// code 6
 extern char * current_regs();
 
-FunctionPtr interruptions[] = {sys_write, sys_read, sys_draw, sys_doubleBuffer, sys_get_registers, sys_get_exceptions, sys_get_time};
+FunctionPtr interruptions[] = {sys_write, sys_read, sys_draw, sys_doubleBuffer, sys_get_registers,
+                               sys_get_exceptions, sys_get_time};
 
 void swInterruptDispatcher(COMPLETE_PARAMS) {
     interruptions[rdi](rsi, rdx, rcx, r8, r9);
@@ -97,6 +99,8 @@ void sys_doubleBuffer(BASE_PARAMS) {
     }
 }
 
+
+//TODO mover esto a un archivo aparte, asi iswDispatcher tiene solo las syscalls y sus handlers
 extern char * current_regs();
 
 static char * regs[]={"rax: ","rbx: ","rcx: ","rdx: ","rsi: ","rdi: ","rbp: ","r8: ","r9: ","r10: ","r11: ","r12: ","r13: ","r14: ","r15: ","rsp: ","rip: "};
@@ -109,6 +113,10 @@ static void printregs(uint64_t* exregs){
 	}
 }
 
+
+//ID=4
+//prints the registers on the console
+//TODO hacer que devuelva los valores en un array o algo
 void sys_get_registers(BASE_PARAMS) {
     printregs(current_regs);
 }
@@ -124,6 +132,8 @@ static invalid_op() {
     // TODO hacer una operacion que tire invalid operation
 }
 
+
+//ID=5
 void sys_get_exceptions(BASE_PARAMS) {
     cPrint("Zero Division Exception");
     cNewline();
@@ -135,16 +145,31 @@ void sys_get_exceptions(BASE_PARAMS) {
     // TODO hacer saltar la invalid operation exceptino
 }
 
-void sys_get_time(BASE_PARAMS) {
-    char * date;
-    char * time;
-    timeToStr(time);
-    dateToStr(date);
 
-    cPrint("Time: ");
-    cPrint(time);
-    cNewline();
-    cPrint("Date: ");
-    cPrint(date);
-    cNewline();
+//ID=6
+//rsi= DATA TYPE :: 0 -> seconds || 1 -> minutes || 2 -> hours || 3 -> day || 4 -> month || 5 -> year
+//rdx= pointer to an unsigned int, the value is stored in this position
+void sys_get_time(BASE_PARAMS) {
+    switch(rsi) {
+        case 0:
+            *(unsigned int*)rdx = seconds();
+            break;
+        case 1:
+            *(unsigned int*)rdx = minutes();
+            break;
+        case 2:
+            *(unsigned int*)rdx = hours();
+            break;
+        case 3:
+            *(unsigned int*)rdx = day();
+            break;
+        case 4:
+            *(unsigned int*)rdx = month();
+            break;
+        case 5:
+            *(unsigned int*)rdx = year();
+            break;
+        default:
+            return;
+    }
 }
