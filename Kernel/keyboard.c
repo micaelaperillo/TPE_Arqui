@@ -1,3 +1,5 @@
+#include <stdint.h>
+
 unsigned char keydown();
 
 
@@ -22,6 +24,10 @@ const unsigned char kbdusWithShift[128] = {
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
 };
 
+uint8_t keyPressed() {
+    return !(keydown() & 0x80);
+}
+
 unsigned char keyboard_handler() {
 
     unsigned char keycode = keydown();
@@ -37,9 +43,11 @@ unsigned char keyboard_handler() {
     }
 
 }
+
 char getc(){
     return keyboard_handler();
 }
+
 void gets(char * s) {
     int i = 0;
     char c;

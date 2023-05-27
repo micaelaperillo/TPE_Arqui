@@ -43,7 +43,9 @@ void unknownCommand(char* str) {
 
 void help() {
     for(int i=0;i<pAmount;i++){
-        printFormat("%s: %s \n",pArr[i]->name_id,pArr[i]->description);
+        putChar('\n');
+        printFormat("\t'%s': %s \n",pArr[i]->name_id,pArr[i]->description);
+        putChar('\n');
     }
 }
 

@@ -114,9 +114,6 @@ int main()
 	
 	cNewline();
 
-	
-
-
 	cPrint("  Calling the sample code module returned: ");
 	cPrintHex(((EntryPoint)sampleCodeModuleAddress)());
 
