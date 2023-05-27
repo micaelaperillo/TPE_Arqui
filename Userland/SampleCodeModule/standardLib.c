@@ -4,8 +4,8 @@
 #define SYSREAD 1
 
 
-//TODO si esto salio de internet hay que linkearlo
-static char * itoa( int value, char * str, int base ) //puede ser util para printf
+
+static char * itoa( int value, char * str, int base )// codigo proveido por https://wiki.osdev.org/Printing_To_Screen
 {
     char * rc;
     char * ptr;
@@ -71,6 +71,22 @@ void printFormat(const char* format, ...) {
                     putStrn(itoa(value,buff,10));
                     break;
                 }
+                case '0':{
+                    format++;
+                    int value=va_arg(args,int);
+                    int zeroes=0;
+                    int digts=getdigts(value);
+                    while(*format!='d'){
+                        zeroes=zeroes*10+(*format)-'0';
+                        format++;
+                    }
+                    if (zeroes>digts)
+                    for (int i =zeroes-digts; i >0; i--){
+                        putChar('0');
+                    }
+                    putStrn(itoa(value,buff,10));
+                    break;
+                }
                 case 's': {
                     char* value = va_arg(args, char*);
                     putStrn(value);
@@ -96,6 +112,15 @@ void printFormat(const char* format, ...) {
 int compstring(const char*s1,const char*s2){
 while (*s1 == *s2++)
 		if (*s1++ == 0)
-			return (0);
-	return (*(unsigned char *)s1 - *(unsigned char *)--s2);
+			return 0;
+	return (*s1 - *--s2);
+}
+
+int getdigts(int n){
+    int digts=0;
+    while(n!=0){
+        n=n/10;
+        digts++;
+    }
+    return digts;
 }

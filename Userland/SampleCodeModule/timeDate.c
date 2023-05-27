@@ -42,11 +42,11 @@ unsigned int getYear() {
     return retrieve(YEAR);
 }
 
-//TODO modificarlo una vez que este terminado printf
+
 void printTime() {
-    printFormat("%d:%d:%d", (int)getHours(), (int)getMinutes(), (int)getSeconds());
+    printFormat("Today's date es: %02d:%02d:%02d", (int)getHours(), (int)getMinutes(), (int)getSeconds());
 }
 
 void printDate() {
-    printFormat("%d/%d/%d", (int)getDay(), (int)getMonth(), (int)getYear());
+    printFormat("Today's date es :%02d/%02d/%02d", (int)getDay(), (int)getMonth(), (int)getYear());
 }
