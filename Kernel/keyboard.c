@@ -5,6 +5,13 @@ unsigned char keydown();
 
 #define LSHFT_PRESSED 42
 #define RSHFT_PRESSED 54
+#define UINT16_MAX 65535
+#define NO_INPUT UINT16_MAX
+
+#define TRUE 1
+#define FALSE 0
+
+static uint8_t shift = FALSE;
 
 const unsigned char kbdusNoShift[128] = {
     0,  27, '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '-', '=', '\b', '\t',
@@ -28,13 +35,19 @@ uint8_t keyPressed() {
     return !(keydown() & 0x80);
 }
 
-unsigned char keyboard_handler() {
+unsigned char retrieveChar(uint8_t keycode) {
+    if(shift) {
+        return kbdusWithShift[keycode];
+    }
+    return kbdusNoShift[keycode];
+}
 
-    unsigned char keycode = keydown();
+uint16_t keyboard_handler() {
+   unsigned char keycode = keydown();
     char shift = 0;
     char mayus = 0;
     if (keycode & 0x80)
-        return keyboard_handler();
+        return NO_INPUT;
     if (keycode == LSHFT_PRESSED || keycode == RSHFT_PRESSED) {
         keycode = keydown();
         return kbdusWithShift[keycode];
@@ -45,7 +58,11 @@ unsigned char keyboard_handler() {
 }
 
 char getc(){
-    return keyboard_handler();
+    uint16_t c = keyboard_handler();
+    while( c == NO_INPUT) {
+        c = keyboard_handler();
+    }
+    return (char) c;
 }
 
 void gets(char * s) {
