@@ -113,6 +113,9 @@ void sys_get_registers(BASE_PARAMS) {
     printregs(current_regs);
 }
 
+
+//TODO en vez de un sys_get_exceptions podriamos hacer que realice las operaciones que generan
+// excepciones en el user space
 static zero_div() {
     int i = 1 / 0;
 }
