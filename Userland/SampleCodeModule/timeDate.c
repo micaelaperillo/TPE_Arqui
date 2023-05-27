@@ -14,7 +14,7 @@ enum TimeID {
 
 unsigned int retrieve(int id) {
     unsigned int* ptr = 0;
-    interrupt(SYS_GET_TIME_ID, id, *ptr, 0, 0, 0);
+    interrupt(SYS_GET_TIME_ID, id, ptr, 0, 0, 0);
     return *ptr;
 }
 
@@ -42,10 +42,11 @@ unsigned int getYear() {
     return retrieve(YEAR);
 }
 
+//TODO modificarlo una vez que este terminado printf
 void printTime() {
-    printFormat("%d:%d:%d", getHours(), getMinutes(), getSeconds());
+    printFormat("%d:%d:%d", (int)getHours(), (int)getMinutes(), (int)getSeconds());
 }
 
 void printDate() {
-    printFormat("%d/%d/%d", getDay(), getMonth(), getYear());
+    printFormat("%d/%d/%d", (int)getDay(), (int)getMonth(), (int)getYear());
 }
