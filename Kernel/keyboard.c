@@ -43,18 +43,20 @@ unsigned char retrieveChar(uint8_t keycode) {
 }
 
 uint16_t keyboard_handler() {
-   unsigned char keycode = keydown();
-    char shift = 0;
-    char mayus = 0;
-    if (keycode & 0x80)
-        return NO_INPUT;
-    if (keycode == LSHFT_PRESSED || keycode == RSHFT_PRESSED) {
-        keycode = keydown();
-        return kbdusWithShift[keycode];
-    } else {
-        return kbdusNoShift[keycode];
+    unsigned char code = keydown();
+    uint8_t keyRelease = FALSE;
+    unsigned char keycode = code & 0x7F;//no diferencia entre release o no
+    if(code & 0x80) {
+        keyRelease = TRUE;
     }
-
+    if(keycode == LSHFT_PRESSED || keycode == RSHFT_PRESSED) {
+        shift = (keyRelease)?(FALSE):(TRUE);
+        return NO_INPUT;
+    }
+    if(!keyRelease) {
+        return (shift)?(kbdusWithShift[keycode]):(kbdusNoShift[keycode]);
+    }
+    return NO_INPUT;
 }
 
 char getc(){
