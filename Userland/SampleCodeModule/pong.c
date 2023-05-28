@@ -1,6 +1,7 @@
 #include <stdint.h>
 #include <keyboard.h>
 #include <sound.h>
+#include <graphics.h>
 
 #define SCREEN_WIDTH 1024
 #define SCREEN_HEIGHT 768
@@ -72,9 +73,9 @@ void pong() {
         // draws 
         init_draw(game);
 
-        // TODO: no estoy muy segura de la logica del handle_moves y update_ball, no se si estan en el orden correcto
+        // TODO: no estoy muy segura de la logica del handle_moves y move_ball, no se si estan en el orden correcto
         handle_moves(&user.v_bar);
-        update_ball(&game.ball);
+        move_ball(&game.ball);
 
         if (game.ball.x == game.user.v_bar.x) {
             if (!ball_touches_bar(game.ball, game.user.v_bar)) {
@@ -95,7 +96,7 @@ void pong() {
 
 
 void init_draw(game g) {
-    drawColoredRectangle(0xFF, SCREEN_WIDTH/2, 0, 5, SCREEN_HEIGHT);
+    drawRectangle(0xFF, SCREEN_WIDTH/2, 0, 5, SCREEN_HEIGHT);
 
     g.ball.x = SCREEN_WIDTH / 2;
     g.ball.y = SCREEN_HEIGHT / 2;
@@ -116,18 +117,21 @@ void init_draw(game g) {
 }
 
 void draw_ball(ball b) {
-    drawColoredCircle(0xFF, b.x, b.y, b.radius);
+    drawCircle(0xFF, b.x, b.y, b.radius);
 }
 
 void draw_bar(bar b) {
-    drawColoredRectangle(0xFF, b.x, b.y, BAR_WIDTH, BAR_HEIGHT);
+    drawRectangle(0xFF, b.x, b.y, BAR_WIDTH, BAR_HEIGHT);
 }
 
 void draw_score(game g) {
     // TODO
 }
 
-void update_ball(ball * b) {
+void move_ball(ball * b) {
+
+    // draws black circle on top of old ball
+    drawCircle(0x00, b->x, b->y, b->radius);
     
     if (b->x + b->xDir - b->radius <= 0) {
         b->xDir = (b->xDir < 0)?(-b->xDir):(b->xDir);
@@ -143,6 +147,9 @@ void update_ball(ball * b) {
 
     b->x += b->xDir;
     b->y += b->yDir;
+    
+    // draws new ball
+    drawCircle(0xFF, b->x, b->y, b->radius);
 
 } 
 
@@ -163,9 +170,9 @@ void handle_moves(bar * b) {
 void move_bar(bar b, uint32_t y) {
 
     // draws black rectangle on top of the old bar
-    drawColoredRectangle(0x00, b.x, b.y, BAR_WIDTH, BAR_HEIGHT);
+    drawRectangle(0x00, b.x, b.y, BAR_WIDTH, BAR_HEIGHT);
     b.y+= y;
-    drawColoredRectangle(0xFF, b.x, b.y, BAR_WIDTH, BAR_HEIGHT);
+    drawRectangle(0xFF, b.x, b.y, BAR_WIDTH, BAR_HEIGHT);
 
 
     // y = -1 --> moves up
