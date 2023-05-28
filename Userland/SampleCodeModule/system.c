@@ -13,6 +13,6 @@ void printRegisters() {
     uint64_t * regs = current_regs();
     printFormat("System registers:");
     for(int i=0; i<regsAmount; i++) {
-        printFormat("\n\t%s%x", regsStr[i], regs[i]);
+        printFormat("\n\t-%s%x ", regsStr[i], regs[i]);
     }
 }

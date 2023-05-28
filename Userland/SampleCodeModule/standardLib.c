@@ -5,7 +5,7 @@
 
 int getDigits(int n);
 
-static char * itoa( int value, char * str, int base )
+static char * itoa( uint64_t value, char * str, int base )
 // code taken from https://wiki.osdev.org/Printing_To_Screen
 {
     char * rc;
@@ -45,13 +45,15 @@ static char * itoa( int value, char * str, int base )
 }
 
 void putChar(char c){ //a partir del segundo parametro no importa lo que le ponga
-    char* aux={&c};
-    interrupt(SYSWRITE,aux,1,0,0,0);
+    interrupt(SYSWRITE,&c,1,0,0,0);
 }
+
 static void putStrn(char*s){
-    for(int i =0;s[i]!='\0';i++){
-        putChar(s[i]);
+    int i;
+    for(i=0;s[i]!='\0';i++){
+        i++;
     }
+    interrupt(SYSWRITE, s, i, 0, 0, 0);
 }
 
 char getChar(){
@@ -60,7 +62,7 @@ char getChar(){
     return c;
 }
 void printFormat(const char* format, ...) {
-    char* buff[9];
+    char buff[17];
     va_list args;
     va_start(args, format);
 
@@ -93,16 +95,18 @@ void printFormat(const char* format, ...) {
                     char* value = va_arg(args, char*);
                     putStrn(value);
                     break;
-                } case 'x':{
+                }
+                case 'x':{
                     format++;
                     uint64_t value =va_arg(args,uint64_t);
                     putStrn("0x");
                     putStrn(itoa(value,buff,16));
+                    break;
                 }
-
-                default:
+                default: {
                     putChar(*format);
                     break;
+                }
             }
         } else {
             putChar(*format);
