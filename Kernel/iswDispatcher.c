@@ -15,12 +15,15 @@ void sys_doubleBuffer(BASE_PARAMS);//code 3
 void sys_get_registers(BASE_PARAMS);//code 4
 void sys_get_exceptions(BASE_PARAMS);//code 5
 void sys_get_time(BASE_PARAMS);// code 6
-extern char * current_regs();
+extern uint64_t* current_regs();
 
 FunctionPtr interruptions[] = {sys_write, sys_read, sys_draw, sys_doubleBuffer, sys_get_registers,
-                               sys_get_exceptions, sys_get_time};
+                               sys_get_exceptions, sys_get_time, (void*)0};
 
 void swInterruptDispatcher(COMPLETE_PARAMS) {
+    if(rdi >= sizeof(interruptions)) {
+        return;
+    }
     interruptions[rdi](rsi, rdx, rcx, r8, r9);
 }
 
@@ -100,25 +103,10 @@ void sys_doubleBuffer(BASE_PARAMS) {
 }
 
 
-//TODO mover esto a un archivo aparte, asi iswDispatcher tiene solo las syscalls y sus handlers
-extern char * current_regs();
-
-static char * regs[]={"rax: ","rbx: ","rcx: ","rdx: ","rsi: ","rdi: ","rbp: ","r8: ","r9: ","r10: ","r11: ","r12: ","r13: ","r14: ","r15: ","rsp: ","rip: "};
-
-static void printregs(uint64_t* exregs){
-	for(int i=0;i<17;i++){
-		cPrint(regs[i]);
-		cPrintHex(exregs[i]);
-		cPrint(" ");
-	}
-}
-
-
 //ID=4
-//prints the registers on the console
-//TODO hacer que devuelva los valores en un array o algo
+//rsi=pointer to a uint64_t arrray
 void sys_get_registers(BASE_PARAMS) {
-    printregs(current_regs);
+    *(uint64_t *)rsi = *current_regs();
 }
 
 

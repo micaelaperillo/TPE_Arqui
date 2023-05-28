@@ -3,9 +3,10 @@
 #define SYSWRITE 0
 #define SYSREAD 1
 
+int getDigits(int n);
 
-
-static char * itoa( int value, char * str, int base )// codigo proveido por https://wiki.osdev.org/Printing_To_Screen
+static char * itoa( int value, char * str, int base )
+// code taken from https://wiki.osdev.org/Printing_To_Screen
 {
     char * rc;
     char * ptr;
@@ -42,6 +43,7 @@ static char * itoa( int value, char * str, int base )// codigo proveido por http
     }
     return rc;
 }
+
 void putChar(char c){ //a partir del segundo parametro no importa lo que le ponga
     char* aux={&c};
     interrupt(SYSWRITE,aux,1,0,0,0);
@@ -75,7 +77,7 @@ void printFormat(const char* format, ...) {
                     format++;
                     int value=va_arg(args,int);
                     int zeroes=0;
-                    int digts=getdigts(value);
+                    int digts=getDigits(value);
                     while(*format!='d'){
                         zeroes=zeroes*10+(*format)-'0';
                         format++;
@@ -92,6 +94,7 @@ void printFormat(const char* format, ...) {
                     putStrn(value);
                     break;
                 } case 'x':{
+                    format++;
                     uint64_t value =va_arg(args,uint64_t);
                     putStrn("0x");
                     putStrn(itoa(value,buff,16));
@@ -109,14 +112,14 @@ void printFormat(const char* format, ...) {
     va_end(args);
 }
 
-int compstring(const char*s1,const char*s2){
+int compString(const char*s1,const char*s2){
 while (*s1 == *s2++)
 		if (*s1++ == 0)
 			return 0;
 	return (*s1 - *--s2);
 }
 
-int getdigts(int n){
+int getDigits(int n){
     int digts=0;
     while(n!=0){
         n=n/10;

@@ -256,7 +256,6 @@ void drawRectangle(uint32_t x, uint32_t y, uint32_t width, uint32_t height) {
 }
 
 void _drawChar(Color c, uint32_t xPixel, uint32_t yPixel, unsigned char character) {
-    //code taken from https://jared.geek.nz/2014/jan/custom-fonts-for-microcontrollers and modified
     uint8_t i, j;
 
     // Convert the character to an index

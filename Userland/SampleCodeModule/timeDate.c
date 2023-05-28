@@ -44,9 +44,9 @@ unsigned int getYear() {
 
 
 void printTime() {
-    printFormat("Today's date es: %02d:%02d:%02d", (int)getHours(), (int)getMinutes(), (int)getSeconds());
+    printFormat("Today's date is: %02d:%02d:%02d", (int)getHours(), (int)getMinutes(), (int)getSeconds());
 }
 
 void printDate() {
-    printFormat("Today's date es :%02d/%02d/%02d", (int)getDay(), (int)getMonth(), (int)getYear());
+    printFormat("Today's date is :%02d/%02d/%02d", (int)getDay(), (int)getMonth(), (int)getYear());
 }

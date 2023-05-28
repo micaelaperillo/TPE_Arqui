@@ -2,6 +2,7 @@
 #include <standardLib.h>
 #include <graphics.h>
 #include <timeDate.h>
+#include <system.h>
 
 typedef void (*FunctionPtr)();
 
@@ -30,7 +31,7 @@ static Program pArr[] = {
 
 void parseCommand(char* str) {
     for(int i=0;pArr[i]!=null;i++){
-        if(compstring(str,pArr[i]->name_id)==0){
+        if(compString(str,pArr[i]->name_id)==0){
             pArr[i]->program();
             return;
         }
@@ -55,7 +56,8 @@ void testExceptions() {
 }
 
 void showRegisters() {
-    //TODO implementar
+    printRegisters();
+    putChar('\n');
 }
 
 void displayTime() {
