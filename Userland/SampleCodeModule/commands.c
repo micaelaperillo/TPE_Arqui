@@ -16,11 +16,12 @@ typedef struct PROGRAM_STRUCT* Program;
 
 void unknownCommand(char* str);
 
-void help(), testExceptions(), showRegisters(), displayTime(), displayDate(), playBubbles(), playPong();
+void help(), testException0(),testException6(), showRegisters(), displayTime(), displayDate(), playBubbles(), playPong();
 
 static Program pArr[] = {
         &(struct PROGRAM_STRUCT){"help", "displays all available commands", help},
-        &(struct PROGRAM_STRUCT){"ex_test", "runs an exception test", testExceptions},
+        &(struct PROGRAM_STRUCT){"test-div0", "runs a zero division", testException0},
+        &(struct PROGRAM_STRUCT){"test-invalidop", "runs an invalid op", testException6},
         &(struct PROGRAM_STRUCT){"registers", "prints the state of the system's registers", showRegisters},
         &(struct PROGRAM_STRUCT){"time", "prints the current time", displayTime},
         &(struct PROGRAM_STRUCT){"date", "prints the current date", displayDate},
@@ -51,8 +52,13 @@ void help() {
     }
 }
 
-void testExceptions() {
-    //TODO implementar
+void testException0() {
+   int i=1/0;
+}
+
+void testException6(){
+    printFormat("inserte operacion invalida aqui");
+    //todo:ver que es una operacion invalida
 }
 
 void showRegisters() {

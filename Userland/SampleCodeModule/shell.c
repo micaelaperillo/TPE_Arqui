@@ -22,7 +22,6 @@ void writePromptIcon() {
 
 void startShell() {
     putChar('\n');
-    clearScreen();
     shellLoop();
 }
 

@@ -47,7 +47,7 @@ void drawEmptyCircle(uint32_t hexColor, uint32_t x, uint32_t y, uint32_t radius)
     interrupt(SYS_DRAW_ID, EMPTY_CIRCLE, coords, 0, radius, hexColor);
 }
 
-// "
+//"
 void drawCircle(uint32_t hexColor, uint32_t x, uint32_t y, uint32_t radius) {
     uint64_t coords = join(x, y);
     interrupt(SYS_DRAW_ID, CIRCLE, coords, 0, radius, hexColor);
