@@ -1,5 +1,5 @@
 GLOBAL current_regs
-
+GLOBAL test
 
 section .text
 current_regs:

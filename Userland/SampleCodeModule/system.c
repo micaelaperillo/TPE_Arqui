@@ -4,7 +4,8 @@
 #define SYS_GET_REGS_ID 4
 
 static int regsAmount = 17;
-static char * regsStr[]={"rax:","rbx:","rcx:","rdx:","rsi:","rdi:","rbp:","r8:","r9:","r10:","r11:","r12:","r13:","r14:","r15:","rsp:","rip:"};
+static char * regsStr[]={"rax:","rbx:","rcx:","rdx:","rsi:","rdi:","rbp:","r8:","r9:","r10:","r11:","r12:","r13:","r14:",
+                         "r15:","rsp:","rip:"};
 
 extern uint64_t* current_regs();
 
