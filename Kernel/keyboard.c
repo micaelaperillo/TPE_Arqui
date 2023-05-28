@@ -2,7 +2,6 @@
 
 unsigned char keydown();
 
-
 #define LSHIFT 0x2A
 #define RSHIFT 0x36
 #define CAPS_LOCK 0x3A

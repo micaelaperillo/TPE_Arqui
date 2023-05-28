@@ -1,5 +1,6 @@
 #include <stdint.h>
 #include <keyboard.h>
+#include <sound.h>
 
 #define SCREEN_WIDTH 1024
 #define SCREEN_HEIGHT 768
@@ -70,20 +71,47 @@ void pong() {
 
         // draws 
         init_draw(game);
-    
 
+        // TODO: no estoy muy segura de la logica del handle_moves y update_ball, no se si estan en el orden correcto
         handle_moves(&user.v_bar);
-    }
+        update_ball(&game.ball);
 
+        if (game.ball.x == game.user.v_bar.x) {
+            if (!ball_touches_bar(game.ball, game.user.v_bar)) {
+                // point for computer
+                game.computer.score++;
+                init_draw(game);
+            }
+        }
+        if (game.ball.x == game.computer.v_bar.x) {
+            if (!ball_touches_bar(game.ball, game.computer.v_bar)) {
+                // point for user
+                game.user.score++;
+                init_draw(game);
+            }
+        }
+    }
 }
 
 
 void init_draw(game g) {
     drawColoredRectangle(0xFF, SCREEN_WIDTH/2, 0, 5, SCREEN_HEIGHT);
+
+    g.ball.x = SCREEN_WIDTH / 2;
+    g.ball.y = SCREEN_HEIGHT / 2;
+
+    g.user.v_bar.x = BAR_WIDTH;
+    g.user.v_bar.y = (SCREEN_HEIGHT/2) + BAR_HEIGHT/2;
+    g.user.v_bar.height = BAR_HEIGHT;
+
+    g.computer.v_bar.x = SCREEN_WIDTH - BAR_WIDTH;
+    g.computer.v_bar.y = (SCREEN_HEIGHT/2) + BAR_HEIGHT/2;
+    g.computer.v_bar.height = BAR_HEIGHT;
+
     draw_bar(g.user.v_bar);
     draw_bar(g.computer.v_bar);
     draw_ball(g.ball);
-    draw_score(g.user.score, g.computer.score);
+    draw_score(g);
 
 }
 
@@ -95,7 +123,7 @@ void draw_bar(bar b) {
     drawColoredRectangle(0xFF, b.x, b.y, BAR_WIDTH, BAR_HEIGHT);
 }
 
-void draw_score(uint32_t user, uint32_t computer) {
+void draw_score(game g) {
     // TODO
 }
 
@@ -151,6 +179,7 @@ char ball_touches_bar(ball ball, bar bar) {
 
     // verify that the ball is inside the bar dims
     if ((ball.y <= bar.y + bar.height) && (ball.y >= ball.y)) {
+        play_beep();
         return 1;
     }
     return 0;    
