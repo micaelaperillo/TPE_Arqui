@@ -1,6 +1,6 @@
 #include <stdint.h>
-#include <keyboard.h>
-#include <sound.h>
+#include <standardLib.h>
+// #include <sound.h>
 #include <graphics.h>
 
 #define SCREEN_WIDTH 1024
@@ -36,64 +36,6 @@ typedef struct
     player computer;
     ball ball;
 } game;
-
-
-void pong() {
-
-    player user, computer;
-
-    setPlayer(&user);
-    setPlayer(&computer);
-
-    ball ball;
-
-    ball.x = SCREEN_WIDTH / 2;
-    ball.y = SCREEN_HEIGHT / 2;
-
-    // USER: left, COMPUTER: right
-    user.v_bar.x = BAR_WIDTH;
-    user.v_bar.y = (SCREEN_HEIGHT/2) + BAR_HEIGHT/2;
-    user.v_bar.height = BAR_HEIGHT;
-
-    computer.v_bar.x = SCREEN_WIDTH - BAR_WIDTH;
-    computer.v_bar.y = (SCREEN_HEIGHT/2) + BAR_HEIGHT/2;
-    computer.v_bar.height = BAR_HEIGHT;
-
-    user.score = 0;
-    computer.score = 0;
-
-    game game;
-
-    game.ball = ball;
-    game.user = user;
-    game.computer = computer;
-
-    while (1) {
-
-        // draws 
-        init_draw(game);
-
-        // TODO: no estoy muy segura de la logica del handle_moves y move_ball, no se si estan en el orden correcto
-        handle_moves(&user.v_bar);
-        move_ball(&game.ball);
-
-        if (game.ball.x == game.user.v_bar.x) {
-            if (!ball_touches_bar(game.ball, game.user.v_bar)) {
-                // point for computer
-                game.computer.score++;
-                init_draw(game);
-            }
-        }
-        if (game.ball.x == game.computer.v_bar.x) {
-            if (!ball_touches_bar(game.ball, game.computer.v_bar)) {
-                // point for user
-                game.user.score++;
-                init_draw(game);
-            }
-        }
-    }
-}
-
 
 void init_draw(game g) {
     drawRectangle(0xFF, SCREEN_WIDTH/2, 0, 5, SCREEN_HEIGHT);
@@ -159,7 +101,7 @@ void handle_moves(bar * b) {
     // if key == S --> move_bar(&bar, 1)
     // else --> no hace nada
 
-    char c = getc();
+    char c = getChar();
     if (c == "w" || c == "W") {
         move_bar(*b, -1);
     } else if (c == "s" || c == "S") {
@@ -179,15 +121,69 @@ void move_bar(bar b, uint32_t y) {
     // y = 1 --> moves down
 }
 
-char ball_touches_bar(ball ball, bar bar) {
+uint32_t ball_touches_bar(ball ball, bar bar) {
     if (ball.x != bar.x) {
         return 0;
     }
 
     // verify that the ball is inside the bar dims
     if ((ball.y <= bar.y + bar.height) && (ball.y >= ball.y)) {
-        play_beep();
+        // TODO add beep
+        // play_beep();
         return 1;
     }
     return 0;    
+}
+
+void pong() {
+
+    player user, computer;
+
+    ball ball;
+
+    ball.x = SCREEN_WIDTH / 2;
+    ball.y = SCREEN_HEIGHT / 2;
+
+    // USER: left, COMPUTER: right
+    user.v_bar.x = BAR_WIDTH;
+    user.v_bar.y = (SCREEN_HEIGHT/2) + BAR_HEIGHT/2;
+    user.v_bar.height = BAR_HEIGHT;
+
+    computer.v_bar.x = SCREEN_WIDTH - BAR_WIDTH;
+    computer.v_bar.y = (SCREEN_HEIGHT/2) + BAR_HEIGHT/2;
+    computer.v_bar.height = BAR_HEIGHT;
+
+    user.score = 0;
+    computer.score = 0;
+
+    game game;
+
+    game.ball = ball;
+    game.user = user;
+    game.computer = computer;
+
+    while (1) {
+
+        // draws 
+        init_draw(game);
+
+        // TODO: no estoy muy segura de la logica del handle_moves y move_ball, no se si estan en el orden correcto
+        handle_moves(&user.v_bar);
+        move_ball(&game.ball);
+
+        if (game.ball.x == game.user.v_bar.x) {
+            if (!ball_touches_bar(game.ball, game.user.v_bar)) {
+                // point for computer
+                game.computer.score++;
+                init_draw(game);
+            }
+        }
+        if (game.ball.x == game.computer.v_bar.x) {
+            if (!ball_touches_bar(game.ball, game.computer.v_bar)) {
+                // point for user
+                game.user.score++;
+                init_draw(game);
+            }
+        }
+    }
 }
