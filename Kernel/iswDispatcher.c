@@ -17,7 +17,7 @@ void sys_get_time(BASE_PARAMS);// code 5
 extern uint64_t* current_regs();
 
 FunctionPtr interruptions[] = {sys_write, sys_read, sys_draw, sys_double_buffer,
-                               sys_get_exceptions, sys_get_time, (void*)0};
+                               sys_get_exceptions, sys_get_time};
 
 void swInterruptDispatcher(COMPLETE_PARAMS) {
     if(rdi >= sizeof(interruptions)) {
