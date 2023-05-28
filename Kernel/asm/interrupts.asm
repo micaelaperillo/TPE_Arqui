@@ -112,7 +112,6 @@ _swInterruptHandler:
     popState
     iretq
 
-
 _hlt:
 	sti
 	hlt

@@ -11,13 +11,12 @@ typedef void (*FunctionPtr)(uint64_t, uint64_t, uint64_t, uint64_t, uint64_t);
 void sys_write(BASE_PARAMS);//code 0
 void sys_read(BASE_PARAMS);//code 1
 void sys_draw(BASE_PARAMS);//code 2
-void sys_doubleBuffer(BASE_PARAMS);//code 3
-void sys_get_registers(BASE_PARAMS);//code 4
-void sys_get_exceptions(BASE_PARAMS);//code 5
-void sys_get_time(BASE_PARAMS);// code 6
+void sys_double_buffer(BASE_PARAMS);//code 3
+void sys_get_exceptions(BASE_PARAMS);//code 4
+void sys_get_time(BASE_PARAMS);// code 5
 extern uint64_t* current_regs();
 
-FunctionPtr interruptions[] = {sys_write, sys_read, sys_draw, sys_doubleBuffer, sys_get_registers,
+FunctionPtr interruptions[] = {sys_write, sys_read, sys_draw, sys_double_buffer,
                                sys_get_exceptions, sys_get_time, (void*)0};
 
 void swInterruptDispatcher(COMPLETE_PARAMS) {
@@ -39,6 +38,8 @@ void sys_write(BASE_PARAMS) {
   }
 }
 
+//ID=1
+//rsi=char* pointing to the tar
 void sys_read(BASE_PARAMS) {
     *(char*)rsi=getc();
 }
@@ -87,7 +88,7 @@ void sys_draw(BASE_PARAMS) {
 
 //ID=3
 //rsi = INSTRUCTION :: 0 -> disables double buffering || 1 -> enables double buffering || 2 -> swaps buffers
-void sys_doubleBuffer(BASE_PARAMS) {
+void sys_double_buffer(BASE_PARAMS) {
     switch(rsi) {
         case 0:
             disableDoubleBuffering();
@@ -102,14 +103,6 @@ void sys_doubleBuffer(BASE_PARAMS) {
     }
 }
 
-
-//ID=4
-//rsi=pointer to a uint64_t arrray
-void sys_get_registers(BASE_PARAMS) {
-    *(uint64_t *)rsi = *current_regs();
-}
-
-
 //TODO en vez de un sys_get_exceptions podriamos hacer que realice las operaciones que generan
 // excepciones en el user space
 static zero_div() {
@@ -121,7 +114,7 @@ static invalid_op() {
 }
 
 
-//ID=5
+//ID=4
 void sys_get_exceptions(BASE_PARAMS) {
     cPrint("Zero Division Exception");
     cNewline();
@@ -134,7 +127,7 @@ void sys_get_exceptions(BASE_PARAMS) {
 }
 
 
-//ID=6
+//ID=5
 //rsi= DATA TYPE :: 0 -> seconds || 1 -> minutes || 2 -> hours || 3 -> day || 4 -> month || 5 -> year
 //rdx= pointer to an unsigned int, the value is stored in this position
 void sys_get_time(BASE_PARAMS) {
