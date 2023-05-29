@@ -1,6 +1,8 @@
 #include <commands.h>
 #include <graphics.h>
 #include <standardLib.h>
+#include <system.h>
+
 #define CONSOLE_X_DIM 96
 
 typedef char cLine[CONSOLE_X_DIM];
@@ -30,7 +32,6 @@ void shellLoop() {
     char c;
     writePromptIcon();
     while((c = getChar()) != 27 ) {// 'esc'
-
         if(c == '\n') {
             //executes the command
             putChar(c);

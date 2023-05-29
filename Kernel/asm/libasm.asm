@@ -1,5 +1,6 @@
 GLOBAL cpuVendor
 GLOBAL keydown
+GLOBAL keypress
 GLOBAL interrupt
 GLOBAL clock
 GLOBAL play_sound
@@ -58,14 +59,28 @@ clock:
 	pop rbp
 	ret
 
+keypress:
+    push rbp
+    mov rbp, rsp
+    in al, 0x60
+    test al, 0x80
+    jnz .not_pressed
+    mov al, 1
+    jmp .finish
+.not_pressed:
+    mov al, 0
+.finish:
+    leave
+    ret
+
 keydown:
 	push rbp
 	mov rbp, rsp
 .loop:
-	in al, 64h
+	in al, 0x64
 	and al, 0x01
 	jz .loop
-	in al, 60h
+	in al, 0x60
 	leave
 	ret
 	

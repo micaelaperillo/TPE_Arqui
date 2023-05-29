@@ -1,4 +1,6 @@
 #include <graphics.h>
+#include <system.h>
+#include <standardLib.h>
 
 struct Bubble {
     int x, y;
@@ -36,7 +38,9 @@ void bubbles() {
                            {100, 367, -3, 2, 20, CYAN}, {990, 701, -2, -1, 20, GREEN}, {150, 610, -1, -1, 20, PINK}};
     //TODO cambiar para que termine cuando detecta input
     int i;
-    while(1) {
+    char c;
+    while(!keyPress() || (c=getChar()) != 27) {
+        //runs until 'esc' is pressed
         //animation loop
         for(i = 0; i<size; i++) {
             updateBubblePosition(&bbs[i]);

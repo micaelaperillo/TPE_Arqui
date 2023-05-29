@@ -13,11 +13,12 @@ void sys_read(BASE_PARAMS);//code 1
 void sys_draw(BASE_PARAMS);//code 2
 void sys_double_buffer(BASE_PARAMS);//code 3
 void sys_get_exceptions(BASE_PARAMS);//code 4
-void sys_get_time(BASE_PARAMS);// code 5
+void sys_get_time(BASE_PARAMS);//code 5
+void sys_detect_key_press(BASE_PARAMS);//code 6
 extern uint64_t* current_regs();
 
 FunctionPtr interruptions[] = {sys_write, sys_read, sys_draw, sys_double_buffer,
-                               sys_get_exceptions, sys_get_time};
+                               sys_get_exceptions, sys_get_time, sys_detect_key_press};
 
 void swInterruptDispatcher(COMPLETE_PARAMS) {
     if(rdi >= sizeof(interruptions)) {
@@ -153,4 +154,11 @@ void sys_get_time(BASE_PARAMS) {
         default:
             return;
     }
+}
+
+
+//ID=6
+//rsi= pointer to an uint8_t, returns 1 if a key press was detected, 0 if not
+void sys_detect_key_press(BASE_PARAMS) {
+    *(uint8_t*) rsi = keyPressed();
 }

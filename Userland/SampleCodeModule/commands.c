@@ -79,6 +79,8 @@ void displayDate() {
 void playBubbles() {
     enableDoubleBuffering();
     bubbles();
+    clearScreen();
+    disableDoubleBuffering();
 }
 
 void playPong() {

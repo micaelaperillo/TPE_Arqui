@@ -1,14 +1,14 @@
 #include <stdint.h>
 
-unsigned char keydown();
+extern unsigned char keydown();
+extern unsigned char keypress();
 
 
 #define LSHIFT 0x2A
 #define RSHIFT 0x36
 #define CAPS_LOCK 0x3A
 
-#define UINT16_MAX 65535
-#define NO_INPUT UINT16_MAX
+#define NO_INPUT 0x00
 
 #define TRUE 1
 #define FALSE 0
@@ -35,7 +35,7 @@ const unsigned char kbdusWithShift[128] = {
 };
 
 uint8_t keyPressed() {
-    return !(keydown() & 0x80);
+    return keypress();
 }
 
 unsigned char retrieveChar(uint8_t keycode) {
@@ -49,7 +49,7 @@ unsigned char retrieveChar(uint8_t keycode) {
     return c;
 }
 
-uint16_t keyboard_handler() {
+uint8_t keyboard_handler() {
     unsigned char code = keydown();
     uint8_t keyRelease = FALSE;
     unsigned char keycode = code & 0x7F;//no diferencia entre release o no
@@ -59,20 +59,18 @@ uint16_t keyboard_handler() {
     }
     if(keycode == LSHIFT || keycode == RSHIFT) {
         shift = (keyRelease)?(FALSE):(TRUE);
-        return NO_INPUT;
     }
-    if(keycode == CAPS_LOCK) {
+    else if(keycode == CAPS_LOCK) {
         caps_lock = (keyRelease)?(caps_lock):(!caps_lock);
-        return NO_INPUT;
     }
-    if(!keyRelease) {
+    else if(!keyRelease) {
         return retrieveChar(keycode);
     }
     return NO_INPUT;
 }
 
 char getc(){
-    uint16_t c = keyboard_handler();
+    uint8_t c = keyboard_handler();
 
     while( c == NO_INPUT) {
         c = keyboard_handler();
