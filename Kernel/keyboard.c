@@ -3,7 +3,6 @@
 extern unsigned char keydown();
 extern unsigned char keypress();
 
-
 #define LSHIFT 0x2A
 #define RSHIFT 0x36
 #define CAPS_LOCK 0x3A
