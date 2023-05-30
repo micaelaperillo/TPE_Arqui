@@ -4,6 +4,7 @@
 #include <timeDate.h>
 #include <system.h>
 
+
 typedef void (*FunctionPtr)();
 
 struct PROGRAM_STRUCT {
@@ -57,8 +58,7 @@ void testException0() {
 }
 
 void testException6(){
-    printFormat("inserte operacion invalida aqui");
-    //todo:ver que es una operacion invalida
+invalidOp();
 }
 
 void showRegisters() {
@@ -82,5 +82,5 @@ void playBubbles() {
 }
 
 void playPong() {
-    //TODO implementar
+    pong();
 }
