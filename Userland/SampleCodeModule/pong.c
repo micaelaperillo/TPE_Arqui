@@ -81,7 +81,7 @@ void draw_score(game g) {
 void move_ball(ball * b) {
 
     // draws black circle on top of old ball
-    drawCircle(0x00, b->x, b->y, b->radius);
+    drawCircle(BLACK, b->x, b->y, b->radius);
 
     b->x += b->xDir;
     b->y += b->yDir;
@@ -100,16 +100,16 @@ void move_ball(ball * b) {
     }
 
     // Draw the new ball at the updated position
-    drawCircle(0xFF, b->x, b->y, b->radius);
+    drawCircle(BLUE, b->x, b->y, b->radius);
 
 } 
 
 void move_bar(bar b, uint32_t y) {
 
     // draws black rectangle on top of the old bar
-    drawRectangle(0x00, b.x, b.y, BAR_WIDTH, BAR_HEIGHT);
+    drawRectangle(BLACK, b.x, b.y, BAR_WIDTH, BAR_HEIGHT);
     b.y += y;
-    drawRectangle(0xFF, b.x, b.y, BAR_WIDTH, BAR_HEIGHT);
+    drawRectangle(BLUE, b.x, b.y, BAR_WIDTH, BAR_HEIGHT);
 
 
     // y = -1 --> moves up
@@ -166,7 +166,7 @@ void pong() {
         // TODO: no estoy muy segura de la logica del handle_moves y move_ball, no se si estan en el orden correcto
         // TODO: que detecte la W y S 
         // if (keyPressed())
-        handle_moves(&game);
+            handle_moves(&game);
         move_ball(&game.ball);
         draw_ball(game.ball);
 
@@ -183,6 +183,7 @@ void pong() {
             if (!ball_touches_bar(game.ball, game.user.v_bar)) {
                 // point for computer
                 game.computer.score++;
+                init_game_and_draw(game);
                 break;
             }
         }
@@ -190,6 +191,7 @@ void pong() {
             if (!ball_touches_bar(game.ball, game.computer.v_bar)) {
             // point for user
                 game.user.score++;
+                init_game_and_draw(game);
                 break;
             }
         }
