@@ -86,5 +86,8 @@ void playBubbles() {
 }
 
 void playPong() {
+    enableDoubleBuffering();
     pong();
+    clearScreen();
+    disableDoubleBuffering();
 }
