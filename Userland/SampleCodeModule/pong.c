@@ -1,6 +1,5 @@
 #include <stdint.h>
 #include <standardLib.h>
-// #include <sound.h>
 #include <graphics.h>
 #include <system.h>
 
@@ -140,6 +139,8 @@ void update_player_computer(game* g) {
 }
 
 void pong() {
+
+    play_beep(2000, 80);
 
     // USER: left, COMPUTER: right
 

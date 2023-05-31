@@ -4,6 +4,7 @@
 
 #define SYS_DETECT_KEY_PRESS_ID 5
 #define SYS_WAIT_ID 6
+#define SYS_SOUND_ID 7
 
 static int regsAmount = 17;
 static char * regsStr[]={"rax:","rbx:","rcx:","rdx:","rsi:","rdi:","rbp:","r8:","r9:","r10:","r11:","r12:","r13:","r14:",
@@ -28,4 +29,8 @@ uint8_t keyPress() {
 
 void wait(unsigned long milliseconds) {
     interrupt(SYS_WAIT_ID, milliseconds, 0, 0, 0, 0);
+}
+
+void play_beep(int32_t frequency, int32_t duration) {
+    interrupt(SYS_SOUND_ID, frequency, duration,  0, 0, 0);
 }

@@ -3,6 +3,7 @@
 #include <keyboard.h>
 #include <console.h>
 #include <time.h>
+#include <sound.h>
 #define BASE_PARAMS uint64_t rsi, uint64_t rdx, uint64_t rcx, uint64_t r8, uint64_t r9
 #define COMPLETE_PARAMS uint64_t rdi, BASE_PARAMS
 
@@ -15,11 +16,12 @@ void sys_double_buffer(BASE_PARAMS);//code 3
 void sys_get_time(BASE_PARAMS);//code 4
 void sys_detect_key_press(BASE_PARAMS);//code 5
 void sys_wait(BASE_PARAMS);//code 6
+void sys_sound(BASE_PARAMS); // code 7
 extern uint64_t* current_regs();
 
 FunctionPtr interruptions[] = {sys_write, sys_read, sys_draw, sys_double_buffer,
                                sys_get_time, sys_detect_key_press,
-                               sys_wait};
+                               sys_wait, sys_sound};
 
 void swInterruptDispatcher(COMPLETE_PARAMS) {
     if(rdi >= sizeof(interruptions)) {
@@ -144,4 +146,11 @@ void sys_detect_key_press(BASE_PARAMS) {
 //rsi= milliseconds to wait in unsigned long
 void sys_wait(BASE_PARAMS) {
     wait(rsi);
+}
+
+// ID = 7
+// rsi = frequency of beep
+// rdx = duration of beep 
+void sys_sound(BASE_PARAMS) {
+    play_beep(rsi, rdx);
 }
