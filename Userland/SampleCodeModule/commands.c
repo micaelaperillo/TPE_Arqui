@@ -15,7 +15,7 @@ struct PROGRAM_STRUCT {
 
 typedef struct PROGRAM_STRUCT* Program;
 
-extern void invalidop();
+extern void invalidOp();
 
 void unknownCommand(char* str);
 
