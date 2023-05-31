@@ -2,6 +2,7 @@
 #include <standardLib.h>
 // #include <sound.h>
 #include <graphics.h>
+#include <system.h>
 
 #define SCREEN_WIDTH 1024
 #define SCREEN_HEIGHT 768
@@ -116,7 +117,7 @@ void move_bar(bar b, uint32_t y) {
     // y = 1 --> moves down
 }
 
-void handle_moves(game * g) {
+void move_user_bar(bar * b) {
     // gets key with the keyboard driver
     // if key == W --> move_bar(bar, -1)
     // if key == S --> move_bar(bar, 1)
@@ -124,9 +125,9 @@ void handle_moves(game * g) {
 
     char c = getChar();
     if (c == 'w' || c == 'W') {
-        move_bar((g->user.v_bar), -1);
+        move_bar((*b), -1);
     } else if (c == 's' || c == 'S') {
-        move_bar((g->user.v_bar), 1);
+        move_bar((*b), 1);
     }
 
 }
@@ -163,12 +164,14 @@ void pong() {
     while (1) {
 
         // TODO definir alguna tecla (esc por ejemplo) que haga que corte el juego 
-        // TODO: no estoy muy segura de la logica del handle_moves y move_ball, no se si estan en el orden correcto
+    
         // TODO: que detecte la W y S 
-        // if (keyPressed())
-            handle_moves(&game);
+        if (keyPress()) {
+            move_user_bar(&game.user.v_bar);
+        }
+            
         move_ball(&game.ball);
-        draw_ball(game.ball);
+        // draw_ball(game.ball);
 
         // move the computer bar
         if (game.ball.y < SCREEN_HEIGHT/2) {
