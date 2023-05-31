@@ -58,7 +58,7 @@ static void putStrn(char*s){
 
 char getChar(){
     char c;
-    interrupt(SYSREAD,&c,1,0,0,0);
+    interrupt(SYSREAD,(uint64_t)&c,0,0,0,0);
     return c;
 }
 void printFormat(const char* format, ...) {

@@ -1,20 +1,17 @@
 #include <time.h>
 #include <stdint.h>
-#include "keyboard.h"
+#include <keyboard.h>
 
-static void int_20();
+static void int_20(), int_21();
+
+static void (*handlerArr[])() = {int_20, int_21};
 
 void irqDispatcher(uint64_t irq) {
-	switch (irq) {
-		case 0:
-			int_20();
-			break;
-	}
-	return;
+    handlerArr[irq]();
 }
 
 void int_20() {
-	timer_handler();
+    timer_handler();
 }
 
 void int_21() {

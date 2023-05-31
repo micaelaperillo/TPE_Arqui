@@ -72,17 +72,6 @@ keydown:
 .finish:
     leave
     ret
-
-keydownold:
-	push rbp
-	mov rbp, rsp
-.loop:
-	in al, 0x64
-	and al, 0x01
-	jz .loop
-	in al, 0x60
-	leave
-	ret
 	
 cpuVendor:
 	push rbp

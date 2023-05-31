@@ -91,33 +91,29 @@ void * initializeKernelBinary()
 int main()
 {
     initializeConsole();
+    cPrint("[Kernel Main]");
     cNewline();
-	cPrint("[Kernel Main]");
+    cPrint("Loading IDT descriptors");
     load_idt();
-	cNewline();
+    cNewline();
     cPrint("  Sample code module at 0x");
-	cPrintHex((uint64_t)sampleCodeModuleAddress);
-	cNewline();
-	
-	cNewline();
-	cNewline();
-	
-	
-	
-	cPrint("  Sample data module at 0x");
-	cPrintHex((uint64_t)sampleDataModuleAddress);
-	cNewline();
-	cPrint("  Sample data module contents: ");
-	cPrint((char*)sampleDataModuleAddress);
-	//div(); testeo la division por cero.Creo que es un testeo valido xd
-	cNewline();
-	
-	cNewline();
+    cPrintHex((uint64_t)sampleCodeModuleAddress);
+    cNewline();
+    cPrint("  Calling the sample code module returned: ");
+    cPrintHex(((EntryPoint)sampleCodeModuleAddress)());
+    cNewline();
+    cNewline();
 
-	cPrint("  Calling the sample code module returned: ");
-	cPrintHex(((EntryPoint)sampleCodeModuleAddress)());
+    cPrint("  Sample data module at 0x");
+    cPrintHex((uint64_t)sampleDataModuleAddress);
+    cNewline();
+    cPrint("  Sample data module contents: ");
+    cPrint((char*)sampleDataModuleAddress);
+    cNewline();
 
-	cPrint("[Finished]");
-
+    cPrint("[Finished]");
+    cNewline();
+    cClear();
+    cNewline();
 	return 0;
 }

@@ -1,7 +1,7 @@
 #include <stdint.h>
+#include <console.h>
 
 extern unsigned char keydown();
-extern unsigned char keypress();
 
 #define LSHIFT 0x2A
 #define RSHIFT 0x36
@@ -15,7 +15,7 @@ extern unsigned char keypress();
 static uint8_t shift = FALSE;
 static uint8_t caps_lock = FALSE;
 
-uint8_t lastKey = NO_INPUT;
+static unsigned char keyBuffer = NO_INPUT;
 
 const unsigned char kbdusNoShift[128] = {
     0,  27, '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '-', '=', '\b', '\t',
@@ -36,24 +36,34 @@ const unsigned char kbdusWithShift[128] = {
 };
 
 uint8_t keyPressed() {
-    lastKey = keypress();
-    return lastKey;
+    return keyBuffer;
 }
 
-unsigned char retrieveChar(uint8_t keycode) {
-    unsigned char c = (lastKey == NO_INPUT)?(kbdusNoShift[keycode]):(lastKey);
-    lastKey = NO_INPUT;
+char readBuffer() {
+    char ret = keyBuffer;
+    keyBuffer = NO_INPUT;
+    return ret;
+}
+
+void addToBuffer(uint8_t keycode) {
+    if (keycode == NO_INPUT) {
+        keyBuffer = NO_INPUT;
+    }
+    unsigned char c = (kbdusNoShift[keycode]);
     uint8_t isLetter = (c >= 'a' && c <= 'z');
     uint8_t auxShift = (caps_lock && isLetter)?(!shift):(shift);
-
     if(auxShift) {
-        return kbdusWithShift[keycode];
+        keyBuffer = kbdusWithShift[keycode];
+        return;
     }
-    return c;
+    keyBuffer = c;
 }
 
-uint8_t keyboard_handler() {
+void keyboard_handler() {
     unsigned char code = keydown();
+    if(code == NO_INPUT) {
+        addToBuffer(NO_INPUT);
+    }
     uint8_t keyRelease = FALSE;
     unsigned char keycode = code & 0x7F;//no diferencia entre release o no
 
@@ -67,16 +77,15 @@ uint8_t keyboard_handler() {
         caps_lock = (keyRelease)?(caps_lock):(!caps_lock);
     }
     else if(!keyRelease) {
-        return retrieveChar(keycode);
+        addToBuffer(keycode);
     }
-    return NO_INPUT;
 }
 
 char getc(){
-    uint8_t c = keyboard_handler();
-
+    uint8_t c = readBuffer();
     while( c == NO_INPUT) {
-        c = keyboard_handler();
+        keyboard_handler();
+        c = readBuffer();
     }
     return (char) c;
 }
@@ -84,7 +93,7 @@ char getc(){
 void gets(char * s) {
     int i = 0;
     char c;
-    while((c=keyboard_handler())!='\n') {
+    while((c=keyBuffer)!='\n') {
         s[i] = c; //lee hasta el enter supuestamente
         i++;
     }
