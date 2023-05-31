@@ -10,6 +10,7 @@
 #define BAR_WIDTH 20
 #define BALL_R 15
 #define SPEED 5
+#define SPEED_BALL 1
 
 typedef struct {
     uint32_t x;
@@ -26,6 +27,7 @@ typedef struct {
     uint32_t x;
     uint32_t y;
     uint32_t height;
+    uint32_t width;
 } bar;
 
 typedef struct {
@@ -49,8 +51,8 @@ void init_game_and_draw(game* g) {
     g->ball.x = SCREEN_WIDTH / 2;
     g->ball.y = SCREEN_HEIGHT / 2;
     g->ball.radius = BALL_R;
-    g->ball.xDir = 1;
-    g->ball.yDir = 1;
+    g->ball.xDir = -1;
+    g->ball.yDir = -1;
 
     // user settings
     g->user.v_bar.x = BAR_WIDTH;
@@ -60,6 +62,7 @@ void init_game_and_draw(game* g) {
     // computer settings
     g->computer.v_bar.x = SCREEN_WIDTH - BAR_WIDTH;
     g->computer.v_bar.y = SCREEN_HEIGHT/2 + BAR_HEIGHT/2;
+    g->computer.v_bar.width = BAR_WIDTH;
     g->computer.v_bar.height = BAR_HEIGHT;
 
     draw_bar(&g->user.v_bar);
@@ -83,56 +86,52 @@ void draw_score(game g) {
     // TODO
 }
 
-void move_ball(ball * b) {
 
-    // draws black circle on top of old ball
-    drawCircle(BLACK, b->x, b->y, b->radius);
-
-    b->x += b->xDir;
-    b->y += b->yDir;
-
-    // check collisions
-    if (b->x + b->xDir - b->radius <= 0) {
-        b->xDir = (b->xDir < 0)?(-b->xDir):(b->xDir);
-    } else if (b->x + b->xDir + b->radius >= SCREEN_WIDTH) {
-        b->xDir = (b->xDir > 0)?(-b->xDir):(b->xDir);
+void check_entity_collision(player* p, ball* b) {
+    uint32_t ball_next_pos_y = b->y + (b->yDir * (SPEED_BALL + b->radius));
+    uint32_t ball_next_pos_x = b->x + (b->xDir * (SPEED_BALL + b->radius));
+    if (ball_next_pos_y <= p->v_bar.y && ball_next_pos_y >= p->v_bar.y + p->v_bar.height
+    && ball_next_pos_x >= p->v_bar.x && ball_next_pos_x <= p->v_bar.x + p->v_bar.width) {
+        //collision detected
+        b->xDir = -b->xDir;
+        return;
     }
-
-    if (b->y + b->yDir - b->radius <= 0) {
-        b->yDir = (b->yDir < 0)?(-b->yDir):(b->yDir);
-    } else if (b->y + b->yDir + b->radius >= SCREEN_HEIGHT) {
-        b->yDir = (b->yDir > 0)?(-b->yDir):(b->yDir);
-    }
-
-    // Draw the new ball at the updated position
-    drawCircle(BLUE, b->x, b->y, b->radius);
-
 }
 
-void move_bar(bar *b, uint32_t y) {
-
-    // draws black rectangle on top of the old bar
-    drawRectangle(BLACK, b->x, b->y, BAR_WIDTH, BAR_HEIGHT);
-    b->y += y;
-    drawRectangle(BLUE, b->x, b->y, BAR_WIDTH, BAR_HEIGHT);
-
-
-    // y = -1 --> moves up
-    // y = 1 --> moves down
-}
-
-uint32_t ball_touches_bar(ball ball, bar bar) {
-    if (ball.x != bar.x) {
-        return 0;
+void update_ball(game* g) {
+    // check collisions with vertical borders
+    uint32_t nextY = g->ball.y + (g->ball.yDir * (SPEED_BALL + g->ball.radius));
+    if (nextY <= 0) {
+        g->ball.yDir = (g->ball.yDir < 0)?(-g->ball.yDir):(g->ball.yDir);
+    } else if (nextY >= SCREEN_HEIGHT) {
+        g->ball.yDir = (g->ball.yDir > 0)?(-g->ball.yDir):(g->ball.yDir);
     }
 
-    // verify that the ball is inside the bar dims
-    if ((ball.y <= bar.y + bar.height) && (ball.y >= ball.y)) {
-        // TODO add beep
-        // play_beep();
-        return 1;
+    //check collisions with players
+    if(g->ball.xDir > 0) {
+        //can only collide with the computer
+        check_entity_collision(&g->computer, &g->ball);
     }
-    return 0;
+    else {
+        //can only collide with the player
+        check_entity_collision(&g->user, &g->ball);
+    }
+
+    //check if it reached the end
+    if (g->ball.x + (g->ball.xDir * SPEED_BALL) - g->ball.radius <= 0) {
+        g->ball.x = SCREEN_WIDTH / 2;
+        g->ball.y = SCREEN_HEIGHT / 2;
+        g->ball.xDir = -g->ball.xDir;
+        //GOL COMPUTADORA
+    } else if (g->ball.x + (g->ball.xDir * SPEED_BALL) + g->ball.radius >= SCREEN_WIDTH) {
+        g->ball.x = SCREEN_WIDTH / 2;
+        g->ball.y = SCREEN_HEIGHT / 2;
+        g->ball.xDir = -g->ball.xDir;
+        //GOL JUGADOR
+    }
+
+    g->ball.x += g->ball.xDir * SPEED_BALL;
+    g->ball.y += g->ball.yDir * SPEED_BALL;
 }
 
 void pong() {
@@ -185,7 +184,7 @@ void pong() {
             drawRectangle(BLUE, SCREEN_WIDTH/2, 0, 2, SCREEN_HEIGHT);
             draw_bar(&game.computer.v_bar);
             draw_bar(&game.user.v_bar);
-            move_ball(&game.ball);
+            update_ball(&game);
             draw_ball(&game.ball);
             swapBuffer();
 
