@@ -57,7 +57,7 @@ void init_game_and_draw(game* g) {
     g->ball.yDir = 1;
 
     // user settings
-    g->user.v_bar.x = BAR_WIDTH;
+    g->user.v_bar.x = 0;
     g->user.v_bar.y = SCREEN_HEIGHT/2 - BAR_HEIGHT*2;
     g->user.v_bar.width = BAR_WIDTH;
     g->user.v_bar.height = BAR_HEIGHT;
@@ -72,9 +72,7 @@ void init_game_and_draw(game* g) {
     draw_bar(&g->computer.v_bar);
     draw_ball(&g->ball);
 
-
     swapBuffer();
-
 }
 
 void draw_ball(ball* b) {
@@ -82,7 +80,7 @@ void draw_ball(ball* b) {
 }
 
 void draw_bar(bar *b) {
-    drawRectangle(BLUE, b->x, b->y, BAR_WIDTH, BAR_HEIGHT);
+    drawRectangle(BLUE, b->x, b->y, b->width, b->height);
 }
 
 void draw_score(game g) {
@@ -97,7 +95,6 @@ void check_entity_collision(player* p, ball* b) {
     && ball_next_pos_x >= p->v_bar.x && ball_next_pos_x <= p->v_bar.x + p->v_bar.width) {
         //collision detected
         b->xDir = -b->xDir;
-        return;
     }
 }
 
@@ -111,11 +108,8 @@ void update_ball(game* g) {
         g->ball.yDir = (g->ball.yDir > 0)?(-g->ball.yDir):(g->ball.yDir);
     }
 
-    if(g->ball.xDir < 0) {
-        check_entity_collision(&g->user, &g->ball);
-    }else {
-        check_entity_collision(&g->computer, &g->ball);
-    }
+    check_entity_collision(&g->user, &g->ball);
+    check_entity_collision(&g->computer, &g->ball);
 
     //check if it reached the end
     if (g->ball.x + (g->ball.xDir * BALLSPEED) <= 0) {
