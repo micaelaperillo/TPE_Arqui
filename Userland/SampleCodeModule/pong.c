@@ -40,43 +40,43 @@ typedef struct
     ball ball;
 } game;
 
-void init_game_and_draw(game g) {
+void init_game_and_draw(game* g) {
 
     // middle line
     drawRectangle(BLUE, SCREEN_WIDTH/2, 0, 2, SCREEN_HEIGHT);
 
     // ball settings
-    g.ball.x = SCREEN_WIDTH / 2;
-    g.ball.y = SCREEN_HEIGHT / 2;
-    g.ball.radius = BALL_R;
-    g.ball.xDir = 1;
-    g.ball.yDir = 1;
+    g->ball.x = SCREEN_WIDTH / 2;
+    g->ball.y = SCREEN_HEIGHT / 2;
+    g->ball.radius = BALL_R;
+    g->ball.xDir = 1;
+    g->ball.yDir = 1;
 
     // user settings
-    g.user.v_bar.x = BAR_WIDTH;
-    g.user.v_bar.y = SCREEN_HEIGHT/2 - BAR_HEIGHT*2;
-    g.user.v_bar.height = BAR_HEIGHT;
-    
-    // computer settings
-    g.computer.v_bar.x = SCREEN_WIDTH - BAR_WIDTH;
-    g.computer.v_bar.y = SCREEN_HEIGHT/2 + BAR_HEIGHT/2;
-    g.computer.v_bar.height = BAR_HEIGHT;
+    g->user.v_bar.x = BAR_WIDTH;
+    g->user.v_bar.y = SCREEN_HEIGHT/2 - BAR_HEIGHT*2;
+    g->user.v_bar.height = BAR_HEIGHT;
 
-    draw_bar(g.user.v_bar);
-    draw_bar(g.computer.v_bar);
-    draw_ball(g.ball);
-    draw_score(g);
+    // computer settings
+    g->computer.v_bar.x = SCREEN_WIDTH - BAR_WIDTH;
+    g->computer.v_bar.y = SCREEN_HEIGHT/2 + BAR_HEIGHT/2;
+    g->computer.v_bar.height = BAR_HEIGHT;
+
+    draw_bar(&g->user.v_bar);
+    draw_bar(&g->computer.v_bar);
+    draw_ball(&g->ball);
+
 
     swapBuffer();
 
 }
 
-void draw_ball(ball b) {
-    drawCircle(WHITE, b.x, b.y, b.radius);
+void draw_ball(ball* b) {
+    drawCircle(WHITE, b->x, b->y, b->radius);
 }
 
-void draw_bar(bar b) {
-    drawRectangle(BLUE, b.x, b.y, BAR_WIDTH, BAR_HEIGHT);
+void draw_bar(bar *b) {
+    drawRectangle(BLUE, b->x, b->y, BAR_WIDTH, BAR_HEIGHT);
 }
 
 void draw_score(game g) {
@@ -91,7 +91,7 @@ void move_ball(ball * b) {
     b->x += b->xDir;
     b->y += b->yDir;
 
-    // check collisions    
+    // check collisions
     if (b->x + b->xDir - b->radius <= 0) {
         b->xDir = (b->xDir < 0)?(-b->xDir):(b->xDir);
     } else if (b->x + b->xDir + b->radius >= SCREEN_WIDTH) {
@@ -107,14 +107,14 @@ void move_ball(ball * b) {
     // Draw the new ball at the updated position
     drawCircle(BLUE, b->x, b->y, b->radius);
 
-} 
+}
 
-void move_bar(bar b, uint32_t y) {
+void move_bar(bar *b, uint32_t y) {
 
     // draws black rectangle on top of the old bar
-    drawRectangle(BLACK, b.x, b.y, BAR_WIDTH, BAR_HEIGHT);
-    b.y += y;
-    drawRectangle(BLUE, b.x, b.y, BAR_WIDTH, BAR_HEIGHT);
+    drawRectangle(BLACK, b->x, b->y, BAR_WIDTH, BAR_HEIGHT);
+    b->y += y;
+    drawRectangle(BLUE, b->x, b->y, BAR_WIDTH, BAR_HEIGHT);
 
 
     // y = -1 --> moves up
@@ -132,11 +132,11 @@ uint32_t ball_touches_bar(ball ball, bar bar) {
         // play_beep();
         return 1;
     }
-    return 0;    
+    return 0;
 }
 
 void pong() {
-    
+
     // USER: left, COMPUTER: right
 
     player user, computer;
@@ -149,9 +149,9 @@ void pong() {
 
     game.user.score = 0;
     game.computer.score = 0;
-    
-    // draws 
-    init_game_and_draw(game);
+
+    // draws
+    init_game_and_draw(&game);
 
     while(1) {
 
@@ -163,59 +163,60 @@ void pong() {
             case 'w':
                 // moves up
                 game.user.v_bar.y -= SPEED;
-                draw_bar(game.user.v_bar);
+                draw_bar(&game.user.v_bar);
                 break;
             case 'W':
                 // moves up
                 game.user.v_bar.y -= SPEED;
-                draw_bar(game.user.v_bar);
+                draw_bar(&game.user.v_bar);
                 break;
             case 's':
                 // moves down
                 game.user.v_bar.y += SPEED;
-                draw_bar(game.user.v_bar);
+                draw_bar(&game.user.v_bar);
                 break;
             case 'S':
                 // moves down
                 game.user.v_bar.y += SPEED;
-                draw_bar(game.user.v_bar);
+                draw_bar(&game.user.v_bar);
                 break;
-            
+
             default:
+                draw_bar(&game.user.v_bar);
                 break;
             }
             // middle line
             drawRectangle(BLUE, SCREEN_WIDTH/2, 0, 2, SCREEN_HEIGHT);
-            draw_bar(game.computer.v_bar);
-            draw_ball(game.ball);
-
+            draw_bar(&game.computer.v_bar);
+            draw_ball(&game.ball);
+            move_ball(&game.ball);
             swapBuffer();
         }
 
     }
-    
+
 
     // while ((c = getChar) != 27) {
 
-    //     // TODO definir alguna tecla (esc por ejemplo) que haga que corte el juego 
-    
-    //     // TODO: que detecte la W y S 
+    //     // TODO definir alguna tecla (esc por ejemplo) que haga que corte el juego
+
+    //     // TODO: que detecte la W y S
     //     if (keyPress()) {
     //         move_user_bar(&game.user.v_bar);
     //     }
-            
+
     //     move_ball(&game.ball);
     //     // draw_ball(game.ball);
 
     //     // move the computer bar
     //     if (game.ball.y < SCREEN_HEIGHT/2) {
-    //     // moves up if the ball is in the upper middle of the screen                
+    //     // moves up if the ball is in the upper middle of the screen
     //         move_bar(game.computer.v_bar, -1);
     //     } else {
     //         // moves down otherwise
     //         move_bar(game.computer.v_bar, 1);
-    //     }       
-        
+    //     }
+
     //     if (game.ball.x == game.user.v_bar.x) {
     //         if (!ball_touches_bar(game.ball, game.user.v_bar)) {
     //             // point for computer
@@ -238,5 +239,5 @@ void pong() {
 
     //     swapBuffer();
     // }
-        
+
 }
