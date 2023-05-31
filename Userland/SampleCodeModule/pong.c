@@ -9,8 +9,8 @@
 #define BAR_HEIGHT 150
 #define BAR_WIDTH 20
 #define BALL_R 15
-#define BALLSPEED 1
-#define BARSPEED 5
+#define BALLSPEED 2
+#define BARSPEED 2
 
 
 typedef struct {
@@ -58,6 +58,7 @@ void init_game_and_draw(game* g) {
     // user settings
     g->user.v_bar.x = BAR_WIDTH;
     g->user.v_bar.y = SCREEN_HEIGHT/2 - BAR_HEIGHT*2;
+    g->user.v_bar.width = BAR_WIDTH;
     g->user.v_bar.height = BAR_HEIGHT;
 
     // computer settings
@@ -91,7 +92,7 @@ void draw_score(game g) {
 void check_entity_collision(player* p, ball* b) {
     uint32_t ball_next_pos_y = b->y + (b->yDir * (BALLSPEED + b->radius));
     uint32_t ball_next_pos_x = b->x + (b->xDir * (BALLSPEED + b->radius));
-    if (ball_next_pos_y <= p->v_bar.y && ball_next_pos_y >= p->v_bar.y + p->v_bar.height
+    if (ball_next_pos_y >= p->v_bar.y && ball_next_pos_y <= p->v_bar.y + p->v_bar.height
     && ball_next_pos_x >= p->v_bar.x && ball_next_pos_x <= p->v_bar.x + p->v_bar.width) {
         //collision detected
         b->xDir = -b->xDir;
@@ -102,29 +103,30 @@ void check_entity_collision(player* p, ball* b) {
 void update_ball(game* g) {
     // check collisions with vertical borders
     uint32_t nextY = g->ball.y + (g->ball.yDir * (BALLSPEED + g->ball.radius));
+    uint32_t nextX = g->ball.x + (g->ball.xDir * (BALLSPEED + g->ball.radius));
     if (nextY <= 0) {
         g->ball.yDir = (g->ball.yDir < 0)?(-g->ball.yDir):(g->ball.yDir);
     } else if (nextY >= SCREEN_HEIGHT) {
         g->ball.yDir = (g->ball.yDir > 0)?(-g->ball.yDir):(g->ball.yDir);
     }
-
-    //check collisions with players
-    if(g->ball.xDir > 0) {
-        //can only collide with the computer
-        check_entity_collision(&g->computer, &g->ball);
+    if (nextY >= g->user.v_bar.y && nextY <= g->user.v_bar.y + g->user.v_bar.height
+        && nextX >= g->user.v_bar.x && nextX <= g->user.v_bar.x + g->user.v_bar.width) {
+        //collision detected
+        g->ball.xDir = -g->ball.xDir;
     }
-    else {
-        //can only collide with the player
-        check_entity_collision(&g->user, &g->ball);
+    else if (nextY >= g->computer.v_bar.y && nextY <= g->computer.v_bar.y + g->computer.v_bar.height
+        && nextX >= g->computer.v_bar.x && nextX <= g->computer.v_bar.x + g->computer.v_bar.width) {
+        //collision detected
+        g->ball.xDir = -g->ball.xDir;
     }
 
     //check if it reached the end
-    if (g->ball.x + (g->ball.xDir * BALLSPEED) - g->ball.radius <= 0) {
+    if (g->ball.x + (g->ball.xDir * BALLSPEED) <= 0) {
         g->ball.x = SCREEN_WIDTH / 2;
         g->ball.y = SCREEN_HEIGHT / 2;
         g->ball.xDir = -g->ball.xDir;
         //GOL COMPUTADORA
-    } else if (g->ball.x + (g->ball.xDir * BALLSPEED) + g->ball.radius >= SCREEN_WIDTH) {
+    } else if (g->ball.x + (g->ball.xDir * BALLSPEED) >= SCREEN_WIDTH) {
         g->ball.x = SCREEN_WIDTH / 2;
         g->ball.y = SCREEN_HEIGHT / 2;
         g->ball.xDir = -g->ball.xDir;
