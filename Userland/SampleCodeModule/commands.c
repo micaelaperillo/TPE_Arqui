@@ -58,7 +58,7 @@ void testException0() {
 }
 
 void testException6(){
-invalidOp();
+    invalidOp();
 }
 
 void showRegisters() {

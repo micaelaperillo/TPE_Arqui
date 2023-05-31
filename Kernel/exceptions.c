@@ -18,11 +18,11 @@ void printregs(uint64_t* exregs) {
 
 void exceptionDispatcher(int exception,uint64_t regs,uint64_t* rip) {
 	if (exception == ZERO_EXCEPTION_ID){
-		cPrint("ERROR division por 0");
+		cPrint("ERROR: a value was divided by 0\n");
 		exScreen(regs,rip);
 	}
 	if (exception==INVALIDO_OP_ID){
-		cPrint("ERROR operacion invalida\n");
+		cPrint("ERROR: invalid operation\n");
 		exScreen(regs,rip);
 	}
 }
