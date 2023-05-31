@@ -2,9 +2,11 @@ GLOBAL current_regs
 GLOBAL test
 GLOBAL invalidOp
 section .text
+
 invalidOp:
 mov cr6, rax
 ret
+
 current_regs:
 	; gets current registers, this function is a duplicate from current_regs in the kernel
 	; this is because when getting the regiter values through a system call, they are modified in the call itself

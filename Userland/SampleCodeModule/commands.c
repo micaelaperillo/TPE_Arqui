@@ -15,6 +15,8 @@ struct PROGRAM_STRUCT {
 
 typedef struct PROGRAM_STRUCT* Program;
 
+extern void invalidop();
+
 void unknownCommand(char* str);
 
 void help(), testException0(),testException6(), showRegisters(), displayTime(), displayDate(), playBubbles(), playPong();

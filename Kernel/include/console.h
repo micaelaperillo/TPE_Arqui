@@ -1,10 +1,13 @@
 #ifndef TPE_ARQUI_CONSOLE_H
 #define TPE_ARQUI_CONSOLE_H
 #include <stdint.h>
+#include <videoDriver.h>
 
 void initializeConsole();
 
-void cPrint(const char * string);
+void cPrintColored(Color c, char * string);
+void cPrint(char * string);
+void cPrintColoredChar(Color c, char character);
 void cPrintChar(char character);
 void cNewline();
 void cPrintDec(uint64_t value);

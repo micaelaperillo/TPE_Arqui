@@ -18,19 +18,27 @@ void initializeConsole() {
 
 }
 
-void cPrint(const char * string)
+void cPrintColored(Color c, char * string)
 {
     int i;
 
     for (i = 0; string[i] != 0; i++)
-        cPrintChar(string[i]);
+        cPrintColoredChar(c, string[i]);
 }
 
-void cPrintChar(char character)
+void cPrint(char * string) {
+    cPrintColored(WHITE, string);
+}
+
+void cPrintChar(char character) {
+    cPrintColoredChar(WHITE, character);
+}
+
+void cPrintColoredChar(Color c, char character)
 {
     if(character == '\b' && consoleCursor > 0) {
         //backspace
-        putCharAt(--consoleCursor, height, character);
+        putColoredCharAt(c, --consoleCursor, height, character);
         return;
     }
     if(consoleCursor >= width || character == '\n') {
@@ -39,12 +47,12 @@ void cPrintChar(char character)
     }
     if(character == '\t') {
         //tab
-        cPrintChar(' ');
-        cPrintChar(' ');
-        cPrintChar(' ');
+        cPrintColoredChar(c, ' ');
+        cPrintColoredChar(c, ' ');
+        cPrintColoredChar(c, ' ');
         return;
     }
-    putCharAt(consoleCursor, height, character);
+    putColoredCharAt(c, consoleCursor, height, character);
     consoleCursor++;
 }
 

@@ -96,24 +96,22 @@ int main()
     cPrint("Loading IDT descriptors");
     load_idt();
     cNewline();
-    cPrint("  Sample code module at 0x");
-    cPrintHex((uint64_t)sampleCodeModuleAddress);
-    cNewline();
-    cPrint("  Calling the sample code module returned: ");
-    cPrintHex(((EntryPoint)sampleCodeModuleAddress)());
-    cNewline();
-    cNewline();
+
 
     cPrint("  Sample data module at 0x");
     cPrintHex((uint64_t)sampleDataModuleAddress);
     cNewline();
     cPrint("  Sample data module contents: ");
     cPrint((char*)sampleDataModuleAddress);
+    cPrint("  Sample code module at 0x");
+    cPrintHex((uint64_t)sampleCodeModuleAddress);
     cNewline();
-
-    cPrint("[Finished]");
+    cPrint("[Kernel finished]");
     cNewline();
-    cClear();
     cNewline();
+    cPrint("Initializing Shell");
+    cNewline();
+    ((EntryPoint)sampleCodeModuleAddress)();
+    cPrint("[Shell finished]");
 	return 0;
 }

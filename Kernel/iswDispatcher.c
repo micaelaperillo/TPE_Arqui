@@ -12,14 +12,13 @@ void sys_write(BASE_PARAMS);//code 0
 void sys_read(BASE_PARAMS);//code 1
 void sys_draw(BASE_PARAMS);//code 2
 void sys_double_buffer(BASE_PARAMS);//code 3
-void sys_get_exceptions(BASE_PARAMS);//code 4
-void sys_get_time(BASE_PARAMS);//code 5
-void sys_detect_key_press(BASE_PARAMS);//code 6
-void sys_wait(BASE_PARAMS);
+void sys_get_time(BASE_PARAMS);//code 4
+void sys_detect_key_press(BASE_PARAMS);//code 5
+void sys_wait(BASE_PARAMS);//code 6
 extern uint64_t* current_regs();
 
 FunctionPtr interruptions[] = {sys_write, sys_read, sys_draw, sys_double_buffer,
-                               sys_get_exceptions, sys_get_time, sys_detect_key_press,
+                               sys_get_time, sys_detect_key_press,
                                sys_wait};
 
 void swInterruptDispatcher(COMPLETE_PARAMS) {
@@ -106,31 +105,7 @@ void sys_double_buffer(BASE_PARAMS) {
     }
 }
 
-//TODO en vez de un sys_get_exceptions podriamos hacer que realice las operaciones que generan
-// excepciones en el user space
-static zero_div() {
-    int i = 1 / 0;
-}
-
-static invalid_op() {
-    // TODO hacer una operacion que tire invalid operation
-}
-
-
 //ID=4
-void sys_get_exceptions(BASE_PARAMS) {
-    cPrint("Zero Division Exception");
-    cNewline();
-    zero_div();
-	cNewline();
-
-    cPrint("Invalid Operation Exception");
-    cNewline();
-    // TODO hacer saltar la invalid operation exceptino
-}
-
-
-//ID=5
 //rsi= DATA TYPE :: 0 -> seconds || 1 -> minutes || 2 -> hours || 3 -> day || 4 -> month || 5 -> year
 //rdx= pointer to an unsigned int, the value is stored in this position
 void sys_get_time(BASE_PARAMS) {
@@ -159,13 +134,13 @@ void sys_get_time(BASE_PARAMS) {
 }
 
 
-//ID=6
+//ID=5
 //rsi= pointer to an uint8_t, returns 1 if a key press was detected, 0 if not
 void sys_detect_key_press(BASE_PARAMS) {
     *(uint8_t*) rsi = keyPressed();
 }
 
-//ID=7
+//ID=6
 //rsi= milliseconds to wait in unsigned long
 void sys_wait(BASE_PARAMS) {
     wait(rsi);

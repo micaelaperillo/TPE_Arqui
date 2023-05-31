@@ -2,9 +2,8 @@
 #include <timeDate.h>
 #include <standardLib.h>
 
-#define SYS_GET_REGS_ID 4
-#define SYS_DETECT_KEY_PRESS_ID 6
-#define SYS_WAIT_ID 7
+#define SYS_DETECT_KEY_PRESS_ID 5
+#define SYS_WAIT_ID 6
 
 static int regsAmount = 17;
 static char * regsStr[]={"rax:","rbx:","rcx:","rdx:","rsi:","rdi:","rbp:","r8:","r9:","r10:","r11:","r12:","r13:","r14:",

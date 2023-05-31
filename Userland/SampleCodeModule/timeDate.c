@@ -1,7 +1,7 @@
 #include <stdint.h>
 #include <standardLib.h>
 
-#define SYS_GET_TIME_ID 5
+#define SYS_GET_TIME_ID 4
 
 enum TimeID {
     SECONDS,
