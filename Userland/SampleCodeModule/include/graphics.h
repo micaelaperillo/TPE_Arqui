@@ -26,5 +26,6 @@ void clearScreen();
 void enableDoubleBuffering();
 void disableDoubleBuffering();
 void swapBuffer();
+void drawNumber(uint32_t x, uint32_t y, uint32_t height, uint32_t hexColor, uint32_t width, uint32_t line_width, uint32_t number);
 
 #endif //TPE_ARQUI_GRAPHICS_H

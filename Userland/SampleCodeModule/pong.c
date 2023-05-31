@@ -89,8 +89,9 @@ void draw_bar(bar *b) {
     drawRectangle(BLUE, b->x, b->y, b->width, b->height);
 }
 
-void draw_score(game g) {
-    // TODO
+void draw_score(game* g) {
+    drawNumber(420,200,60,WHITE,20,5,g->computer.score);
+    drawNumber(580,200,60,WHITE,20,5,g->user.score);
 }
 
 void ball_impulse(ball* b, uint8_t dir) {
@@ -141,11 +142,13 @@ void update_ball(game* g) {
         g->ball.x = SCREEN_WIDTH / 2;
         g->ball.y = SCREEN_HEIGHT / 2;
         g->ball.xDir = -g->ball.xDir;
+        g->computer.score++;
         //GOL COMPUTADORA
     } else if (g->ball.x + (g->ball.xDir * BALLSPEED) >= SCREEN_WIDTH) {
         g->ball.x = SCREEN_WIDTH / 2;
         g->ball.y = SCREEN_HEIGHT / 2;
         g->ball.xDir = -g->ball.xDir;
+        g->user.score++;
         //GOL JUGADOR
     }
 
@@ -183,7 +186,7 @@ void pong() {
     // draws
     init_game_and_draw(&game);
     char c;
-    while(1) {
+    while(c!=27) {
         if (keyPress()) {
             c = getChar();
             if (c == 'w' || c == 'W') {
@@ -208,14 +211,11 @@ void pong() {
         //UPDATES POS
         update_player_computer(&game);
         update_ball(&game);
-
-        //DRAWS SHAPES
-        drawRectangle(BLUE, SCREEN_WIDTH / 2, 0, 2, SCREEN_HEIGHT);
+        drawRectangle(WHITE, SCREEN_WIDTH / 2, 0, 2, SCREEN_HEIGHT);
         draw_bar(&game.computer.v_bar);
         draw_bar(&game.user.v_bar);
         draw_ball(&game.ball);
-
-        //RENDERS TO SCREEN
+        draw_score(&game);
         swapBuffer();
     }
 }
