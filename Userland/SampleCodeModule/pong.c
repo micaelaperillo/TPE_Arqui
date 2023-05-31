@@ -9,8 +9,8 @@
 #define BAR_HEIGHT 150
 #define BAR_WIDTH 20
 #define BALL_R 15
-#define BALLSPEED 2
-#define BARSPEED 2
+#define BALLSPEED 1
+#define BARSPEED 1
 
 
 typedef struct {
@@ -52,8 +52,8 @@ void init_game_and_draw(game* g) {
     g->ball.x = SCREEN_WIDTH / 2;
     g->ball.y = SCREEN_HEIGHT / 2;
     g->ball.radius = BALL_R;
-    g->ball.xDir = -1;
-    g->ball.yDir = -1;
+    g->ball.xDir = 1;
+    g->ball.yDir = 1;
 
     // user settings
     g->user.v_bar.x = BAR_WIDTH;
@@ -138,10 +138,12 @@ void update_ball(game* g) {
 }
 
 void move_bar(bar *b, uint32_t y) {
-    // draws black rectangle on top of the old bar
-    drawRectangle(BLACK, b->x, b->y, BAR_WIDTH, BAR_HEIGHT);
-    b->y += y;
-    drawRectangle(BLUE, b->x, b->y, BAR_WIDTH, BAR_HEIGHT);
+    if (b->y + y * BARSPEED < 0 || b->y + y * BARSPEED > SCREEN_HEIGHT) {
+        y = y * -1;
+    }
+    b->y += y * BARSPEED;
+    draw_bar(b);
+
     // y = -1 --> moves up
     // y = 1 --> moves down
 }
@@ -172,7 +174,6 @@ void pong() {
             else if(c=='s'||c=="S")
                 game.user.v_bar.y += BARSPEED;
             }
-            // middle line
 
 
             //UPDATES POS
@@ -186,10 +187,13 @@ void pong() {
             update_ball(&game);
             draw_ball(&game.ball);
             swapBuffer();
-     if (game.ball.y < game.computer.v_bar.y)
-         move_bar(&game.computer.v_bar, -BARSPEED);
-    else if(game.ball.y>game.computer.v_bar.y)
-         move_bar(&game.computer.v_bar, BARSPEED);
+
+    if (game.ball.y < game.computer.v_bar.y)
+        // -1 si sube
+        move_bar(&game.computer.v_bar, -BARSPEED);
+    else if(game.ball.y > game.computer.v_bar.y)
+        // 1 si baja
+        move_bar(&game.computer.v_bar, BARSPEED);
     }
 
 }
