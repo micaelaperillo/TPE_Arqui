@@ -67,6 +67,180 @@ void drawRectangle(uint32_t hexColor, uint32_t x, uint32_t y, uint32_t width, ui
     interrupt(SYS_DRAW_ID, RCT, coords, 0, dim, hexColor);
 }
 
+void drawNumber(uint32_t x, uint32_t y, uint32_t height, uint32_t hexColor, uint32_t width, uint32_t line_width, uint32_t number) {
+
+    switch (number)
+    {
+
+    case 0:
+        // left vertical line
+        drawRectangle(hexColor, x, y, line_width, height);
+
+        // right vertical line
+        drawRectangle(hexColor, x+width, y, line_width, height);
+
+        // upper horizontal line
+        drawRectangle(hexColor, x, y, width, line_width);
+
+        // bottom horizontal line
+        drawRectangle(hexColor, x, y+height, width+line_width, line_width);
+
+
+    case 1:
+        // right vertical line
+        drawRectangle(hexColor, x+width, y, line_width, height);
+        break;
+
+    case 2:
+        // upper horizontal line
+        drawRectangle(hexColor, x, y, width, line_width);
+
+        // middle horizonal line
+        drawRectangle(hexColor, x, y+(height/2), width+line_width, line_width);
+
+        // bottom horizontal line
+        drawRectangle(hexColor, x, y+height, width+line_width, line_width);
+
+        // right vertical upper line
+        drawRectangle(hexColor, x+width, y, line_width, height/2);
+
+        // left vertical lower line
+        drawRectangle(hexColor, x, y+(height/2), line_width, height/2);
+        break;
+
+    case 3:
+        // upper horizontal line
+        drawRectangle(hexColor, x, y, width, line_width);
+
+        // middle horizonal line
+        drawRectangle(hexColor, x, y+(height/2), width, line_width);
+
+        // bottom horizontal line
+        drawRectangle(hexColor, x, y+height, width+line_width, line_width);
+
+        // left vertical upper line
+        drawRectangle(hexColor, x, y, line_width, height/2);
+
+        // right vertical upper line
+        drawRectangle(hexColor, x+width, y, line_width, height/2);
+        break;
+
+    case 4:
+
+        // middle horizonal line
+        drawRectangle(hexColor, x, y+(height/2), width, line_width);
+
+        // left vertical upper line
+        drawRectangle(hexColor, x, y, line_width, height/2);
+
+        // right vertical upper line
+        drawRectangle(hexColor, x+width, y, line_width, height/2);
+
+        // right vertical lower line
+        drawRectangle(hexColor, x+width, y+(height/2), line_width, height/2);
+        break;
+
+    case 5:
+        // upper horizontal line
+        drawRectangle(hexColor, x, y, width, line_width);
+
+        // middle horizonal line
+        drawRectangle(hexColor, x, y+(height/2), width, line_width);
+
+        // bottom horizontal line
+        drawRectangle(hexColor, x, y+height, width+line_width, line_width);
+
+        // left vertical upper line
+        drawRectangle(hexColor, x, y, line_width, height/2);
+
+        // right vertical upper line
+        drawRectangle(hexColor, x+width, y, line_width, height/2);
+
+        // left vertical lower line
+        drawRectangle(hexColor, x, y+(height/2), line_width, height/2);
+
+        // right vertical lower line
+        drawRectangle(hexColor, x+width, y+(height/2), line_width, height/2);
+        break;
+
+    case 6:
+
+        // middle horizonal line
+        drawRectangle(hexColor, x, y+(height/2), width, line_width);
+
+        // bottom horizontal line
+        drawRectangle(hexColor, x, y+height, width+line_width, line_width);
+
+        // left vertical upper line
+        drawRectangle(hexColor, x, y, line_width, height/2);
+
+        // left vertical lower line
+        drawRectangle(hexColor, x, y+(height/2), line_width, height/2);
+
+        // right vertical lower line
+        drawRectangle(hexColor, x+width, y+(height/2), line_width, height/2);
+        break;
+
+    case 7:
+        // upper horizontal line
+        drawRectangle(hexColor, x, y, width, line_width);
+
+        // right vertical upper line
+        drawRectangle(hexColor, x+width, y, line_width, height/2);
+
+        // right vertical lower line
+        drawRectangle(hexColor, x+width, y+(height/2), line_width, height/2);
+
+        break;
+
+    case 8:
+        // upper horizontal line
+        drawRectangle(hexColor, x, y, width, line_width);
+
+        // middle horizonal line
+        drawRectangle(hexColor, x, y+(height/2), width, line_width);
+
+        // bottom horizontal line
+        drawRectangle(hexColor, x, y+height, width+line_width, line_width);
+
+        // left vertical upper line
+        drawRectangle(hexColor, x, y, line_width, height/2);
+
+        // right vertical upper line
+        drawRectangle(hexColor, x+width, y, line_width, height/2);
+
+        // left vertical lower line
+        drawRectangle(hexColor, x, y+(height/2), line_width, height/2);
+
+        // right vertical lower line
+        drawRectangle(hexColor, x+width, y+(height/2), line_width, height/2);
+        break;
+
+    case 9:
+        // upper horizontal line
+        drawRectangle(hexColor, x, y, width, line_width);
+
+        // middle horizonal line
+        drawRectangle(hexColor, x, y+(height/2), width, line_width);
+
+        // left vertical upper line
+        drawRectangle(hexColor, x, y, line_width, height/2);
+
+        // right vertical upper line
+        drawRectangle(hexColor, x+width, y, line_width, height/2);
+
+        // right vertical lower line
+        drawRectangle(hexColor, x+width, y+(height/2), line_width, height/2);
+        break;
+
+    
+    
+    default:
+        break;
+    }
+
+}
+
 void clearScreen() {
     interrupt(SYS_DRAW_ID, CLR, 0, 0, 0, 0);
 }
