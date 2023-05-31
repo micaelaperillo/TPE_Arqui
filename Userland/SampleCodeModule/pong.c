@@ -8,9 +8,10 @@
 #define SCREEN_HEIGHT 768
 #define BAR_HEIGHT 150
 #define BAR_WIDTH 20
-#define BALL_R 15
-#define BALLSPEED 1
-#define BARSPEED 1
+#define BALL_R 10
+#define BALLSPEED 3
+#define BARSPEED 2
+#define OFFSET 2
 
 
 typedef struct {
@@ -109,15 +110,11 @@ void update_ball(game* g) {
     } else if (nextY >= SCREEN_HEIGHT) {
         g->ball.yDir = (g->ball.yDir > 0)?(-g->ball.yDir):(g->ball.yDir);
     }
-    if (nextY >= g->user.v_bar.y && nextY <= g->user.v_bar.y + g->user.v_bar.height
-        && nextX >= g->user.v_bar.x && nextX <= g->user.v_bar.x + g->user.v_bar.width) {
-        //collision detected
-        g->ball.xDir = -g->ball.xDir;
-    }
-    else if (nextY >= g->computer.v_bar.y && nextY <= g->computer.v_bar.y + g->computer.v_bar.height
-        && nextX >= g->computer.v_bar.x && nextX <= g->computer.v_bar.x + g->computer.v_bar.width) {
-        //collision detected
-        g->ball.xDir = -g->ball.xDir;
+
+    if(g->ball.xDir < 0) {
+        check_entity_collision(&g->user, &g->ball);
+    }else {
+        check_entity_collision(&g->computer, &g->ball);
     }
 
     //check if it reached the end
@@ -137,15 +134,12 @@ void update_ball(game* g) {
     g->ball.y += g->ball.yDir * BALLSPEED;
 }
 
-void move_bar(bar *b, uint32_t y) {
-    if (b->y + y * BARSPEED < 0 || b->y + y * BARSPEED > SCREEN_HEIGHT) {
-        y = y * -1;
+void update_player_computer(game* g) {
+    if(g->ball.y > g->computer.v_bar.y + (g->computer.v_bar.height / 2) + OFFSET) {
+        g->computer.v_bar.y += BARSPEED;
+    }else if(g->ball.y < g->computer.v_bar.y + (g->computer.v_bar.height / 2) + OFFSET) {
+        g->computer.v_bar.y -= BARSPEED;
     }
-    b->y += y * BARSPEED;
-    draw_bar(b);
-
-    // y = -1 --> moves up
-    // y = 1 --> moves down
 }
 
 void pong() {
@@ -169,31 +163,24 @@ void pong() {
     while(1) {
         if (keyPress()) {
             c = getChar();
-            if(c=='w'||c=='W')
+            if (c == 'w' || c == 'W')
                 game.user.v_bar.y -= BARSPEED;
-            else if(c=='s'||c=="S")
+            else if (c == 's' || c == "S")
                 game.user.v_bar.y += BARSPEED;
-            }
+        }
 
 
-            //UPDATES POS
+        //UPDATES POS
 
-            //upp
-            //uap
+        //upp
+        //uap
 
-            drawRectangle(BLUE, SCREEN_WIDTH/2, 0, 2, SCREEN_HEIGHT);
-            draw_bar(&game.computer.v_bar);
-            draw_bar(&game.user.v_bar);
-            update_ball(&game);
-            draw_ball(&game.ball);
-            swapBuffer();
-
-    if (game.ball.y < game.computer.v_bar.y)
-        // -1 si sube
-        move_bar(&game.computer.v_bar, -BARSPEED);
-    else if(game.ball.y > game.computer.v_bar.y)
-        // 1 si baja
-        move_bar(&game.computer.v_bar, BARSPEED);
+        update_player_computer(&game);
+        update_ball(&game);
+        drawRectangle(BLUE, SCREEN_WIDTH / 2, 0, 2, SCREEN_HEIGHT);
+        draw_bar(&game.computer.v_bar);
+        draw_bar(&game.user.v_bar);
+        draw_ball(&game.ball);
+        swapBuffer();
     }
-
 }
