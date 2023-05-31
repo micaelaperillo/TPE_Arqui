@@ -163,35 +163,31 @@ void pong() {
             case 'w':
                 // moves up
                 game.user.v_bar.y -= SPEED;
-                draw_bar(&game.user.v_bar);
                 break;
             case 'W':
                 // moves up
                 game.user.v_bar.y -= SPEED;
-                draw_bar(&game.user.v_bar);
                 break;
             case 's':
                 // moves down
                 game.user.v_bar.y += SPEED;
-                draw_bar(&game.user.v_bar);
                 break;
             case 'S':
                 // moves down
                 game.user.v_bar.y += SPEED;
-                draw_bar(&game.user.v_bar);
                 break;
 
             default:
-                draw_bar(&game.user.v_bar);
                 break;
             }
             // middle line
+        }
             drawRectangle(BLUE, SCREEN_WIDTH/2, 0, 2, SCREEN_HEIGHT);
             draw_bar(&game.computer.v_bar);
-            draw_ball(&game.ball);
+            draw_bar(&game.user.v_bar);
             move_ball(&game.ball);
+            draw_ball(&game.ball);
             swapBuffer();
-        }
 
     }
 
