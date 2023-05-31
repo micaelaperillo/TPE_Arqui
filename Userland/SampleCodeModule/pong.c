@@ -9,7 +9,9 @@
 #define BAR_HEIGHT 150
 #define BAR_WIDTH 20
 #define BALL_R 15
-#define SPEED 5
+#define BALLSPEED 1
+#define BARSPEED 5
+
 
 typedef struct {
     uint32_t x;
@@ -121,13 +123,13 @@ void move_bar(bar *b, uint32_t y) {
     // y = 1 --> moves down
 }
 
-uint32_t ball_touches_bar(ball ball, bar bar) {
-    if (ball.x != bar.x) {
+uint32_t ball_touches_bar(ball *ball, bar *bar) {
+    if (ball->x != bar->x) {
         return 0;
     }
 
     // verify that the ball is inside the bar dims
-    if ((ball.y <= bar.y + bar.height) && (ball.y >= ball.y)) {
+    if ((ball->y <= bar->y + bar->height) && (ball->y >= ball->y)) {
         // TODO add beep
         // play_beep();
         return 1;
@@ -152,88 +154,33 @@ void pong() {
 
     // draws
     init_game_and_draw(&game);
-
+    char c;
     while(1) {
-
         if (keyPress()) {
-
-            char c = getChar();
-            switch (c)
-            {
-            case 'w':
-                // moves up
-                game.user.v_bar.y -= SPEED;
-                break;
-            case 'W':
-                // moves up
-                game.user.v_bar.y -= SPEED;
-                break;
-            case 's':
-                // moves down
-                game.user.v_bar.y += SPEED;
-                break;
-            case 'S':
-                // moves down
-                game.user.v_bar.y += SPEED;
-                break;
-
-            default:
-                break;
+            c = getChar();
+            if(c=='w'||c=='W')
+                game.user.v_bar.y -= BARSPEED;
+            else if(c=='s'||c=="S")
+                game.user.v_bar.y += BARSPEED;
             }
             // middle line
-        }
+
+
+            //UPDATES POS
+
+            //upp
+            //uap
+
             drawRectangle(BLUE, SCREEN_WIDTH/2, 0, 2, SCREEN_HEIGHT);
             draw_bar(&game.computer.v_bar);
             draw_bar(&game.user.v_bar);
             move_ball(&game.ball);
             draw_ball(&game.ball);
             swapBuffer();
-
+     if (game.ball.y < game.computer.v_bar.y)
+         move_bar(&game.computer.v_bar, -BARSPEED);
+    else if(game.ball.y>game.computer.v_bar.y)
+         move_bar(&game.computer.v_bar, BARSPEED);
     }
-
-
-    // while ((c = getChar) != 27) {
-
-    //     // TODO definir alguna tecla (esc por ejemplo) que haga que corte el juego
-
-    //     // TODO: que detecte la W y S
-    //     if (keyPress()) {
-    //         move_user_bar(&game.user.v_bar);
-    //     }
-
-    //     move_ball(&game.ball);
-    //     // draw_ball(game.ball);
-
-    //     // move the computer bar
-    //     if (game.ball.y < SCREEN_HEIGHT/2) {
-    //     // moves up if the ball is in the upper middle of the screen
-    //         move_bar(game.computer.v_bar, -1);
-    //     } else {
-    //         // moves down otherwise
-    //         move_bar(game.computer.v_bar, 1);
-    //     }
-
-    //     if (game.ball.x == game.user.v_bar.x) {
-    //         if (!ball_touches_bar(game.ball, game.user.v_bar)) {
-    //             // point for computer
-    //             game.computer.score++;
-    //             init_game_and_draw(game);
-    //         }
-    //     }
-    //     if (game.ball.x == game.computer.v_bar.x) {
-    //         if (!ball_touches_bar(game.ball, game.computer.v_bar)) {
-    //         // point for user
-    //             game.user.score++;
-    //             init_game_and_draw(game);
-    //         }
-    //     }
-
-    //     // draw rec and circle
-    //     draw_ball(game.ball);
-    //     draw_bar(game.user.v_bar);
-    //     draw_bar(game.computer.v_bar);
-
-    //     swapBuffer();
-    // }
 
 }
