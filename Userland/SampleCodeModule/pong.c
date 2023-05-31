@@ -101,7 +101,7 @@ void check_entity_collision(player* p, ball* b) {
 
 void update_ball(game* g) {
     // check collisions with vertical borders
-    uint32_t nextY = g->ball.y + (g->ball.yDir * (SPEED_BALL + g->ball.radius));
+    uint32_t nextY = g->ball.y + (g->ball.yDir * (BALLSPEED + g->ball.radius));
     if (nextY <= 0) {
         g->ball.yDir = (g->ball.yDir < 0)?(-g->ball.yDir):(g->ball.yDir);
     } else if (nextY >= SCREEN_HEIGHT) {
@@ -133,6 +133,15 @@ void update_ball(game* g) {
 
     g->ball.x += g->ball.xDir * BALLSPEED;
     g->ball.y += g->ball.yDir * BALLSPEED;
+}
+
+void move_bar(bar *b, uint32_t y) {
+    // draws black rectangle on top of the old bar
+    drawRectangle(BLACK, b->x, b->y, BAR_WIDTH, BAR_HEIGHT);
+    b->y += y;
+    drawRectangle(BLUE, b->x, b->y, BAR_WIDTH, BAR_HEIGHT);
+    // y = -1 --> moves up
+    // y = 1 --> moves down
 }
 
 void pong() {
