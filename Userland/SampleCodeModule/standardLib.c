@@ -1,5 +1,6 @@
 #include <standardLib.h>
 #include <stdarg.h>
+#include <system.h>
 #define SYSWRITE 0
 #define SYSREAD 1
 
@@ -58,8 +59,13 @@ static void putStrn(char*s){
 
 char getChar(){
     char c;
-    interrupt(SYSREAD,(uint64_t)&c,0,0,0,0);
-    return c;
+    //this prevents the system calls from being blocked by the sys_read interruption
+    while(1) {
+        if(keyPress()) {
+            interrupt(SYSREAD,(uint64_t)&c,0,0,0,0);
+            return c;
+        }
+    }
 }
 void printFormat(const char* format, ...) {
     char buff[17];
