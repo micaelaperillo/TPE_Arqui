@@ -39,7 +39,10 @@ void bubbles() {
     //TODO cambiar para que termine cuando detecta input
     int i;
     char c;
-    while(!keyPress() || (c=getChar()) != 27) {
+    while(1) {
+        if(keyPress() && (c=getChar()) == 27) {
+            return;
+        }
         //runs until 'esc' is pressed
         //animation loop
         for(i = 0; i<size; i++) {

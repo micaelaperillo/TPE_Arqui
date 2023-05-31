@@ -1,8 +1,10 @@
 #include <stdint.h>
+#include <timeDate.h>
 #include <standardLib.h>
 
 #define SYS_GET_REGS_ID 4
 #define SYS_DETECT_KEY_PRESS_ID 6
+#define SYS_WAIT_ID 7
 
 static int regsAmount = 17;
 static char * regsStr[]={"rax:","rbx:","rcx:","rdx:","rsi:","rdi:","rbp:","r8:","r9:","r10:","r11:","r12:","r13:","r14:",
@@ -23,4 +25,8 @@ uint8_t keyPress() {
     uint8_t b;
     interrupt(SYS_DETECT_KEY_PRESS_ID, (uint64_t)&b, 0, 0, 0, 0);
     return b;
+}
+
+void wait(unsigned long milliseconds) {
+    interrupt(SYS_WAIT_ID, milliseconds, 0, 0, 0, 0);
 }

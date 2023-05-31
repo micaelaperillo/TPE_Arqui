@@ -15,6 +15,8 @@ extern unsigned char keypress();
 static uint8_t shift = FALSE;
 static uint8_t caps_lock = FALSE;
 
+uint8_t lastKey = NO_INPUT;
+
 const unsigned char kbdusNoShift[128] = {
     0,  27, '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '-', '=', '\b', '\t',
     'q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p', '[', ']', '\n', 0, 'a', 's', 'd',
@@ -34,11 +36,13 @@ const unsigned char kbdusWithShift[128] = {
 };
 
 uint8_t keyPressed() {
-    return keypress();
+    lastKey = keypress();
+    return lastKey;
 }
 
 unsigned char retrieveChar(uint8_t keycode) {
-    unsigned char c = kbdusNoShift[keycode];
+    unsigned char c = (lastKey == NO_INPUT)?(kbdusNoShift[keycode]):(lastKey);
+    lastKey = NO_INPUT;
     uint8_t isLetter = (c >= 'a' && c <= 'z');
     uint8_t auxShift = (caps_lock && isLetter)?(!shift):(shift);
 

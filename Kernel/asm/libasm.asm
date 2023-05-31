@@ -59,13 +59,13 @@ clock:
 	pop rbp
 	ret
 
-keypress:
+keydown:
     push rbp
     mov rbp, rsp
+    in al, 0x64
+    and al, 0x01
+    jz .not_pressed
     in al, 0x60
-    test al, 0x80
-    jnz .not_pressed
-    mov al, 1
     jmp .finish
 .not_pressed:
     mov al, 0
@@ -73,7 +73,7 @@ keypress:
     leave
     ret
 
-keydown:
+keydownold:
 	push rbp
 	mov rbp, rsp
 .loop:
