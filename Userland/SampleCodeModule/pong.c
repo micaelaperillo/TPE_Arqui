@@ -130,8 +130,8 @@ void recenter_player(player* p) {
 
 void update_ball(game* g) {
     // check collisions with vertical borders
-    int mult = ((int) g->ball.xDir > 0)?(1):(-1);
-    int nextY = g->ball.y + BALLSPEED * (int) g->ball.xDir + g->ball.radius * mult;
+    int mult = (g->ball.yDir > 0)?(1):(-1);
+    int nextY = g->ball.y + BALLSPEED * g->ball.yDir + g->ball.radius * mult;
     if (nextY <= 0) {
         g->ball.yDir = (g->ball.yDir < 0)?(-g->ball.yDir):(g->ball.yDir);
     } else if (nextY >= SCREEN_HEIGHT) {
