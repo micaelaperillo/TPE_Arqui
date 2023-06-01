@@ -78,28 +78,29 @@ SECTION .text
 %macro exceptionHandler 1
 	pushState
 	mov [excregs], rax
-	mov [excregs+8], rbx
-	mov [excregs+16], rcx
-	mov [excregs+24], rdx
-	mov [excregs+32], rsi
-	mov [excregs+40], rdi
-	mov [excregs+48], rbp
-	mov [excregs+64], r8
-	mov [excregs+72], r9
-	mov [excregs+80], r10
-	mov [excregs+88], r11
-	mov [excregs+96], r12
-	mov [excregs+104], r13
-	mov [excregs+112], r14
-	mov [excregs+120], r15
+	mov [excregs+8*1], rbx
+	mov [excregs+8*2], rcx
+	mov [excregs+8*3], rdx
+	mov [excregs+8*4], rsi
+	mov [excregs+8*5], rdi
+	mov [excregs+8*6], rbp
+	mov [excregs+8*7], r8
+	mov [excregs+8*8], r9
+	mov [excregs+8*9], r10
+	mov [excregs+8*10], r11
+	mov [excregs+8*11], r12
+	mov [excregs+8*12], r13
+	mov [excregs+8*13], r14
+	mov [excregs+8*14], r15
 	mov rax,rsp
 	add rax,8*15  ;valor rip pusheado luego de la excepcion
-	mov [excregs+128],rax ;; le pasa el rip, el vector excregs y el tipo de excepcion a exception
 	mov rdx,rax
+	mov rcx,rsp ;valor rsp antes de la excepcion
+	add rcx,18*8
+	mov [excregs+8*15],rcx
 	mov rsi,excregs
 	mov rdi, %1 ; pasaje de parametro
 	call exceptionDispatcher
-
 	popState
 	iretq
 %endmacro
@@ -184,4 +185,4 @@ haltcpu:
 
 SECTION .bss
 	aux resq 1
-	excregs resq 18
+	excregs resq 17
