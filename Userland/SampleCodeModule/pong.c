@@ -13,7 +13,6 @@
 #define IMPULSESPEED 2
 #define OFFSET 50
 
-
 typedef struct {
     int x;
     int y;
@@ -23,11 +22,8 @@ typedef struct {
 } ball;
 
 typedef struct {
-    // (x,y) are the upper right coordinates
-    // h is the height of the bar, the other two coordinates are (x1, y1+height) and (x2,y2+height)
-    // (0,0) is the top left of the screen
-    int x;
-    int y;
+    int x;          // upper right x position
+    int y;          // upper right y position
     int height;
     int width;
     int dir;
@@ -38,17 +34,24 @@ typedef struct {
     int score;
 } player;
 
-typedef struct
-{
+typedef struct {
     player user;
     player computer;
     ball ball;
 } game;
 
-void draw_bar(bar* b);
-void draw_ball(ball* b);
+// function prototypes
+void draw_bar(bar * b);
+void draw_ball(ball * b);
+void init_game_and_draw(game* g);
+void draw_score(game * g);
+void ball_impulse(ball* b, uint8_t dir);
+void check_entity_collision(player * p, ball * b);
+void update_ball(game * g);
+void update_player_computer(game * g);
+void pong();
 
-void init_game_and_draw(game* g) {
+void init_game_and_draw(game * g) {
 
     // middle line
     drawRectangle(BLUE, SCREEN_WIDTH/2, 0, 2, SCREEN_HEIGHT);
@@ -81,11 +84,11 @@ void init_game_and_draw(game* g) {
     swapBuffer();
 }
 
-void draw_ball(ball* b) {
+void draw_ball(ball * b) {
     drawCircle(WHITE, b->x, b->y, b->radius);
 }
 
-void draw_bar(bar *b) {
+void draw_bar(bar * b) {
     drawRectangle(BLUE, b->x, b->y, b->width, b->height);
 }
 
@@ -107,14 +110,14 @@ void ball_impulse(ball* b, uint8_t dir) {
 
 }
 
-void check_entity_collision(player* p, ball* b) {
+void check_entity_collision(player * p, ball * b) {
     int mult = ((int)b->xDir > 0)?(1):(-1);
     int ball_next_pos_y = b->y + BALLSPEED * b->yDir + b->radius * mult;
     int ball_next_pos_x = b->x + BALLSPEED * b->xDir + b->radius * mult;
     if (((ball_next_pos_y + b->radius >= p->v_bar.y && ball_next_pos_y + b->radius <= p->v_bar.y + p->v_bar.height) ||
     (ball_next_pos_y - b->radius >= p->v_bar.y && ball_next_pos_y - b->radius <= p->v_bar.y + p->v_bar.height))
     && ball_next_pos_x >= p->v_bar.x && ball_next_pos_x <= p->v_bar.x + p->v_bar.width) {
-        //collision detected
+        // collision detected
         b->xDir = -b->xDir;
         ball_impulse(b, p->v_bar.dir);
     }
@@ -141,7 +144,7 @@ void update_ball(game* g) {
     check_entity_collision(&g->user, &g->ball);
     check_entity_collision(&g->computer, &g->ball);
 
-    //check if it reached the end
+    // check if it reached the end
     if (g->ball.x + (g->ball.xDir * BALLSPEED) <= 0) {
         g->ball.x = SCREEN_WIDTH / 2;
         g->ball.y = SCREEN_HEIGHT / 2;
@@ -159,12 +162,11 @@ void update_ball(game* g) {
         play_beep(2000, 100);
         //GOL COMPUTER
     }
-
     g->ball.x += g->ball.xDir * BALLSPEED;
     g->ball.y += g->ball.yDir * BALLSPEED;
 }
 
-void update_player_computer(game* g) {
+void update_player_computer(game * g) {
     if(g->ball.y > g->computer.v_bar.y + (g->computer.v_bar.height / 2) + OFFSET) {
         g->computer.v_bar.y += BARSPEED;
         g->computer.v_bar.dir = 1;
@@ -208,7 +210,8 @@ char update_player_user(game* g) {
 
 void pong() {
 
-    // USER: left, COMPUTER: right
+    // the USER is the bar on the left
+    // the COMPUTER is the bar on the right
 
     player user, computer;
     ball ball;
@@ -221,10 +224,10 @@ void pong() {
     game.user.score = 0;
     game.computer.score = 0;
 
-    // draws
+    // draws initial game
     init_game_and_draw(&game);
     char c = 0;
-    while(c != 27) {
+    while(c != 27 && (game.user.score!=2 && game.computer.score!=2)) {
 
         //UPDATES POS
         c = update_player_user(&game);
