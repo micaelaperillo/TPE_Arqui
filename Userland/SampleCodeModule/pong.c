@@ -9,8 +9,9 @@
 #define BAR_WIDTH 20
 #define BALL_R 10
 #define BALLSPEED 2
-#define BARSPEED 6
-#define OFFSET 30
+#define BARSPEED 8
+#define IMPULSESPEED 2
+#define OFFSET 50
 
 typedef struct {
     int x;
@@ -25,7 +26,7 @@ typedef struct {
     int y;          // upper right y position
     int height;
     int width;
-    uint8_t dir;
+    int dir;
 } bar;
 
 typedef struct {
@@ -59,8 +60,8 @@ void init_game_and_draw(game * g) {
     g->ball.x = SCREEN_WIDTH / 2;
     g->ball.y = SCREEN_HEIGHT / 2;
     g->ball.radius = BALL_R;
-    g->ball.xDir = BALLSPEED * 2;
-    g->ball.yDir = BALLSPEED;
+    g->ball.xDir = BALLSPEED;
+    g->ball.yDir = 1;
 
     // user settings
     g->user.v_bar.x = 0;
@@ -98,16 +99,12 @@ void draw_score(game* g) {
 
 void ball_impulse(ball* b, uint8_t dir) {
     if(b->yDir * dir < 0) {
-        if( b->yDir == BALLSPEED ||  b->yDir == -BALLSPEED) {
-            b->yDir = -b->yDir;
-            return;
-        }else {
-            b->yDir += (b->yDir > 0)?(-BALLSPEED):(BALLSPEED);
-            return;
-        }
+        b->yDir += (b->yDir > 0)?(-IMPULSESPEED):(IMPULSESPEED);
+        return;
+
     }
     if(b->yDir * dir > 0) {
-        b->yDir += (b->yDir > 0)?(BALLSPEED):(-BALLSPEED);;
+        b->yDir += (b->yDir > 0)?(IMPULSESPEED):(-IMPULSESPEED);
         return;
     }
 
@@ -126,10 +123,18 @@ void check_entity_collision(player * p, ball * b) {
     }
 }
 
-void update_ball(game * g) {
+void recenter_player(player* p) {
+    if(p->v_bar.y < 0) {
+        p->v_bar.y = 0;
+    }else if(p->v_bar.y + p->v_bar.height > SCREEN_HEIGHT) {
+        p->v_bar.y = SCREEN_HEIGHT - p->v_bar.height;
+    }
+}
+
+void update_ball(game* g) {
     // check collisions with vertical borders
-    int mult = ((int) g->ball.xDir > 0)?(1):(-1);
-    int nextY = g->ball.y + BALLSPEED * (int) g->ball.xDir + g->ball.radius * mult;
+    int mult = (g->ball.yDir > 0)?(1):(-1);
+    int nextY = g->ball.y + BALLSPEED * g->ball.yDir + g->ball.radius * mult;
     if (nextY <= 0) {
         g->ball.yDir = (g->ball.yDir < 0)?(-g->ball.yDir):(g->ball.yDir);
     } else if (nextY >= SCREEN_HEIGHT) {
@@ -144,16 +149,18 @@ void update_ball(game * g) {
         g->ball.x = SCREEN_WIDTH / 2;
         g->ball.y = SCREEN_HEIGHT / 2;
         g->ball.xDir = -g->ball.xDir;
+        g->ball.yDir = 1;
         g->user.score++;
-        play_beep(2000, 1);
-        // GOL USER
+        play_beep(2000, 100);
+        //GOL USER
     } else if (g->ball.x + (g->ball.xDir * BALLSPEED) >= SCREEN_WIDTH) {
         g->ball.x = SCREEN_WIDTH / 2;
         g->ball.y = SCREEN_HEIGHT / 2;
         g->ball.xDir = -g->ball.xDir;
+        g->ball.yDir = 1;
         g->computer.score++;
-        play_beep(2000, 1);
-        // GOL COMPUTER
+        play_beep(2000, 100);
+        //GOL COMPUTER
     }
     g->ball.x += g->ball.xDir * BALLSPEED;
     g->ball.y += g->ball.yDir * BALLSPEED;
@@ -163,12 +170,42 @@ void update_player_computer(game * g) {
     if(g->ball.y > g->computer.v_bar.y + (g->computer.v_bar.height / 2) + OFFSET && g->computer.v_bar.y+BAR_HEIGHT<SCREEN_HEIGHT) {
         g->computer.v_bar.y += BARSPEED;
         g->computer.v_bar.dir = 1;
-    }else if(g->ball.y < g->computer.v_bar.y + (g->computer.v_bar.height / 2) + OFFSET && g->computer.v_bar.y>0) {
+    }else if(g->ball.y < g->computer.v_bar.y + (g->computer.v_bar.height / 2) - OFFSET) {
         g->computer.v_bar.y -= BARSPEED;
         g->computer.v_bar.dir = -1;
     }else {
         g->computer.v_bar.dir = 0;
     }
+    recenter_player(&g->computer);
+}
+
+uint8_t is_key(char c, char k) {
+    char dist = 'a' - 'A';
+    return c == k || c == k + dist;
+}
+
+char update_player_user(game* g) {
+    char c;
+    if (keyPress()) {
+        c = getChar();
+        if (is_key(c, 'w')) {
+            g->user.v_bar.y -= BARSPEED;
+            g->user.v_bar.dir = -1;
+        }
+        else if (is_key(c, 's')) {
+            g->user.v_bar.y += BARSPEED;
+            g->user.v_bar.dir = 1;
+        }
+        else {
+            g->user.v_bar.dir = 0;
+        }
+    }
+    else {
+        c = 0;
+        g->user.v_bar.dir = 0;
+    }
+    recenter_player(&g->user);
+    return c;
 }
 
 void pong() {
@@ -189,42 +226,22 @@ void pong() {
 
     // draws initial game
     init_game_and_draw(&game);
-    char c;
-
+    char c = 0;
     while(c != 27) {
 
-        if (keyPress()) {
-            c = getChar();
-            if ((c == 'w' || c == 'W')&&game.user.v_bar.y>=0) {
-                game.user.v_bar.y -= BARSPEED;
-                game.user.v_bar.dir = -1;
-            }
-            else if ((c == 's' || c == "S")&& game.user.v_bar.y+BAR_HEIGHT<=SCREEN_HEIGHT) {
-                game.user.v_bar.y += BARSPEED;
-                game.user.v_bar.dir = 1;
-            }
-            else if (c == 27) {
-                break;
-            }
-            else {
-                game.user.v_bar.dir = 0;
-            }
-
-        } else {
-            game.user.v_bar.dir = 0;
-        }
-
-        // updates positions
+        //UPDATES POS
+        c = update_player_user(&game);
         update_player_computer(&game);
         update_ball(&game);
 
-        // draws
+        //DRAWS FRAME
         drawRectangle(WHITE, SCREEN_WIDTH / 2, 0, 2, SCREEN_HEIGHT);
         draw_bar(&game.computer.v_bar);
         draw_bar(&game.user.v_bar);
         draw_ball(&game.ball);
         draw_score(&game);
 
+        //SHOWS FRAME ON SCREEN
         swapBuffer();
     }
 }
