@@ -90,7 +90,7 @@ int seconds_elapsed() {
     return ticks / 18;
 }
 
-void wait(unsigned long milliseconds) {
+void wait(uint64_t milliseconds) {
     unsigned long initTicks = ticks;
     while((ticks - initTicks) < (milliseconds / 55)) {
 

@@ -152,5 +152,7 @@ void sys_wait(BASE_PARAMS) {
 // rsi = frequency of beep
 // rdx = duration of beep 
 void sys_sound(BASE_PARAMS) {
+    //TODO esto es bastante feo, pero por ahi es lo unica opcion por ahora
+    _sti();
     play_beep(rsi, rdx);
 }

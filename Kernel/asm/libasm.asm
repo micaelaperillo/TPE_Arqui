@@ -171,10 +171,10 @@ timer_wait:
     mul edx                   
     add eax, ecx              
 	
-wait_loop:
+.wait_loop:
     rdtsc                     
     cmp rax, rdx              
-    jb wait_loop              
+    jb .wait_loop
 
     pop rbp
     ret

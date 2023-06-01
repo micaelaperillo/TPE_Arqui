@@ -10,7 +10,7 @@
 #define BALL_R 10
 #define BALLSPEED 1
 #define BARSPEED 6
-#define OFFSET 2
+#define OFFSET 30
 
 
 typedef struct {
@@ -168,8 +168,6 @@ void update_player_computer(game* g) {
 }
 
 void pong() {
-
-    play_beep(2000, 80);
 
     // USER: left, COMPUTER: right
 

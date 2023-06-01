@@ -1,5 +1,6 @@
 #ifndef TIME_H
 #define TIME_H
+#include <stdint.h>
 
 // functions for RTC
 
@@ -17,6 +18,6 @@ void dateToStr(char * dest);
 void timer_handler();
 int ticks_elapsed();
 int seconds_elapsed();
-void wait(unsigned long milliseconds);
+void wait(uint64_t milliseconds);
 
 #endif

@@ -3,6 +3,7 @@
 
 void printRegisters();
 uint8_t keyPress();
-void wait(unsigned long milliseconds);
+void wait(uint64_t milliseconds);
+void play_beep(uint32_t frequency, uint32_t milliseconds);
 
 #endif //TPE_ARQUI_SYSTEM_H

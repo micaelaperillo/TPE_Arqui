@@ -27,10 +27,10 @@ uint8_t keyPress() {
     return b;
 }
 
-void wait(unsigned long milliseconds) {
+void wait(uint64_t milliseconds) {
     interrupt(SYS_WAIT_ID, milliseconds, 0, 0, 0, 0);
 }
 
-void play_beep(int32_t frequency, int32_t duration) {
+void play_beep(uint32_t frequency, uint32_t duration) {
     interrupt(SYS_SOUND_ID, frequency, duration,  0, 0, 0);
 }
