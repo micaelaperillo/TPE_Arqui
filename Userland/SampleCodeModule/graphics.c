@@ -106,6 +106,7 @@ void drawNumber(uint32_t x, uint32_t y, uint32_t height, uint32_t hexColor, uint
 
         // left vertical lower line
         drawRectangle(hexColor, x, y+(height/2), line_width, height/2);
+
         break;
 
     case 3:
@@ -118,11 +119,9 @@ void drawNumber(uint32_t x, uint32_t y, uint32_t height, uint32_t hexColor, uint
         // bottom horizontal line
         drawRectangle(hexColor, x, y+height, width+line_width, line_width);
 
-        // left vertical upper line
-        drawRectangle(hexColor, x, y, line_width, height/2);
+        // right vertical line
+        drawRectangle(hexColor, x+width, y, line_width, height);
 
-        // right vertical upper line
-        drawRectangle(hexColor, x+width, y, line_width, height/2);
         break;
 
     case 4:
@@ -152,12 +151,6 @@ void drawNumber(uint32_t x, uint32_t y, uint32_t height, uint32_t hexColor, uint
 
         // left vertical upper line
         drawRectangle(hexColor, x, y, line_width, height/2);
-
-        // right vertical upper line
-        drawRectangle(hexColor, x+width, y, line_width, height/2);
-
-        // left vertical lower line
-        drawRectangle(hexColor, x, y+(height/2), line_width, height/2);
 
         // right vertical lower line
         drawRectangle(hexColor, x+width, y+(height/2), line_width, height/2);
