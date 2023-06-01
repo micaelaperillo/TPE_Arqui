@@ -169,8 +169,6 @@ void update_player_computer(game* g) {
 
 void pong() {
 
-    play_beep(2000, 80);
-
     // USER: left, COMPUTER: right
 
     player user, computer;
