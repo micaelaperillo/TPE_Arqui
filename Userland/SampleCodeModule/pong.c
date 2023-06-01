@@ -8,7 +8,7 @@
 #define BAR_HEIGHT 150
 #define BAR_WIDTH 20
 #define BALL_R 10
-#define BALLSPEED 1
+#define BALLSPEED 2
 #define BARSPEED 6
 #define OFFSET 30
 
@@ -29,7 +29,7 @@ typedef struct {
 } bar;
 
 typedef struct {
-    bar v_bar;      
+    bar v_bar;
     int score;
 } player;
 
@@ -160,10 +160,10 @@ void update_ball(game * g) {
 }
 
 void update_player_computer(game * g) {
-    if(g->ball.y > g->computer.v_bar.y + (g->computer.v_bar.height / 2) + OFFSET) {
+    if(g->ball.y > g->computer.v_bar.y + (g->computer.v_bar.height / 2) + OFFSET && g->computer.v_bar.y+BAR_HEIGHT<SCREEN_HEIGHT) {
         g->computer.v_bar.y += BARSPEED;
         g->computer.v_bar.dir = 1;
-    }else if(g->ball.y < g->computer.v_bar.y + (g->computer.v_bar.height / 2) + OFFSET) {
+    }else if(g->ball.y < g->computer.v_bar.y + (g->computer.v_bar.height / 2) + OFFSET && g->computer.v_bar.y>0) {
         g->computer.v_bar.y -= BARSPEED;
         g->computer.v_bar.dir = -1;
     }else {
@@ -195,11 +195,11 @@ void pong() {
 
         if (keyPress()) {
             c = getChar();
-            if (c == 'w' || c == 'W') {
+            if ((c == 'w' || c == 'W')&&game.user.v_bar.y>=0) {
                 game.user.v_bar.y -= BARSPEED;
                 game.user.v_bar.dir = -1;
             }
-            else if (c == 's' || c == "S") {
+            else if ((c == 's' || c == "S")&& game.user.v_bar.y+BAR_HEIGHT<=SCREEN_HEIGHT) {
                 game.user.v_bar.y += BARSPEED;
                 game.user.v_bar.dir = 1;
             }
