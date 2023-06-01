@@ -141,14 +141,16 @@ void update_ball(game* g) {
         g->ball.x = SCREEN_WIDTH / 2;
         g->ball.y = SCREEN_HEIGHT / 2;
         g->ball.xDir = -g->ball.xDir;
-        g->computer.score++;
-        //GOL COMPUTADORA
+        g->user.score++;
+        play_beep(2000, 1);
+        //GOL USER
     } else if (g->ball.x + (g->ball.xDir * BALLSPEED) >= SCREEN_WIDTH) {
         g->ball.x = SCREEN_WIDTH / 2;
         g->ball.y = SCREEN_HEIGHT / 2;
         g->ball.xDir = -g->ball.xDir;
-        g->user.score++;
-        //GOL JUGADOR
+        g->computer.score++;
+        play_beep(2000, 1);
+        //GOL COMPUTER
     }
 
     g->ball.x += g->ball.xDir * BALLSPEED;
