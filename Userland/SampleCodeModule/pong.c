@@ -92,12 +92,12 @@ void draw_bar(bar * b) {
     drawRectangle(BLUE, b->x, b->y, b->width, b->height);
 }
 
-void draw_score(game* g) {
+void draw_score(game * g) {
     drawNumber(420,200,60,WHITE,20,5,g->computer.score);
     drawNumber(580,200,60,WHITE,20,5,g->user.score);
 }
 
-void ball_impulse(ball* b, int dir) {
+void ball_impulse(ball * b, int dir) {
     if(dir == 0) {
         return;
     }
@@ -128,7 +128,7 @@ void check_entity_collision(player * p, ball * b) {
     }
 }
 
-void recenter_player(player* p) {
+void recenter_player(player * p) {
     if(p->v_bar.y < 0) {
         p->v_bar.y = 0;
     }else if(p->v_bar.y + p->v_bar.height > SCREEN_HEIGHT) {
@@ -136,7 +136,7 @@ void recenter_player(player* p) {
     }
 }
 
-void update_ball(game* g) {
+void update_ball(game * g) {
     // check collisions with vertical borders
     int mult = (g->ball.yDir > 0)?(1):(-1);
     int nextY = g->ball.y + BALLSPEED * g->ball.yDir + g->ball.radius * mult;
@@ -157,7 +157,7 @@ void update_ball(game* g) {
         g->ball.yDir = 1;
         g->user.score++;
         play_beep(2000, 100);
-        //GOL USER
+        // GOL USER
     } else if (g->ball.x + (g->ball.xDir * BALLSPEED) >= SCREEN_WIDTH) {
         g->ball.x = SCREEN_WIDTH / 2;
         g->ball.y = SCREEN_HEIGHT / 2;
@@ -165,7 +165,7 @@ void update_ball(game* g) {
         g->ball.yDir = 1;
         g->computer.score++;
         play_beep(2000, 100);
-        //GOL COMPUTER
+        // GOL COMPUTER
     }
     g->ball.x += g->ball.xDir * BALLSPEED;
     g->ball.y += g->ball.yDir * BALLSPEED;
@@ -213,7 +213,27 @@ char update_player_user(game* g) {
     return c;
 }
 
+void welcome() {
+    printFormat("\nWelcome to PONG. Press any key to start the game\n");
+    swapBuffer();
+    while (!getChar()) {
+        //
+    }
+}
+
+void winning_screen(char w) {
+    // 0 if PLAYER WON
+    // 1 if COMPUTER WON
+    printFormat("\nWINNER: %s. Press ESC to return\n", (w == 0 ? "USER" : "COMPUTER"));
+    swapBuffer();
+    while (getChar() != 27) {
+        // returns when the user presses ESC    
+    }
+}
+
 void pong() {
+
+    welcome();
 
     // the USER is the bar on the left
     // the COMPUTER is the bar on the right
@@ -232,14 +252,14 @@ void pong() {
     // draws initial game
     init_game_and_draw(&game);
     char c = 0;
-    while(c != 27 && (game.user.score!=2 && game.computer.score!=2)) {
+    while(c != 27 && (game.user.score != 10 && game.computer.score != 10)) {
 
-        //UPDATES POS
+        // UPDATES POS
         c = update_player_user(&game);
         update_player_computer(&game);
         update_ball(&game);
 
-        //DRAWS FRAME
+        // DRAWS FRAME
         drawRectangle(WHITE, SCREEN_WIDTH / 2, 0, 2, SCREEN_HEIGHT);
         draw_bar(&game.computer.v_bar);
         draw_bar(&game.user.v_bar);
@@ -247,7 +267,15 @@ void pong() {
         draw_score(&game);
         draw_score(&game);
 
-        //SHOWS FRAME ON SCREEN
+        // SHOWS FRAME ON SCREEN
         swapBuffer();
+    }
+
+    if (game.user.score == 10) {
+        // the winner is USER
+        winning_screen(0);
+    } else if (game.computer.score == 10) {
+        // the winner is COMPUTER
+        winning_screen(1);
     }
 }
