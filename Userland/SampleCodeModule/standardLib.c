@@ -5,6 +5,8 @@
 #define SYSREAD 1
 
 int getDigits(int n);
+void _printDec(int value, int len, uint8_t padding0, char* buff);
+void _printHex(uint64_t value, char* buff);
 
 static char * itoa( uint64_t value, char * str, int base )
 // code taken from https://wiki.osdev.org/Printing_To_Screen
@@ -75,26 +77,20 @@ void printFormat(const char* format, ...) {
     while (*format != '\0') {
         if (*format == '%') {
             format++; // Move past '%'
+            int len = 0;
+            uint8_t padding0 = 0;
+            if(*format == '0') {
+                padding0 = 1;
+                format++;
+            }
+            if(*format >= '1' && *format <= '9') {
+                len = *format - '0';
+                format++;
+            }
             switch (*format) {
                 case 'd': {
                     int value = va_arg(args, int);
-                    putStrn(itoa(value,buff,10));
-                    break;
-                }
-                case '0':{
-                    format++;
-                    int value=va_arg(args,int);
-                    int zeroes=0;
-                    int digts=getDigits(value);
-                    while(*format!='d'){
-                        zeroes=zeroes*10+(*format)-'0';
-                        format++;
-                    }
-                    if (zeroes>digts)
-                    for (int i =zeroes-digts; i >0; i--){
-                        putChar('0');
-                    }
-                    putStrn(itoa(value,buff,10));
+                    _printDec(value, len, padding0, buff);
                     break;
                 }
                 case 's': {
@@ -105,8 +101,7 @@ void printFormat(const char* format, ...) {
                 case 'x':{
                     format++;
                     uint64_t value =va_arg(args,uint64_t);
-                    putStrn("0x");
-                    putStrn(itoa(value,buff,16));
+                    _printHex(value, buff);
                     break;
                 }
                 default: {
@@ -122,6 +117,44 @@ void printFormat(const char* format, ...) {
     va_end(args);
 }
 
+int _pow(int base, int power) {
+    //this can't handle a negative power value
+    if(power <= 0) {
+        return 1;
+    }
+    int result = base;
+    for(int i=0; i< power - 1; i++) {
+        result = result * base;
+    }
+    return result;
+}
+
+void _printDec(int value, int len, uint8_t padding0, char* buff) {
+    int digits=getDigits(value);
+    int zeros = 0;
+    while(digits > len) {
+        //example: 4567 -> 567
+        int place = _pow(10, digits - 1);// place = 10^(4-1) = 1000
+        int num = value / place;        // num = 4567 / 1000 = 4
+        value = value - place * num;   // value = 4567 - (1000 * 4) = 567
+        digits--;
+        padding0=0;
+    }
+    if(len > 0 && padding0) {
+        //how many zeros need to be placed before writing the number
+        zeros = len - digits;
+        for(int i=0; i<zeros; i++) {
+            putChar('0');
+        }
+    }
+    putStrn(itoa(value,buff,10));
+}
+
+void _printHex(uint64_t value, char* buff) {
+    putStrn("0x");
+    putStrn(itoa(value,buff,16));
+}
+
 int compString(const char*s1,const char*s2){
 while (*s1 == *s2++)
 		if (*s1++ == 0)
@@ -130,10 +163,10 @@ while (*s1 == *s2++)
 }
 
 int getDigits(int n){
-    int digts=0;
+    int digits=0;
     while(n!=0){
         n=n/10;
-        digts++;
+        digits++;
     }
-    return digts;
+    return digits;
 }
