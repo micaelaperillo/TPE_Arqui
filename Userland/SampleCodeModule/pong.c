@@ -206,8 +206,12 @@ char update_player_user(game* g) {
         }
     }
     else {
+        //this creates smoother movement
+        if(g->user.v_bar.dir!=0) {
+            g->user.v_bar.y += (g->user.v_bar.dir > 0)?(BARSPEED):(-BARSPEED);
+            g->user.v_bar.dir = 0;
+        }
         c = 0;
-        g->user.v_bar.dir = 0;
     }
     recenter_player(&g->user);
     return c;
