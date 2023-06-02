@@ -35,10 +35,9 @@ void shellLoop() {
         if(c == '\n') {
             //executes the command
             putChar(c);
-
             parseCommand(prompt);
             clearPrompt();
-
+            putChar('\n');
             writePromptIcon();
         }
 

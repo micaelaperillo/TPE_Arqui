@@ -10,7 +10,7 @@
 #define BALL_R 10
 #define BALLSPEED 2
 #define BARSPEED 8
-#define IMPULSESPEED 2
+#define IMPULSESPEED 1
 #define OFFSET 50
 
 typedef struct {
@@ -22,8 +22,8 @@ typedef struct {
 } ball;
 
 typedef struct {
-    int x;          // upper right x position
-    int y;          // upper right y position
+    int x;          // upper left x position
+    int y;          // upper left y position
     int height;
     int width;
     int dir;
@@ -45,7 +45,7 @@ void draw_bar(bar * b);
 void draw_ball(ball * b);
 void init_game_and_draw(game* g);
 void draw_score(game * g);
-void ball_impulse(ball* b, uint8_t dir);
+void ball_impulse(ball* b, int dir);
 void check_entity_collision(player * p, ball * b);
 void update_ball(game * g);
 void update_player_computer(game * g);
@@ -97,21 +97,26 @@ void draw_score(game* g) {
     drawNumber(580,200,60,WHITE,20,5,g->user.score);
 }
 
-void ball_impulse(ball* b, uint8_t dir) {
-    if(b->yDir * dir < 0) {
-        b->yDir += (b->yDir > 0)?(-IMPULSESPEED):(IMPULSESPEED);
+void ball_impulse(ball* b, int dir) {
+    if(dir == 0) {
         return;
-
     }
-    if(b->yDir * dir > 0) {
+    if(dir * b->yDir < 0) {
+        if(b->yDir - IMPULSESPEED == 0 || b->yDir + IMPULSESPEED == 0) {
+            b->yDir = -b->yDir;
+        }
+        else {
+            b->yDir += (b->yDir > 0) ? (-IMPULSESPEED) : (IMPULSESPEED);
+        }
+        return;
+    } else{
         b->yDir += (b->yDir > 0)?(IMPULSESPEED):(-IMPULSESPEED);
         return;
     }
-
 }
 
 void check_entity_collision(player * p, ball * b) {
-    int mult = ((int)b->xDir > 0)?(1):(-1);
+    int mult = (b->xDir > 0)?(1):(-1);
     int ball_next_pos_y = b->y + BALLSPEED * b->yDir + b->radius * mult;
     int ball_next_pos_x = b->x + BALLSPEED * b->xDir + b->radius * mult;
     if (((ball_next_pos_y + b->radius >= p->v_bar.y && ball_next_pos_y + b->radius <= p->v_bar.y + p->v_bar.height) ||
@@ -239,6 +244,7 @@ void pong() {
         draw_bar(&game.computer.v_bar);
         draw_bar(&game.user.v_bar);
         draw_ball(&game.ball);
+        draw_score(&game);
         draw_score(&game);
 
         //SHOWS FRAME ON SCREEN
