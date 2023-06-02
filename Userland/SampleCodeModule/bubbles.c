@@ -36,7 +36,6 @@ void bubbles() {
                            {100, 300, -1, 3, 20, CYAN}, {90, 70, -3, 1, 20, GREEN}, {1000, 700, -1, -2, 20, PINK},
                            {1000, 50, -3, 1, 20, WHITE},  {5, 10, 2, -2, 20, RED},  {100, 100, 2, -1, 20, BLUE},  {1200, 620, 2, -2, 20, YELLOW},
                            {100, 367, -3, 2, 20, CYAN}, {990, 701, -2, -1, 20, GREEN}, {150, 610, -1, -1, 20, PINK}};
-    //TODO cambiar para que termine cuando detecta input
     int i;
     char c;
     while(!keyPress() || (c=getChar()) != 27) {
