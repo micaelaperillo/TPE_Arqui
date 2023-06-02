@@ -13,9 +13,9 @@ enum TimeID {
 };
 
 unsigned int retrieve(int id) {
-    unsigned int* ptr = 0;
-    interrupt(SYS_GET_TIME_ID, id, ptr, 0, 0, 0);
-    return *ptr;
+    unsigned int ptr = 0;
+    interrupt(SYS_GET_TIME_ID, id, &ptr, 0, 0, 0);
+    return ptr;
 }
 
 unsigned int getSeconds() {

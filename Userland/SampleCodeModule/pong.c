@@ -179,7 +179,10 @@ void update_player_computer(game * g) {
         g->computer.v_bar.y -= BARSPEED;
         g->computer.v_bar.dir = -1;
     }else {
-        g->computer.v_bar.dir = 0;
+        if(g->user.v_bar.dir!=0) {
+            g->user.v_bar.y += (g->user.v_bar.dir > 0)?(BARSPEED):(-BARSPEED);
+            g->user.v_bar.dir = 0;
+        }
     }
     recenter_player(&g->computer);
 }
