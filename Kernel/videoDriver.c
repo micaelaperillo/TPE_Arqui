@@ -105,7 +105,7 @@ void scrollCharArea() {
             memcpy(currMem, currMem + offset, xLen);
             currMem += VBE_mode_info->width * (VBE_mode_info->bpp / 8);//jumps to the pixels below
         }
-        //once it finishes it has copied an entire block
+        //once it finishes it has copied an entire block of characters
     }
 }
 
@@ -121,6 +121,7 @@ void putPixel(Color c, uint32_t x, uint32_t y) {
         videoBuffer[offset+2] = c.r;
         return;
     }
+    //double buffering is disabled, it paints directly to the screen
     uint8_t * videoPtr = VBE_mode_info->framebuffer;
     int offset = y * VBE_mode_info->pitch + x * (VBE_mode_info->bpp / 8);
     videoPtr[offset] = c.b;
@@ -258,14 +259,16 @@ void drawRectangle(uint32_t x, uint32_t y, uint32_t width, uint32_t height) {
 void _drawChar(Color c, uint32_t xPixel, uint32_t yPixel, unsigned char character) {
     uint8_t i, j;
 
-    // Convert the character to an index
+    //converts the character to an index
     character = character & 0x7F;
     const char *chr = font[character];
 
-    // Draw pixels
+    //draws the pixels
     for (j = 0; j < CHAR_HEIGHT; j++) {
         for (i = 0; i < CHAR_WIDTH; i++) {
             if(chr[j] & (1<<i)) {
+                //it draws rectangles in case size_mult > 1, which is currently not supported
+                //this was left as it is easier to adapt it in case it is supported again
                 drawColoredRectangle(c, (xPixel + i) * SIZE_MULT, (yPixel + j) * SIZE_MULT, SIZE_MULT, SIZE_MULT);
             }
             else {
