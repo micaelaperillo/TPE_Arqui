@@ -11,10 +11,12 @@ static void exScreen(char* str, uint64_t exregs, uint64_t* rip,uint64_t*rsp);
 void printRegs(uint64_t* exregs,uint64_t*rip) {
 	for(int i=0;i<16;i++) {
 		cPrint(regs[i]);
+		cPrint("0x");
 		cPrintHex(exregs[i]);
 		cPrint("\n");
 	}
 	cPrint(regs[16]); // imprime la direccion en donde ocurrio la exception aparte
+	cPrint("0x");
 	cPrintHex(*rip);
 }
 
