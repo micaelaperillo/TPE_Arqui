@@ -48,7 +48,7 @@ static char * itoa( uint64_t value, char * str, int base )
 }
 
 void putChar(char c){ //a partir del segundo parametro no importa lo que le ponga
-    interrupt(SYSWRITE,&c,1,0,0,0);
+    interrupt(SYSWRITE,(uint64_t) &c,1,0,0,0);
 }
 
 static void putStrn(char*s){
@@ -56,7 +56,7 @@ static void putStrn(char*s){
     for(i=0;s[i]!='\0';i++){
         i++;
     }
-    interrupt(SYSWRITE, s, i, 0, 0, 0);
+    interrupt(SYSWRITE, (uint64_t)s, i, 0, 0, 0);
 }
 
 char getChar(){
@@ -131,7 +131,7 @@ int _pow(int base, int power) {
 
 void _printDec(int value, int len, uint8_t padding0, char* buff) {
     int digits=getDigits(value);
-    int zeros = 0;
+    int zeros;
     while(digits > len) {
         //example: 4567 -> 567
         int place = _pow(10, digits - 1);// place = 10^(4-1) = 1000

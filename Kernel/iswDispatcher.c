@@ -19,6 +19,8 @@ void sys_wait(BASE_PARAMS);//code 6
 void sys_sound(BASE_PARAMS); // code 7
 extern uint64_t* current_regs();
 
+extern void _sti();
+
 FunctionPtr interruptions[] = {sys_write, sys_read, sys_draw, sys_double_buffer,
                                sys_get_time, sys_detect_key_press,
                                sys_wait, sys_sound};
@@ -152,7 +154,7 @@ void sys_wait(BASE_PARAMS) {
 // rsi = frequency of beep
 // rdx = duration of beep 
 void sys_sound(BASE_PARAMS) {
-    //TODO esto es bastante feo, pero por ahi es lo unica opcion por ahora
+    //beep needs the timer tick interruption to work, this isn't pretty, but it won't work without it
     _sti();
     play_beep(rsi, rdx);
 }

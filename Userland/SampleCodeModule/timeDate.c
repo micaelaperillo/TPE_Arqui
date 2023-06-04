@@ -13,8 +13,8 @@ enum TimeID {
 };
 
 unsigned int retrieve(int id) {
-    unsigned int ptr = 0;
-    interrupt(SYS_GET_TIME_ID, id, &ptr, 0, 0, 0);
+    unsigned int ptr;
+    interrupt(SYS_GET_TIME_ID, id, (uint64_t) &ptr, 0, 0, 0);
     return ptr;
 }
 

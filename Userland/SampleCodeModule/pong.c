@@ -254,8 +254,9 @@ void pong() {
     // the USER is the bar on the left
     // the COMPUTER is the bar on the right
 
-    player user, computer;
-    ball ball;
+    player user = {};
+    player computer = {};
+    ball ball = {};
     game game;
 
     game.ball = ball;

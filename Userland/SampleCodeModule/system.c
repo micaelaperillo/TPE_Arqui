@@ -1,5 +1,4 @@
 #include <stdint.h>
-#include <timeDate.h>
 #include <standardLib.h>
 
 #define SYS_DETECT_KEY_PRESS_ID 5

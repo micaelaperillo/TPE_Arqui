@@ -6,8 +6,5 @@
  * Initializes and begins the Shell loop
  */
 void startShell();
-/**
- *
- */
 
 #endif //TPE_ARQUI_SHELL_H

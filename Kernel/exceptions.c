@@ -7,8 +7,9 @@
 static char* regs[]={"rax:","rbx:","rcx:","rdx:","rsi:","rdi:","rbp:","r8:","r9:","r10:","r11:","r12:","r13:","r14:","r15:","rsp:","rip:"};
 
 static void exScreen(char* str, uint64_t exregs, uint64_t* rip,uint64_t*rsp);
+extern uint64_t getStackBase();
 
-void printRegs(uint64_t* exregs,uint64_t*rip) {
+void printRegs(uint64_t* exregs,const uint64_t*rip) {
 	for(int i=0;i<16;i++) {
 		cPrint(regs[i]);
 		cPrint("0x");
@@ -32,9 +33,8 @@ void exceptionDispatcher(int exception, uint64_t exregs, uint64_t* rip,uint64_t*
 static void exScreen(char* str, uint64_t exregs,uint64_t* rip,uint64_t *rsp) {
     cPrintColored(RED, str);
 	cNewline();
-	printRegs(exregs,rip);
+	printRegs(&exregs,rip);
 	cNewline();
-	//cPrint("esta terminal explotara en 5 segundos\n"); //todo:ponerle un timer o algo para que quede mas lindo la lanzada de exception
 	*rip=0x400000; //direccion del sample code module
 	*rsp=getStackBase()-20; // restora el stack pointer al volver de la exepcion
 }
