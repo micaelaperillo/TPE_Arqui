@@ -1,5 +1,6 @@
 #include <stdint.h>
 #include <console.h>
+#include <keyboardDriver.h>
 
 extern unsigned char keydown();
 
@@ -65,7 +66,7 @@ void keyboard_handler() {
         addToBuffer(NO_INPUT);
     }
     uint8_t keyRelease = FALSE;
-    unsigned char keycode = code & 0x7F;//no diferencia entre release o no
+    unsigned char keycode = code & 0x7F; // no diferencia entre release o no
 
     if(code & 0x80) {
         keyRelease = TRUE;
