@@ -11,10 +11,12 @@ static void exScreen(char* str, uint64_t exregs, uint64_t* rip,uint64_t*rsp);
 void printRegs(uint64_t* exregs,uint64_t*rip) {
 	for(int i=0;i<16;i++) {
 		cPrint(regs[i]);
+		cPrint("0x");
 		cPrintHex(exregs[i]);
 		cPrint("\n");
 	}
 	cPrint(regs[16]); // imprime la direccion en donde ocurrio la exception aparte
+	cPrint("0x");
 	cPrintHex(*rip);
 }
 
@@ -32,10 +34,8 @@ static void exScreen(char* str, uint64_t exregs,uint64_t* rip,uint64_t *rsp) {
 	cNewline();
 	printRegs(exregs,rip);
 	cNewline();
-	int i=0;
 	//cPrint("esta terminal explotara en 5 segundos\n"); //todo:ponerle un timer o algo para que quede mas lindo la lanzada de exception
 	*rip=0x400000; //direccion del sample code module
-	*rsp=getStackBase()-10; // restora el stack pointer al volver de la exepcion
-
+	*rsp=getStackBase()-20; // restora el stack pointer al volver de la exepcion
 }
 

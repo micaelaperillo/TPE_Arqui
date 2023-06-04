@@ -172,16 +172,28 @@ void update_ball(game * g) {
 }
 
 void update_player_computer(game * g) {
-    if(g->ball.y > g->computer.v_bar.y + (g->computer.v_bar.height / 2) + OFFSET) {
-        g->computer.v_bar.y += BARSPEED;
-        g->computer.v_bar.dir = 1;
-    }else if(g->ball.y < g->computer.v_bar.y + (g->computer.v_bar.height / 2) - OFFSET) {
-        g->computer.v_bar.y -= BARSPEED;
-        g->computer.v_bar.dir = -1;
-    }else {
-        g->computer.v_bar.dir = 0;
+    if(g->ball.x > SCREEN_WIDTH / 4 * 3 || g->ball.xDir > 0) {
+        if (g->ball.y > g->computer.v_bar.y + (g->computer.v_bar.height / 2) + OFFSET) {
+            g->computer.v_bar.y += BARSPEED;
+            g->computer.v_bar.dir = 1;
+        } else if (g->ball.y < g->computer.v_bar.y + (g->computer.v_bar.height / 2) - OFFSET) {
+            g->computer.v_bar.y -= BARSPEED;
+            g->computer.v_bar.dir = -1;
+        } else {
+            if (g->user.v_bar.dir != 0) {
+                g->user.v_bar.y += (g->user.v_bar.dir > 0) ? (BARSPEED) : (-BARSPEED);
+                g->user.v_bar.dir = 0;
+            }
+        }
+        recenter_player(&g->computer);
+    } else {
+        //returns to the center of the screen
+        if(g->computer.v_bar.y + (g->computer.v_bar.height / 2) < (SCREEN_HEIGHT / 2) - OFFSET
+        || g->computer.v_bar.y + (g->computer.v_bar.height / 2) > (SCREEN_HEIGHT / 2) + OFFSET) {
+            g->computer.v_bar.y += (g->computer.v_bar.y + (g->computer.v_bar.height / 2) > SCREEN_HEIGHT / 2) ? (-BARSPEED) : (BARSPEED);
+        }
+
     }
-    recenter_player(&g->computer);
 }
 
 uint8_t is_key(char c, char k) {
@@ -206,8 +218,12 @@ char update_player_user(game* g) {
         }
     }
     else {
+        //this creates smoother movement
+        if(g->user.v_bar.dir!=0) {
+            g->user.v_bar.y += (g->user.v_bar.dir > 0)?(BARSPEED):(-BARSPEED);
+            g->user.v_bar.dir = 0;
+        }
         c = 0;
-        g->user.v_bar.dir = 0;
     }
     recenter_player(&g->user);
     return c;
