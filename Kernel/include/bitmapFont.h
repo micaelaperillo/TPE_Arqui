@@ -1,9 +1,9 @@
 #ifndef TPE_ARQUI_BITMAPFONTS_H
 #define TPE_ARQUI_BITMAPFONTS_H
 
-//bitmap font obtained from https://github.com/dhepper/font8x8
+// bitmap font obtained from https://github.com/dhepper/font8x8
 
-//font 8x8 basic
+// font 8x8 basic
 const char font[128][8] = {
         { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00},   // U+0000 (nul)
         { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00},   // U+0001

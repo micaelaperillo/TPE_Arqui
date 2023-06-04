@@ -3,8 +3,7 @@
 #include <videoDriver.h>
 #include <lib.h>
 
-//################################################
-//Este pedazo de codigo fue dado por la cátedra de Arquitectura de Computadoras
+// codigo dado por la cátedra de Arquitectura de Computadoras
 
 struct vbe_mode_info_structure {
     uint16_t attributes;		// deprecated, only bit 7 should be of interest to you, and it indicates the mode supports a linear frame buffer.

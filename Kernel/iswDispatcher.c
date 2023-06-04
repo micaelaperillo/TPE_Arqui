@@ -1,6 +1,6 @@
 #include <stdint.h>
 #include <videoDriver.h>
-#include <keyboard.h>
+#include <keyboardDriver.h>
 #include <console.h>
 #include <time.h>
 #include <sound.h>
