@@ -94,7 +94,7 @@ void gets(char * s) {
     int i = 0;
     char c;
     while((c=keyBuffer)!='\n') {
-        s[i] = c; //lee hasta el enter supuestamente
+        s[i] = c; // lee hasta el enter supuestamente
         i++;
     }
     s[i]='\0';

@@ -15,14 +15,10 @@ void initializeConsole() {
     height = getYCharSlots();
     cPrint("[Console initialized]");
     cNewline();
-
 }
 
-void cPrintColored(Color c, char * string)
-{
-    int i;
-
-    for (i = 0; string[i] != 0; i++)
+void cPrintColored(Color c, char * string) {
+    for (int i = 0; string[i] != 0; i++)
         cPrintColoredChar(c, string[i]);
 }
 
@@ -34,18 +30,17 @@ void cPrintChar(char character) {
     cPrintColoredChar(WHITE, character);
 }
 
-void cPrintColoredChar(Color c, char character)
-{
-    if(character == '\b' && consoleCursor > 0) {
+void cPrintColoredChar(Color c, char character) {
+    if (character == '\b' && consoleCursor > 0) {
         //backspace
         putColoredCharAt(c, --consoleCursor, height, character);
         return;
     }
-    if(consoleCursor >= width || character == '\n') {
+    if (consoleCursor >= width || character == '\n') {
         cNewline();
         return;
     }
-    if(character == '\t') {
+    if (character == '\t') {
         //tab
         cPrintColoredChar(c, ' ');
         cPrintColoredChar(c, ' ');
@@ -56,29 +51,24 @@ void cPrintColoredChar(Color c, char character)
     consoleCursor++;
 }
 
-void cNewline()
-{
+void cNewline() {
     scrollUp();
     consoleCursor = 0;
 }
 
-void cPrintDec(uint64_t value)
-{
+void cPrintDec(uint64_t value) {
     cPrintBase(value, 10);
 }
 
-void cPrintHex(uint64_t value)
-{
+void cPrintHex(uint64_t value) {
     cPrintBase(value, 16);
 }
 
-void cPrintBin(uint64_t value)
-{
+void cPrintBin(uint64_t value) {
     cPrintBase(value, 2);
 }
 
-void cPrintBase(uint64_t value, uint32_t base)
-{
+void cPrintBase(uint64_t value, uint32_t base) {
     uintToBase(value, buffer, base);
     cPrint(buffer);
 }
@@ -90,8 +80,7 @@ void cErase() {
     }
 }
 
-void cClear()
-{
+void cClear() {
     int i;
 
     for (i = 0; i < height * width; i++) {
