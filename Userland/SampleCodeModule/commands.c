@@ -19,13 +19,12 @@ extern void invalidOp();
 
 void unknownCommand(char* str);
 
-void help(), testException0(),testException6(), showRegisters(), displayTime(), displayDate(), playBubbles(), playPong(), playBeep();
+void help(), testException0(),testException6(), displayTime(), displayDate(), playBubbles(), playPong(), playBeep();
 
 static Program pArr[] = {
         &(struct PROGRAM_STRUCT){"help", "displays all available commands", help},
         &(struct PROGRAM_STRUCT){"test-div0", "runs a zero division", testException0},
         &(struct PROGRAM_STRUCT){"test-invalidop", "runs an invalid op", testException6},
-        &(struct PROGRAM_STRUCT){"registers", "prints the state of the system's registers", showRegisters},
         &(struct PROGRAM_STRUCT){"time", "prints the current time", displayTime},
         &(struct PROGRAM_STRUCT){"date", "prints the current date", displayDate},
         &(struct PROGRAM_STRUCT){"bubbles", "shows colored bubbles on the screen", playBubbles},
@@ -62,11 +61,6 @@ void testException0() {
 
 void testException6(){
     invalidOp();
-}
-
-void showRegisters() {
-    printRegisters();
-    putChar('\n');
 }
 
 void displayTime() {
