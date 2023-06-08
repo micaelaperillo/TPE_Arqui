@@ -264,17 +264,13 @@ void pong() {
     char c = 0;
     while(c != 27 && (game.user.score != 3 && game.computer.score != 3)) {
         
-        // pressing P pauses the game
+        // pressing P pauses the game and unables double buffer
         if (c == 'p' || c == 'P') {
             printFormat("\nPress any key to return");
             swapBuffer();
+            disableDoubleBuffering();
             pause();
-        }
-
-        // pressing R pauses the game and shows the registers in that moment
-        if (c == 'r' || c == 'R') {
-            swapBuffer();
-            pause();
+            enableDoubleBuffering();
         }
 
         // UPDATES POS
