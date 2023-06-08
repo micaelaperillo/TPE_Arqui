@@ -273,8 +273,6 @@ void pong() {
 
         // pressing R pauses the game and shows the registers in that moment
         if (c == 'r' || c == 'R') {
-            // printFormat("\n");
-            // printRegisters();
             swapBuffer();
             pause();
         }
