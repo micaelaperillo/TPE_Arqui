@@ -6,6 +6,8 @@ extern unsigned char keydown();
 
 #define LSHIFT 0x2A
 #define RSHIFT 0x36
+#define LCTRL 0x1D
+#define LALT 0x38
 #define CAPS_LOCK 0x3A
 
 #define NO_INPUT 0x00
@@ -14,9 +16,11 @@ extern unsigned char keydown();
 #define FALSE 0
 
 static uint8_t shift = FALSE;
+static uint8_t ctrl = FALSE;
+static uint8_t alt = FALSE;
 static uint8_t caps_lock = FALSE;
 
-static unsigned char keyBuffer = NO_INPUT;
+static char keyBuffer = NO_INPUT;
 
 const unsigned char kbdusNoShift[128] = {
     0,  27, '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '-', '=', '\b', '\t',
@@ -40,13 +44,13 @@ uint8_t keyPressed() {
     return keyBuffer;
 }
 
-char readBuffer() {
+static char readBuffer() {
     char ret = keyBuffer;
     keyBuffer = NO_INPUT;
     return ret;
 }
 
-void addToBuffer(uint8_t keycode) {
+static void addToBuffer(uint8_t keycode) {
     if (keycode == NO_INPUT) {
         keyBuffer = NO_INPUT;
     }
@@ -71,7 +75,13 @@ void keyboard_handler() {
     if(code & 0x80) {
         keyRelease = TRUE;
     }
-    if(keycode == LSHIFT || keycode == RSHIFT) {
+    if(keycode == LCTRL) {
+        ctrl = (keyRelease)?(FALSE):(TRUE);
+    }
+    else if(keycode == LALT) {
+        alt = (keyRelease)?(FALSE):(TRUE);
+    }
+    else if(keycode == LSHIFT || keycode == RSHIFT) {
         shift = (keyRelease)?(FALSE):(TRUE);
     }
     else if(keycode == CAPS_LOCK) {
@@ -79,6 +89,12 @@ void keyboard_handler() {
     }
     else if(!keyRelease) {
         addToBuffer(keycode);
+    }
+
+    //TODO cambiar a printregs
+    if(ctrl && alt && shift) {
+        moveGlobalCursor(0, 0);
+        gPrint("FUNCOaaa");
     }
 }
 

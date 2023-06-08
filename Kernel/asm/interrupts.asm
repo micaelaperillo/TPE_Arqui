@@ -18,6 +18,7 @@ GLOBAL _swInterruptHandler
 GLOBAL _exception0Handler
 GLOBAL _exception6Handler
 
+EXTERN getStackBase
 EXTERN irqDispatcher
 EXTERN exceptionDispatcher
 EXTERN swInterruptDispatcher
@@ -77,31 +78,12 @@ SECTION .text
 
 %macro exceptionHandler 1
 	pushState
-	mov [excregs], rax
-	mov [excregs+8*1], rbx
-	mov [excregs+8*2], rcx
-	mov [excregs+8*3], rdx
-	mov [excregs+8*4], rsi
-	mov [excregs+8*5], rdi
-	mov [excregs+8*6], rbp
-	mov [excregs+8*7], r8
-	mov [excregs+8*8], r9
-	mov [excregs+8*9], r10
-	mov [excregs+8*10], r11
-	mov [excregs+8*11], r12
-	mov [excregs+8*12], r13
-	mov [excregs+8*13], r14
-	mov [excregs+8*14], r15
-	mov rax,rsp
-	add rax,8*15  ;valor rip pusheado luego de la excepcion
-	mov rdx,rax
-	mov rcx,rsp ;valor rsp antes de la excepcion
-	add rcx,18*8
-	mov [excregs+8*15],rcx
-	mov rsi,excregs
+	mov rsi, rsp
 	mov rdi, %1 ; pasaje de parametro
 	call exceptionDispatcher
 	popState
+	call getStackBase
+	mov rsp,rax
 	iretq
 %endmacro
 
@@ -173,7 +155,7 @@ _irq05Handler:
 ;Zero Division Exception
 _exception0Handler:
 	exceptionHandler 0
-_exception6Handler:
+_exception6Handler:; Invalid Operation Excepttion
 	exceptionHandler 6
 
 haltcpu:
@@ -185,4 +167,3 @@ haltcpu:
 
 SECTION .bss
 	aux resq 1
-	excregs resq 17

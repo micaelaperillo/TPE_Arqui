@@ -2,11 +2,6 @@
 #define TPE_ARQUI_SYSTEM_H
 
 /**
- * Prints the current system's registers on the console
- */
-void printRegisters();
-
-/**
  * Checks whether a key is currently being pressed or not
  * @return 1 if a key press was detected, 0 if not
  */

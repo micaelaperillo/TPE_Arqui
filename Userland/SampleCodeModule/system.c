@@ -11,15 +11,6 @@ static char * regsStr[]={"rax:","rbx:","rcx:","rdx:","rsi:","rdi:","rbp:","r8:",
 
 extern uint64_t* current_regs();
 
-void printRegisters() {
-    //prints the registers at this exact moment, values will be lost between the prompt and here
-    uint64_t * regs = current_regs();
-    printFormat("System registers:");
-    for(int i=0; i<regsAmount; i++) {
-        printFormat("\n\t-%s%x ", regsStr[i], regs[i]);
-    }
-}
-
 uint8_t keyPress() {
     uint8_t b;
     interrupt(SYS_DETECT_KEY_PRESS_ID, (uint64_t)&b, 0, 0, 0, 0);
