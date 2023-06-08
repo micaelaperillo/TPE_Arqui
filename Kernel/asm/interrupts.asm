@@ -82,8 +82,6 @@ SECTION .text
 	mov rdi, %1 ; pasaje de parametro
 	call exceptionDispatcher
 	popState
-	call getStackBase
-	mov rsp,rax
 	iretq
 %endmacro
 
