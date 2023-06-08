@@ -9,4 +9,6 @@ void * memcut(void * destination, void * source, uint64_t length);
 
 char *cpuVendor(char *result);
 
+void show_regs();
+
 #endif

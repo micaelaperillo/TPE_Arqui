@@ -5,6 +5,9 @@
 
 void initializeConsole();
 
+//#######################################################
+//WRITES AT GLOBAL CURSOR
+
 // prints the string in the color c
 void gPrintColored(Color c, char * string);
 
@@ -13,6 +16,29 @@ void gPrint(char * string);
 
 // prints char character in the color c
 void gPrintColoredChar(Color c, char character);
+
+// prints new line
+void gNewline();
+
+// prints value, which is a decimal
+void gPrintDec(uint64_t value);
+
+// prints value, which is a hexadecimal
+void gPrintHex(uint64_t value);
+
+// prints value, which is a binary
+void gPrintBin(uint64_t value);
+
+// prints value, according to its base
+void gPrintBase(uint64_t value, uint32_t base);
+
+void gErase();
+
+void moveGlobalCursor(uint32_t x, uint32_t y);
+
+//#######################################################
+//WRITES AT CONSOLE CURSOR
+
 
 // prints the string in the color c
 void cPrintColored(Color c, char * string);
@@ -29,9 +55,6 @@ void cPrintChar(char character);
 // prints new line
 void cNewline();
 
-// prints new line
-void gNewline();
-
 // prints value, which is a decimal
 void cPrintDec(uint64_t value);
 
@@ -45,8 +68,7 @@ void cPrintBin(uint64_t value);
 void cPrintBase(uint64_t value, uint32_t base);
 
 void cErase();
-void cClear();
 
-void moveGlobalCursor(uint32_t x, uint32_t y);
+void cClear();
 
 #endif //TPE_ARQUI_CONSOLE_H

@@ -1,6 +1,7 @@
 #include <stdint.h>
 #include <console.h>
 #include <keyboardDriver.h>
+#include <lib.h>
 
 extern unsigned char keydown();
 
@@ -91,10 +92,8 @@ void keyboard_handler() {
         addToBuffer(keycode);
     }
 
-    //TODO cambiar a printregs
     if(ctrl && alt && shift) {
-        moveGlobalCursor(0, 0);
-        gPrint("FUNCOaaa");
+        show_regs();
     }
 }
 

@@ -37,7 +37,7 @@ void cPrintColoredChar(Color c, char character) {
     //writes at consoleCursor
     if (character == '\b' && consoleCursor > 0) {
         //backspace
-        putColoredCharAt(c, --consoleCursor, height, character);
+        cErase();
         return;
     }
     if (consoleCursor >= width || character == '\n') {
@@ -68,13 +68,7 @@ void gPrintColoredChar(Color c, char character) {
     //writes at globalCursor
     if (character == '\b' && (globalCursorX != 0 || globalCursorY != 0)) {
         //backspace
-        if(globalCursorX == 0) {
-            globalCursorX = width - 1;
-            globalCursorY--;
-        } else {
-            globalCursorX--;
-        }
-        putColoredCharAt(c, globalCursorX, globalCursorY, character);
+        gErase();
         return;
     }
     if (globalCursorX >= width || character == '\n') {
@@ -111,6 +105,33 @@ void gPrintColoredChar(Color c, char character) {
 void gNewline() {
     scrollUp();
     globalCursorX = 0;
+}
+
+void gPrintDec(uint64_t value) {
+    gPrintBase(value, 10);
+}
+
+void gPrintHex(uint64_t value) {
+    gPrintBase(value, 16);
+}
+
+void gPrintBin(uint64_t value) {
+    gPrintBase(value, 2);
+}
+
+void gPrintBase(uint64_t value, uint32_t base) {
+    uintToBase(value, buffer, base);
+    gPrint(buffer);
+}
+
+void gErase() {
+    if(globalCursorX == 0) {
+        globalCursorX = width - 1;
+        globalCursorY--;
+    } else {
+        globalCursorX--;
+    }
+    putCharAt(globalCursorX, globalCursorY, ' ');
 }
 
 void cNewline() {

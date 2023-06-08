@@ -1,4 +1,9 @@
 #include <stdint.h>
+#include <console.h>
+
+static char* regs[]={"r15: ", "r14: ", "r13: ", "r12: ", "r11: ", "r10: ", "r9: ","r8: ", "rsi: ", "rdi: ", "rbp: ", "rdx: ", "rcx: ", "rbx: ","rax: ", "rip: ", "rsp: "};
+
+static void exScreen(char* str, uint64_t* stack);
 
 void * memset(void * destination, int32_t c, uint64_t length)
 {
@@ -80,4 +85,17 @@ void * memcut(void * destination, void * source, uint64_t length)
     }
 
     return destination;
+}
+
+void displayRegs(uint64_t* exregs) {
+    moveGlobalCursor(0, 0);
+    for(int i=0;i<16;i++){
+        gPrint(regs[i]);
+        gPrint("0x");
+        gPrintHex(exregs[i]);
+        gPrint("\n");
+    }
+    gPrint(regs[16]); // imprime la direccion en donde ocurrio la exception aparte
+    gPrint("0x");
+    gPrintHex(exregs+18);
 }
