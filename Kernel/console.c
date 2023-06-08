@@ -3,10 +3,13 @@
 #include <videoDriver.h>
 #include <utils.h>
 
+
 void scrollUp();
 
 static char buffer[64] = { '0' };
 static uint32_t consoleCursor = 0;
+static uint32_t globalCursorX = 0;
+static uint32_t globalCursorY = 0;
 uint32_t width = 0;
 uint32_t height = 0;
 
@@ -31,6 +34,7 @@ void cPrintChar(char character) {
 }
 
 void cPrintColoredChar(Color c, char character) {
+    //writes at consoleCursor
     if (character == '\b' && consoleCursor > 0) {
         //backspace
         putColoredCharAt(c, --consoleCursor, height, character);
@@ -49,6 +53,64 @@ void cPrintColoredChar(Color c, char character) {
     }
     putColoredCharAt(c, consoleCursor, height, character);
     consoleCursor++;
+}
+
+void gPrintColored(Color c, char* string) {
+    for (int i = 0; string[i] != 0; i++)
+        gPrintColoredChar(c, string[i]);
+}
+
+void gPrint(char* string) {
+    gPrintColored(WHITE, string);
+}
+
+void gPrintColoredChar(Color c, char character) {
+    //writes at globalCursor
+    if (character == '\b' && (globalCursorX != 0 || globalCursorY != 0)) {
+        //backspace
+        if(globalCursorX == 0) {
+            globalCursorX = width - 1;
+            globalCursorY--;
+        } else {
+            globalCursorX--;
+        }
+        putColoredCharAt(c, globalCursorX, globalCursorY, character);
+        return;
+    }
+    if (globalCursorX >= width || character == '\n') {
+        if(globalCursorY >= height) {
+            gNewline();
+        } else {
+            globalCursorX = 0;
+            globalCursorY++;
+        }
+        return;
+    }
+    if (character == '\t') {
+        //tab
+        gPrintColoredChar(c, ' ');
+        gPrintColoredChar(c, ' ');
+        gPrintColoredChar(c, ' ');
+        return;
+    }
+    putColoredCharAt(c, globalCursorX, globalCursorY, character);
+
+    if(globalCursorX == width) {
+        if(globalCursorY == height) {
+            gNewline();
+        } else {
+            globalCursorX = 0;
+            globalCursorY++;
+        }
+    } else {
+        globalCursorX++;
+    }
+
+}
+
+void gNewline() {
+    scrollUp();
+    globalCursorX = 0;
 }
 
 void cNewline() {
@@ -93,4 +155,9 @@ void cClear() {
 
 void scrollUp() {
     scrollCharArea();
+}
+
+void moveGlobalCursor(uint32_t x, uint32_t y) {
+    globalCursorX = (x > width) ? (width) : (x);
+    globalCursorY = (y > height) ? (height) : (y);
 }
