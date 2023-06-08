@@ -93,8 +93,8 @@ void draw_bar(bar * b) {
 }
 
 void draw_score(game * g) {
-    drawNumber(420,200,60,WHITE,20,5,g->computer.score);
-    drawNumber(580,200,60,WHITE,20,5,g->user.score);
+    drawNumber(420,200,60,WHITE,20,5,g->user.score);
+    drawNumber(580,200,60,WHITE,20,5,g->computer.score);
 }
 
 void ball_impulse(ball * b, int dir) {
@@ -155,17 +155,17 @@ void update_ball(game * g) {
         g->ball.y = SCREEN_HEIGHT / 2;
         g->ball.xDir = -g->ball.xDir;
         g->ball.yDir = 1;
-        g->user.score++;
+        g->computer.score++;
         play_beep(2000, 100);
-        // GOL USER
+        // GOL COMPUTER
     } else if (g->ball.x + (g->ball.xDir * BALLSPEED) >= SCREEN_WIDTH) {
         g->ball.x = SCREEN_WIDTH / 2;
         g->ball.y = SCREEN_HEIGHT / 2;
         g->ball.xDir = -g->ball.xDir;
         g->ball.yDir = 1;
-        g->computer.score++;
+        g->user.score++;
         play_beep(2000, 100);
-        // GOL COMPUTER
+        // GOL USER
     }
     g->ball.x += g->ball.xDir * BALLSPEED;
     g->ball.y += g->ball.yDir * BALLSPEED;
@@ -237,16 +237,6 @@ void welcome() {
     }
 }
 
-void winning_screen(char w) {
-    // 0 if PLAYER WON
-    // 1 if COMPUTER WON
-    printFormat("\nWINNER: %s. Press ESC to return\n", (w == 0 ? "USER" : "COMPUTER"));
-    swapBuffer();
-    while (getChar() != 27) {
-        // returns when the user presses ESC    
-    }
-}
-
 void pong() {
 
     welcome();
@@ -269,7 +259,7 @@ void pong() {
     // draws initial game
     init_game_and_draw(&game);
     char c = 0;
-    while(c != 27 && (game.user.score != 10 && game.computer.score != 10)) {
+    while(c != 27 && (game.user.score != 3 && game.computer.score != 3)) {
 
         // UPDATES POS
         c = update_player_user(&game);
@@ -288,11 +278,17 @@ void pong() {
         swapBuffer();
     }
 
-    if (game.user.score == 10) {
+    if (game.user.score == 3) {
         // the winner is USER
-        winning_screen(0);
-    } else if (game.computer.score == 10) {
+        printFormat("\nWINNER: USER. Press ESC to return\n");
+        swapBuffer();
+    } else if (game.computer.score == 3) {
         // the winner is COMPUTER
-        winning_screen(1);
+        printFormat("\nWINNER: COMPUTER. Press ESC to return\n");
+        swapBuffer();
+    }
+
+    while (getChar() != 27) {
+        // returns when the user presses ESC    
     }
 }
