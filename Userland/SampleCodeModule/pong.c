@@ -232,9 +232,12 @@ char update_player_user(game* g) {
 void welcome() {
     printFormat("\nWelcome to PONG. Press any key to start the game\n");
     swapBuffer();
-    while (!getChar()) {
-        //
-    }
+    while (!getChar()) { }
+}
+
+void pause() {
+    char c;
+    while(!getChar()) { }
 }
 
 void pong() {
@@ -260,6 +263,19 @@ void pong() {
     init_game_and_draw(&game);
     char c = 0;
     while(c != 27 && (game.user.score != 3 && game.computer.score != 3)) {
+        
+        // pressing P pauses the game
+        if (c == 'p' || c == 'P') {
+            printFormat("\nPress any key to return");
+            swapBuffer();
+            pause();
+        }
+
+        // pressing R pauses the game and shows the registers in that moment
+        if (c == 'r' || c == 'R') {
+            swapBuffer();
+            pause();
+        }
 
         // UPDATES POS
         c = update_player_user(&game);
