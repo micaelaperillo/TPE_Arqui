@@ -22,6 +22,7 @@ EXTERN getStackBase
 EXTERN irqDispatcher
 EXTERN exceptionDispatcher
 EXTERN swInterruptDispatcher
+EXTERN show_regs
 
 SECTION .text
 
@@ -77,6 +78,7 @@ SECTION .text
 
 
 %macro exceptionHandler 1
+    call show_regs ; the registers need to be displayed asap
 	pushState
 	mov rsi, rsp
 	mov rdi, %1 ; pasaje de parametro

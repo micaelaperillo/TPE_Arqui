@@ -91,10 +91,6 @@ void keyboard_handler() {
     else if(!keyRelease) {
         addToBuffer(keycode);
     }
-
-    if(ctrl && alt && shift) {
-        show_regs();
-    }
 }
 
 char getc(){

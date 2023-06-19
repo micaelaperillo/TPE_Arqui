@@ -36,6 +36,10 @@ void gErase();
 
 void moveGlobalCursor(uint32_t x, uint32_t y);
 
+int getGlobalCursorX();
+
+int getGlobalCursorY();
+
 //#######################################################
 //WRITES AT CONSOLE CURSOR
 

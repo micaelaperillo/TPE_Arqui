@@ -126,6 +126,9 @@ void gPrintBase(uint64_t value, uint32_t base) {
 
 void gErase() {
     if(globalCursorX == 0) {
+        if(globalCursorY == 0) {
+            return;
+        }
         globalCursorX = width - 1;
         globalCursorY--;
     } else {
@@ -181,4 +184,12 @@ void scrollUp() {
 void moveGlobalCursor(uint32_t x, uint32_t y) {
     globalCursorX = (x > width) ? (width) : (x);
     globalCursorY = (y > height) ? (height) : (y);
+}
+
+int getGlobalCursorX() {
+    return (int)globalCursorX;
+}
+
+int getGlobalCursorY() {
+    return (int)globalCursorY;
 }

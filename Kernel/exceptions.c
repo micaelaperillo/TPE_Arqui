@@ -1,5 +1,6 @@
 #include <stdint.h>
 #include <console.h>
+#include <lib.h>
 
 #define ZERO_EXCEPTION_ID 0
 #define INVALIDO_OP_ID 6
@@ -31,10 +32,7 @@ void exceptionDispatcher(int exception, uint64_t* stack) {
 }
 
 static void exScreen(char* str, uint64_t* stack) {
-    cPrintColored(RED, str);
-	cNewline();
-	printRegs(stack);
-	cNewline();
+    gPrintColored(RED, str);
 	stack[15]=0x400000;
 }
 

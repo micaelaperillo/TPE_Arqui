@@ -48,6 +48,44 @@ section .text
 	pop rax
 %endmacro
 
+%macro pushStateInverse 0
+    push rsp
+	push r15
+	push r14
+	push r13
+	push r12
+	push r11
+	push r10
+	push r9
+	push r8
+	push rsi
+	push rdi
+	push rbp
+	push rdx
+	push rcx
+	push rbx
+	push rax
+%endmacro
+
+%macro popStateInverse 0
+    pop rax
+	pop rbx
+	pop rcx
+	pop rdx
+	pop rbp
+	pop rdi
+	pop rsi
+	pop r8
+	pop r9
+	pop r10
+	pop r11
+	pop r12
+	pop r13
+	pop r14
+	pop r15
+	pop rsp
+%endmacro
+
 clock:
 	push rbp
 	mov rbp, rsp
@@ -62,8 +100,8 @@ clock:
 	ret
 
 keydown:
-    push rbp
-    mov rbp, rsp
+    ;if F1 was pressed, the value in each register should be preserved, building the stack messes up the process
+    push rax
     in al, 0x64
     and al, 0x01
     jz .not_pressed
@@ -71,8 +109,17 @@ keydown:
     jmp .finish
 .not_pressed:
     mov al, 0
+    jmp .continue
 .finish:
-    leave
+    cmp al, 0x3B
+    je .regs   ;F1
+    add esp, 8
+    jmp .continue
+.regs:
+    pop rax
+    call show_regs
+    mov al, 0x3B
+.continue:
     ret
 	
 cpuVendor:
@@ -182,12 +229,12 @@ timer_wait:
     ret
 
 show_regs:
-	; gets current registers
-    pushState
-	mov rdi, rsp
-	call displayRegs
-	popState
-	ret
-
-    section .bss
-	registers resb 8 * 17
+  ; Store the register values in an array
+  push rsp
+  pushStateInverse
+  ; Pass the array pointer to the C function
+  mov rdi, rsp
+  call displayRegs
+  popStateInverse
+  pop rsp
+  ret

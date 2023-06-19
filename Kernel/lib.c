@@ -1,7 +1,7 @@
 #include <stdint.h>
 #include <console.h>
 
-static char* regs[]={"r15: ", "r14: ", "r13: ", "r12: ", "r11: ", "r10: ", "r9: ","r8: ", "rsi: ", "rdi: ", "rbp: ", "rdx: ", "rcx: ", "rbx: ","rax: ", "rip: ", "rsp: "};
+static char* regs[]={"rax: ", "rbx: ", "rcx: ", "rdx: ", "rbp: ", "rdi: ", "rsi: ", " r8: ", " r9: ", "r10: ", "r11: ", "r12: ", "r13: ","r14: ", "r15: ", "rsp: ", "rip: "};
 
 static void exScreen(char* str, uint64_t* stack);
 
@@ -88,14 +88,18 @@ void * memcut(void * destination, void * source, uint64_t length)
 }
 
 void displayRegs(uint64_t* exregs) {
-    moveGlobalCursor(0, 0);
-    for(int i=0;i<16;i++){
+    int linesToWrite = 17;
+    int margin = 3;
+    moveGlobalCursor(0, linesToWrite+margin);
+    while(!(getGlobalCursorX() == 0 && getGlobalCursorY() == 0)) {
+        //clears the screen that is going to be written at
+        gErase();
+    }
+    moveGlobalCursor(0, margin);//adds a bit of margin
+    for(int i=0;i<linesToWrite;i++){
         gPrint(regs[i]);
         gPrint("0x");
         gPrintHex(exregs[i]);
         gPrint("\n");
     }
-    gPrint(regs[16]); // imprime la direccion en donde ocurrio la exception aparte
-    gPrint("0x");
-    gPrintHex(exregs+18);
 }
