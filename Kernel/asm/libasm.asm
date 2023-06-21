@@ -89,17 +89,16 @@ clock:
 	push rbp
 	mov rbp, rsp
 
-	mov al, dil 
+	mov al, dil
 	out 70h, al
 	xor rax, rax
 	in al, 71h
-		
+
 	mov rsp, rbp
 	pop rbp
 	ret
 
 keydown:
-    ;if F1 was pressed and rdi != 0, it will print the system regsiters on the screen
     push rbp
     mov rbp, rsp
     in al, 0x64
@@ -109,11 +108,10 @@ keydown:
     jmp .finish
 .not_pressed:
     mov al, 0
-    jmp .finish
 .finish:
     leave
     ret
-	
+
 cpuVendor:
 	push rbp
 	mov rbp, rsp
@@ -200,21 +198,21 @@ timer_wait:
     mov rbp, rsp
 
     mov eax, dword [rbp+16]    ; recibe el tiempo que espera
-    mov ebx, eax              	
+    mov ebx, eax
 
     ; calcula numero de ciclos que tiene que esperar
-    mov ecx, 0                	
-    mov edx, 1000000          
-    mul edx                   
-    mov ecx, eax              
-    xor edx, edx              
-    mov eax, ebx              
-    mul edx                   
-    add eax, ecx              
-	
+    mov ecx, 0
+    mov edx, 1000000
+    mul edx
+    mov ecx, eax
+    xor edx, edx
+    mov eax, ebx
+    mul edx
+    add eax, ecx
+
 .wait_loop:
-    rdtsc                     
-    cmp rax, rdx              
+    rdtsc
+    cmp rax, rdx
     jb .wait_loop
 
     pop rbp

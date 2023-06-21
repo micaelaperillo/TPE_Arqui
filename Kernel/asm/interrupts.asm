@@ -125,6 +125,10 @@ SECTION .text
 	mov rdi, %1 ; pasaje de parametro
 	call exceptionDispatcher
 	popState
+	call getStackBase
+    sub rax, 20h
+    mov qword [rsp+8*3], rax
+	mov qword [rsp],400000h ;posicion del samplecodeModule
 	iretq
 %endmacro
 
