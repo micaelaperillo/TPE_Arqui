@@ -118,13 +118,9 @@ SECTION .text
     pushStateInverse
     mov rdi, rsp
     call displayRegs ; the registers need to be displayed asap
-    popStateInverse
-    ;the code above recovers the rsp value
-    pushState
-	mov rsi, rsp
 	mov rdi, %1 ; pasaje de parametro
 	call exceptionDispatcher
-	popState
+	popStateInverse
 	call getStackBase
     sub rax, 20h
     mov qword [rsp+8*3], rax
