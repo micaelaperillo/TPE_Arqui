@@ -52,11 +52,11 @@ clock:
 	push rbp
 	mov rbp, rsp
 
-	mov al, dil 
+	mov al, dil
 	out 70h, al
 	xor rax, rax
 	in al, 71h
-		
+
 	mov rsp, rbp
 	pop rbp
 	ret
@@ -74,7 +74,7 @@ keydown:
 .finish:
     leave
     ret
-	
+
 cpuVendor:
 	push rbp
 	mov rbp, rsp
@@ -161,21 +161,21 @@ timer_wait:
     mov rbp, rsp
 
     mov eax, dword [rbp+16]    ; recibe el tiempo que espera
-    mov ebx, eax              	
+    mov ebx, eax
 
     ; calcula numero de ciclos que tiene que esperar
-    mov ecx, 0                	
-    mov edx, 1000000          
-    mul edx                   
-    mov ecx, eax              
-    xor edx, edx              
-    mov eax, ebx              
-    mul edx                   
-    add eax, ecx              
-	
+    mov ecx, 0
+    mov edx, 1000000
+    mul edx
+    mov ecx, eax
+    xor edx, edx
+    mov eax, ebx
+    mul edx
+    add eax, ecx
+
 .wait_loop:
-    rdtsc                     
-    cmp rax, rdx              
+    rdtsc
+    cmp rax, rdx
     jb .wait_loop
 
     pop rbp
@@ -183,6 +183,7 @@ timer_wait:
 
 show_regs:
 	; gets current registers
+
     pushState
 	mov rdi, rsp
 	call displayRegs
@@ -190,4 +191,4 @@ show_regs:
 	ret
 
     section .bss
-	registers resb 8 * 17
+	registers resq 17

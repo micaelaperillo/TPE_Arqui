@@ -16,7 +16,7 @@ void printRegs(uint64_t* exregs) {
 		cPrintHex(exregs[i]);
 		cPrint("\n");
 	}
-	cPrint(regs[16]); // imprime la direccion en donde ocurrio la exception aparte
+	cPrint(regs[16]);
 	cPrint("0x");
 	cPrintHex(exregs+18);
 }
@@ -31,10 +31,10 @@ void exceptionDispatcher(int exception, uint64_t* stack) {
 }
 
 static void exScreen(char* str, uint64_t* stack) {
-    cPrintColored(RED, str);
-	cNewline();
 	printRegs(stack);
 	cNewline();
-	stack[15]=0x400000;
+    cPrintColored(RED, str);
+	cNewline();
+	cNewline();
 }
 
