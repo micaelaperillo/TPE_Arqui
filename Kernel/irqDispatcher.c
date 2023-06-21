@@ -2,18 +2,18 @@
 #include <stdint.h>
 #include <keyboardDriver.h>
 
-static void int_20(), int_21();
+static void int_20(uint64_t* registers), int_21(uint64_t* registers);
 
-static void (*handlerArr[])() = {int_20, int_21};
+static void (*handlerArr[])(uint64_t* registers) = {int_20, int_21};
 
-void irqDispatcher(uint64_t irq) {
-    handlerArr[irq]();
+void irqDispatcher(uint64_t irq, uint64_t* registers) {
+    handlerArr[irq](registers);
 }
 
-void int_20() {
+void int_20(uint64_t* registers) {
     timer_handler();
 }
 
-void int_21() {
-    keyboard_handler();
+void int_21(uint64_t* registers) {
+    keyboard_handler(registers);
 }

@@ -5,22 +5,9 @@
 #define ZERO_EXCEPTION_ID 0
 #define INVALIDO_OP_ID 6
 
-static char* regs[]={"r15: ", "r14: ", "r13: ", "r12: ", "r11: ", "r10: ", "r9: ","r8: ", "rsi: ", "rdi: ", "rbp: ", "rdx: ", "rcx: ", "rbx: ","rax: ", "rip: ", "rsp: "};
-
 static void exScreen(char* str, uint64_t* stack);
 extern uint64_t getStackBase();
 
-void printRegs(uint64_t* exregs) {
-	for(int i=0;i<16;i++){
-		cPrint(regs[i]);
-		cPrint("0x");
-		cPrintHex(exregs[i]);
-		cPrint("\n");
-	}
-	cPrint(regs[16]); // imprime la direccion en donde ocurrio la exception aparte
-	cPrint("0x");
-	cPrintHex(exregs+18);
-}
 
 void exceptionDispatcher(int exception, uint64_t* stack) {
 	if (exception == ZERO_EXCEPTION_ID){

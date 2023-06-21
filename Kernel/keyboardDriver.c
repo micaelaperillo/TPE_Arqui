@@ -1,5 +1,4 @@
 #include <stdint.h>
-#include <console.h>
 #include <keyboardDriver.h>
 #include <lib.h>
 
@@ -10,6 +9,8 @@ extern unsigned char keydown();
 #define LCTRL 0x1D
 #define LALT 0x38
 #define CAPS_LOCK 0x3A
+
+#define F1 0x3B
 
 #define NO_INPUT 0x00
 
@@ -65,7 +66,7 @@ static void addToBuffer(uint8_t keycode) {
     keyBuffer = c;
 }
 
-void keyboard_handler() {
+void keyboard_handler(uint64_t* registers) {
     unsigned char code = keydown();
     if(code == NO_INPUT) {
         addToBuffer(NO_INPUT);
@@ -88,6 +89,9 @@ void keyboard_handler() {
     else if(keycode == CAPS_LOCK) {
         caps_lock = (keyRelease)?(caps_lock):(!caps_lock);
     }
+    else if(keycode == F1) {
+        displayRegs(registers);
+    }
     else if(!keyRelease) {
         addToBuffer(keycode);
     }
@@ -96,7 +100,7 @@ void keyboard_handler() {
 char getc(){
     uint8_t c = readBuffer();
     while( c == NO_INPUT) {
-        keyboard_handler();
+        keyboard_handler(0);
         c = readBuffer();
     }
     return (char) c;

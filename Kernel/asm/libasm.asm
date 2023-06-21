@@ -6,7 +6,6 @@ GLOBAL clock
 GLOBAL play_sound
 GLOBAL stop_sound
 GLOBAL timer_wait
-GLOBAL show_regs
 
 EXTERN displayRegs
 
@@ -100,8 +99,9 @@ clock:
 	ret
 
 keydown:
-    ;if F1 was pressed, the value in each register should be preserved, building the stack messes up the process
-    push rax
+    ;if F1 was pressed and rdi != 0, it will print the system regsiters on the screen
+    push rbp
+    mov rbp, rsp
     in al, 0x64
     and al, 0x01
     jz .not_pressed
@@ -109,17 +109,9 @@ keydown:
     jmp .finish
 .not_pressed:
     mov al, 0
-    jmp .continue
+    jmp .finish
 .finish:
-    cmp al, 0x3B
-    je .regs   ;F1
-    add esp, 8
-    jmp .continue
-.regs:
-    pop rax
-    call show_regs
-    mov al, 0x3B
-.continue:
+    leave
     ret
 	
 cpuVendor:
@@ -227,14 +219,3 @@ timer_wait:
 
     pop rbp
     ret
-
-show_regs:
-  ; Store the register values in an array
-  push rsp
-  pushStateInverse
-  ; Pass the array pointer to the C function
-  mov rdi, rsp
-  call displayRegs
-  popStateInverse
-  pop rsp
-  ret

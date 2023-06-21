@@ -22,7 +22,7 @@ EXTERN getStackBase
 EXTERN irqDispatcher
 EXTERN exceptionDispatcher
 EXTERN swInterruptDispatcher
-EXTERN show_regs
+EXTERN displayRegs
 
 SECTION .text
 
@@ -62,24 +62,65 @@ SECTION .text
 	pop rax
 %endmacro
 
-%macro irqHandlerMaster 1
-	pushState
+%macro pushStateInverse 0
+    push rsp
+	push r15
+	push r14
+	push r13
+	push r12
+	push r11
+	push r10
+	push r9
+	push r8
+	push rsi
+	push rdi
+	push rbp
+	push rdx
+	push rcx
+	push rbx
+	push rax
+%endmacro
 
+%macro popStateInverse 0
+	pop rax
+	pop rbx
+	pop rcx
+	pop rdx
+	pop rbp
+	pop rdi
+	pop rsi
+	pop r8
+	pop r9
+	pop r10
+	pop r11
+	pop r12
+	pop r13
+	pop r14
+	pop r15
+	pop rsp
+%endmacro
+
+%macro irqHandlerMaster 1
+	pushStateInverse
 	mov rdi, %1 ; pasaje de parametro
+	mov rsi, rsp
 	call irqDispatcher
 	; signal pic EOI (End of Interrupt)
 	mov al, 20h
 	out 20h, al
-
-	popState
+	popStateInverse
 	iretq
 %endmacro
 
 
 
 %macro exceptionHandler 1
-    call show_regs ; the registers need to be displayed asap
-	pushState
+    pushStateInverse
+    mov rdi, rsp
+    call displayRegs ; the registers need to be displayed asap
+    popStateInverse
+    ;the code above recovers the rsp value
+    pushState
 	mov rsi, rsp
 	mov rdi, %1 ; pasaje de parametro
 	call exceptionDispatcher
@@ -122,7 +163,7 @@ picSlaveMask:
 	push    rbp
     mov     rbp, rsp
     mov     ax, di  ; ax = mascara de 16 bits
-    out	0A1h,al
+    out	    0A1h,al
     pop     rbp
     retn
 
@@ -167,3 +208,4 @@ haltcpu:
 
 SECTION .bss
 	aux resq 1
+	registers resq 17

@@ -105,10 +105,7 @@ int main()
     cNewline();
     cPrint("[Kernel finished]");
     cNewline();
-    cNewline();
-    cPrint("Initializing Shell");
-    cNewline();
     ((EntryPoint)sampleCodeModuleAddress)();
-    cPrint("[Shell finished]");
+    cPrint("[Exiting System]");
 	return 0;
 }
