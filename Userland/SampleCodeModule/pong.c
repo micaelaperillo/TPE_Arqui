@@ -285,7 +285,7 @@ void pong() {
         draw_ball(&game.ball);
         draw_score(&game);
         draw_score(&game);
-
+        //invalidOp(); //for testing
         // SHOWS FRAME ON SCREEN
         swapBuffer();
     }
