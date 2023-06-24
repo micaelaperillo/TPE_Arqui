@@ -5,9 +5,7 @@
 #define SYS_WAIT_ID 6
 #define SYS_SOUND_ID 7
 
-static int regsAmount = 17;
-static char * regsStr[]={"rax:","rbx:","rcx:","rdx:","rsi:","rdi:","rbp:","r8:","r9:","r10:","r11:","r12:","r13:","r14:",
-                         "r15:","rsp:","rip:"};
+
 
 extern uint64_t* current_regs();
 
