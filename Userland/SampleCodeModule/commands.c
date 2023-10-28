@@ -19,7 +19,7 @@ extern void invalidOp();
 
 void unknownCommand(char* str);
 
-void help(), testException0(),testException6(), displayTime(), displayDate(), playBubbles(), playPong(), playBeep();
+void help(), testException0(),testException6(), displayTime(), displayDate(), playBubbles(), playPong(), playBeep(),playSnakegame();
 
 static Program pArr[] = {
         &(struct PROGRAM_STRUCT){"help", "displays all available commands", help},
@@ -30,7 +30,7 @@ static Program pArr[] = {
         &(struct PROGRAM_STRUCT){"bubbles", "shows colored bubbles on the screen", playBubbles},
         &(struct PROGRAM_STRUCT){"pong", "runs a virtual ping pong match against the computer", playPong},
         &(struct PROGRAM_STRUCT){"beep", "produces a 'beep' sound", playBeep},
-        &(struct PROGRAM_STRUCT){"snake","SNAAAAAKE",snakegame},
+        &(struct PROGRAM_STRUCT){"snake","SNAAAAAKE",playSnakegame},
         null //marks the end of the array
         };
 
@@ -84,6 +84,12 @@ void playBubbles() {
 void playPong() {
     enableDoubleBuffering();
     pong();
+    clearScreen();
+    disableDoubleBuffering();
+}
+void playSnakegame(){
+    enableDoubleBuffering();
+    snakegame();
     clearScreen();
     disableDoubleBuffering();
 }
