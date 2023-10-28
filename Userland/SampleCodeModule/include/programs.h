@@ -9,5 +9,6 @@ void bubbles();
  * Runs a game of pong, enable double buffering before using it
  */
 void pong();
+void snakegame();
 
 #endif //TPE_ARQUI_PROGRAMS_H

@@ -30,6 +30,7 @@ static Program pArr[] = {
         &(struct PROGRAM_STRUCT){"bubbles", "shows colored bubbles on the screen", playBubbles},
         &(struct PROGRAM_STRUCT){"pong", "runs a virtual ping pong match against the computer", playPong},
         &(struct PROGRAM_STRUCT){"beep", "produces a 'beep' sound", playBeep},
+        &(struct PROGRAM_STRUCT){"snake","SNAAAAAKE",snakegame},
         null //marks the end of the array
         };
 
