@@ -10,8 +10,9 @@
 #define LEFT 4
 #define RIGHT 6
 #define MAXSNAKELENGHT 300
-#define GROWRATE 5
-
+#define GROWRATE 10
+#define TICTAC_RADIUS 8
+#define HEADRADIUS 4
 typedef struct snake{
     int snakepos [2][MAXSNAKELENGHT];
     int dir;
@@ -30,6 +31,19 @@ typedef struct game{
     food food;
 } game;
 
+static uint32_t seed = 12345; // Initial seed value
+
+// Custom random number generator function
+uint32_t customRandom() {
+    // LCG parameters (you can experiment with different values)
+    uint32_t a = 1664525;
+    uint32_t c = 1013904223;
+
+    seed = (a * seed + c); // Update the seed value
+    return seed;
+}
+
+
 void drawtictac(game* g){
     drawCircle(WHITE,g->food.x,g->food.y,g->food.radius);
 }
@@ -46,7 +60,7 @@ g->food.radius=8;
 
 }
 
-int checksnakecolission(snakey *s){
+int checksnakecolission(snakey *s){ // agregar condicion de choque para la otra snek
     if(s->snakepos[0][0]<0 || s->snakepos[0][0]>SCREEN_WIDTH || s->snakepos[1][0]<0 || s->snakepos[1][0]>SCREEN_HEIGHT)
         return 1;
     for(int i=1;i<s->lenght;i++)
@@ -57,17 +71,17 @@ int checksnakecolission(snakey *s){
 
 void checkfoodcolission(snakey *s,food *f){
     int i;
-    if(s->snakepos[0][0]==f->x && s->snakepos[1][0]==f->y){
+    if((s->snakepos[0][0] + HEADRADIUS >= f->x - f->radius && s->snakepos[0][0] + HEADRADIUS <= f->x + f->radius) && (s->snakepos[1][0] + HEADRADIUS >=f->y-f->radius && s->snakepos[1][0] + HEADRADIUS <=f->y+f->radius)){
         s->lenght+=GROWRATE;
-        f->x=i%SCREEN_WIDTH;
-        f->y=i%SCREEN_HEIGHT;
+        f->x=customRandom()%SCREEN_WIDTH;
+        f->y=customRandom()%SCREEN_HEIGHT;
         play_beep(2000, 100);
     }
 }
 
 void drawsnake(snakey * s){
     for (int i=0;i<s->lenght;i++){
-        drawCircle(RED,s->snakepos[0][i],s->snakepos[1][i],4);
+        drawCircle(RED,s->snakepos[0][i],s->snakepos[1][i],HEADRADIUS);
     }
 }
 char updateSnake(snakey * s){
@@ -139,7 +153,8 @@ void snakegame(){
         moveSnake(&game.s1);
         drawsnake(&game.s1);
         gm1=checksnakecolission(&game.s1);
-        drawtictac(&game.food);
+        checkfoodcolission(&game.s1,&game.food);
+        drawtictac(&game);
         swapBuffer();
     }
 
