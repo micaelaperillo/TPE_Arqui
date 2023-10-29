@@ -90,15 +90,19 @@ char updateSnake(snakey * s){
     c=getChar();
     switch (c){
         case 'w':
-            s->dir = UP;
+            if(s->dir!=DOWN)
+                s->dir = UP;
             break;
         case 's':
+            if(s->dir!=UP)
             s->dir = DOWN;
             break;
         case 'a':
+            if(s->dir!=RIGHT)
             s->dir = LEFT;
             break;
         case 'd':
+            if(s->dir!=LEFT)
             s->dir = RIGHT;
             break;
         default:
