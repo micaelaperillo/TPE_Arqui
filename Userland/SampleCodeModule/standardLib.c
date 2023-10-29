@@ -150,6 +150,12 @@ void _printDec(int value, int len, uint8_t padding0, char* buff) {
     putStrn(itoa(value,buff,10));
 }
 
+uint8_t isCharPressed(char c) {
+    uint8_t v;
+    interrupt(8, (uint64_t)&v, c, 0, 0, 0);
+    return v;
+}
+
 void _printHex(uint64_t value, char* buff) {
     putStrn("0x");
     putStrn(itoa(value,buff,16));

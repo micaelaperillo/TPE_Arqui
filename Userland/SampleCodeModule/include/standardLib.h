@@ -42,4 +42,6 @@ void printFormat(const char*format,...);
  * @return 0 if the strings are equal
  */
 int compString(const char *s1,const char *s2);
+
+uint8_t isCharPressed(char c);
 #endif //TPE_ARQUI_STANDARDLIB_H

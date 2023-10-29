@@ -15,4 +15,6 @@ void gets(char * s);
 // gets string, from the keyboard
 char getc();
 
+uint8_t isCharPressed(unsigned char c);
+
 #endif

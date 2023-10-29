@@ -42,8 +42,14 @@ const unsigned char kbdusWithShift[128] = {
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
 };
 
+uint8_t keyMap[256] = {FALSE};
+
 uint8_t keyPressed() {
     return keyBuffer;
+}
+
+uint8_t isCharPressed(unsigned char c) {
+    return keyMap[c];
 }
 
 static char readBuffer() {
@@ -64,6 +70,20 @@ static void addToBuffer(uint8_t keycode) {
         return;
     }
     keyBuffer = c;
+}
+
+static void setKeyMap(uint8_t keycode, uint8_t condition) {
+    if (keycode == NO_INPUT) {
+        return;
+    }
+    unsigned char c = (kbdusNoShift[keycode]);
+    uint8_t isLetter = (c >= 'a' && c <= 'z');
+    uint8_t auxShift = (caps_lock && isLetter)?(!shift):(shift);
+    if(auxShift) {
+        keyMap[kbdusWithShift[keycode]] = condition;
+        return;
+    }
+    keyMap[c] = condition;
 }
 
 void keyboard_handler(uint64_t* registers) {
@@ -94,6 +114,10 @@ void keyboard_handler(uint64_t* registers) {
     }
     else if(!keyRelease) {
         addToBuffer(keycode);
+        setKeyMap(keycode, TRUE);
+    }
+    else if(keyRelease) {
+        setKeyMap(keycode, FALSE);
     }
 }
 

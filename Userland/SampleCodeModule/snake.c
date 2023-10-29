@@ -45,6 +45,7 @@ uint32_t customRandom() {
     return seed;
 }
 
+char playercant;
 
 void drawtictac(game* g){
     drawCircle(WHITE,g->food.x,g->food.y,g->food.radius);
@@ -57,9 +58,21 @@ g->s1.lenght=40;
 g->s1.dir=LEFT;
 g->s1.score=0;
 
+g->s2.snakepos[0][0]=SCREEN_WIDTH/2+100;
+g->s2.snakepos[1][0]=SCREEN_HEIGHT/2+100;
+g->s2.lenght=40;
+g->s2.dir=LEFT;
+g->s2.score=0;
+
 g->food.x=SCREEN_WIDTH/4;
 g->food.y=SCREEN_HEIGHT/4;
 g->food.radius=8;
+}
+
+void welcomeSnake(){
+printFormat("Welcome to Snake! press 1 for single player, 2 for multiplayer \n");
+swapBuffer();
+while((playercant=getChar())!='1' && playercant!='2');
 }
 
 void gameover(){
@@ -92,35 +105,40 @@ void drawsnake(snakey * s){
         drawCircle(RED,s->snakepos[0][i],s->snakepos[1][i],HEADRADIUS);
     }
 }
-char updateSnake(snakey * s){
-    char c;
-    if(keyPress()){
-    c=getChar();
-    c=c>='a' && c<='z' ? c : c+'a'-'A';
-    switch (c){
-        case 'w':
-            if(s->dir!=DOWN)
-                s->dir = UP;
-            break;
-        case 's':
-            if(s->dir!=UP)
-            s->dir = DOWN;
-            break;
-        case 'a':
-            if(s->dir!=RIGHT)
-            s->dir = LEFT;
-            break;
-        case 'd':
-            if(s->dir!=LEFT)
-            s->dir = RIGHT;
-            break;
-        default:
-            break;
-         }
+
+void drawsnake2(snakey * s){
+    for (int i=0;i<s->lenght;i++){
+        drawCircle(YELLOW,s->snakepos[0][i],s->snakepos[1][i],HEADRADIUS);
     }
-    else
-        c=0;
-    return c;
+}
+void updateSnake(snakey * s){
+    if(isCharPressed('w')||isCharPressed('W'))
+        if(s->dir!=DOWN)
+            s->dir = UP;
+     if(isCharPressed('s')||isCharPressed('S'))
+        if(s->dir!=UP)
+            s->dir = DOWN;
+    if(isCharPressed('a')||isCharPressed('A'))
+        if(s->dir!=RIGHT)
+            s->dir = LEFT;
+     if(isCharPressed('d')||isCharPressed('D'))
+        if(s->dir!=LEFT)
+            s->dir = RIGHT;
+}
+
+void updateSnake2(snakey * s){
+    if(isCharPressed('i')|| isCharPressed('I'))
+        if(s->dir!=DOWN)
+            s->dir = UP;
+    if (isCharPressed('k')|| isCharPressed('K'))
+        if(s->dir!=UP)
+            s->dir = DOWN;
+    if(isCharPressed('j')|| isCharPressed('J'))
+        if(s->dir!=RIGHT)
+                s->dir = LEFT;
+    if (isCharPressed('l')|| isCharPressed('L'))
+        if(s->dir!=LEFT)
+            s->dir = RIGHT;
 }
 
 void moveSnake(snakey *s){
@@ -145,12 +163,19 @@ void moveSnake(snakey *s){
             break;
     }
 }
-void drawscore(game *g){
-    if(g->s1.score>9)
-        drawNumber(500,20,60,WHITE,20,5,g->s1.score/10);
-    drawNumber(540,20,60,WHITE,20,5,g->s1.score%10);
+void drawscore(snakey *s){
+    if(s->score>9)
+        drawNumber(400,20,60,WHITE,20,5,s->score/10);
+    drawNumber(440,20,60,WHITE,20,5,s->score%10);
+}
+
+void drawscore2(snakey *s){
+    if(s->score>9)
+        drawNumber(860,20,60,WHITE,20,5,s->score/10);
+    drawNumber(900,20,60,WHITE,20,5,s->score%10);
 }
 void snakegame(){
+    welcomeSnake();
     food food;
     snakey s1;
     snakey s2;
@@ -163,17 +188,27 @@ void snakegame(){
     initgame(&game);
     swapBuffer();
 
-    char c1=0;
-    int gm1=0;
-    while(c1!=27 && gm1==0){
-        c1=updateSnake(&game.s1);
+
+    int gm1=0,gm2=0;
+    while(gm1==0 && gm2==0){
+        updateSnake(&game.s1);
         moveSnake(&game.s1);
         drawsnake(&game.s1);
+        if(playercant=='2'){
+            updateSnake2(&game.s2);
+            moveSnake(&game.s2);
+            drawsnake2(&game.s2);
+            gm2=checksnakecolission(&game.s2);
+            checkfoodcolission(&game.s2,&game.food);
+            drawscore2(&game.s2);
+        }
         gm1=checksnakecolission(&game.s1);
         checkfoodcolission(&game.s1,&game.food);
         drawtictac(&game);
-        drawscore(&game);
+        drawscore(&game.s1);
         swapBuffer();
+        if(isCharPressed(27))
+            break;
     }
     gameover();
 
