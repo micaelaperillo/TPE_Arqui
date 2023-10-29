@@ -13,10 +13,12 @@
 #define GROWRATE 10
 #define TICTAC_RADIUS 8
 #define HEADRADIUS 4
+
 typedef struct snake{
     int snakepos [2][MAXSNAKELENGHT];
     int dir;
-    int lenght
+    int lenght;
+    int score;
 }snakey;
 
 typedef struct food{
@@ -53,13 +55,18 @@ g->s1.snakepos[0][0]=SCREEN_WIDTH/2;
 g->s1.snakepos[1][0]=SCREEN_HEIGHT/2;
 g->s1.lenght=40;
 g->s1.dir=LEFT;
+g->s1.score=0;
 
 g->food.x=SCREEN_WIDTH/4;
 g->food.y=SCREEN_HEIGHT/4;
 g->food.radius=8;
-
 }
 
+void gameover(){
+    printFormat("Press any key to go back to terminal \n");
+    swapBuffer();
+    while(!getChar());
+}
 int checksnakecolission(snakey *s){ // agregar condicion de choque para la otra snek
     if(s->snakepos[0][0]<0 || s->snakepos[0][0]>SCREEN_WIDTH || s->snakepos[1][0]<0 || s->snakepos[1][0]>SCREEN_HEIGHT)
         return 1;
@@ -71,11 +78,12 @@ int checksnakecolission(snakey *s){ // agregar condicion de choque para la otra 
 
 void checkfoodcolission(snakey *s,food *f){
     int i;
-    if((s->snakepos[0][0] + HEADRADIUS >= f->x - f->radius && s->snakepos[0][0] + HEADRADIUS <= f->x + f->radius) && (s->snakepos[1][0] + HEADRADIUS >=f->y-f->radius && s->snakepos[1][0] + HEADRADIUS <=f->y+f->radius)){
+    if((s->snakepos[0][0] + HEADRADIUS >= f->x - f->radius && s->snakepos[0][0] + HEADRADIUS <= f->x + f->radius || (s->snakepos[0][0] - HEADRADIUS >= f->x - f->radius && s->snakepos[0][0] - HEADRADIUS <= f->x + f->radius)) && (s->snakepos[1][0] + HEADRADIUS >=f->y-f->radius && s->snakepos[1][0] + HEADRADIUS <=f->y+f->radius||(s->snakepos[1][0] - HEADRADIUS >=f->y-f->radius && s->snakepos[1][0] - HEADRADIUS <=f->y+f->radius))){
         s->lenght+=GROWRATE;
         f->x=customRandom()%SCREEN_WIDTH;
         f->y=customRandom()%SCREEN_HEIGHT;
         play_beep(2000, 100);
+        s->score++;
     }
 }
 
@@ -88,6 +96,7 @@ char updateSnake(snakey * s){
     char c;
     if(keyPress()){
     c=getChar();
+    c=c>='a' && c<='z' ? c : c+'a'-'A';
     switch (c){
         case 'w':
             if(s->dir!=DOWN)
@@ -136,7 +145,11 @@ void moveSnake(snakey *s){
             break;
     }
 }
-
+void drawscore(game *g){
+    if(g->s1.score>9)
+        drawNumber(500,20,60,WHITE,20,5,g->s1.score/10);
+    drawNumber(540,20,60,WHITE,20,5,g->s1.score%10);
+}
 void snakegame(){
     food food;
     snakey s1;
@@ -159,7 +172,9 @@ void snakegame(){
         gm1=checksnakecolission(&game.s1);
         checkfoodcolission(&game.s1,&game.food);
         drawtictac(&game);
+        drawscore(&game);
         swapBuffer();
     }
+    gameover();
 
 }
