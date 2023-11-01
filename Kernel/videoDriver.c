@@ -222,6 +222,15 @@ void drawColoredRectangle(Color c, uint32_t x, uint32_t y, uint32_t width, uint3
     }
 }
 
+void drawColoredSquare(Color c, uint32_t x, uint32_t y, uint32_t side) {
+    // drawColoredRectangle(c, x, y, side, side);
+    for (int i = 0; i < side; i++) {
+        for (int j = 0; j < side; j++) {
+            putPixel(c, x + i, y + j);
+        }
+    }
+}
+
 void drawHexRectangle(uint32_t hexColor, uint32_t x, uint32_t y, uint32_t width, uint32_t height) {
     Color c;
     hexToColor(hexColor, &c);
@@ -268,10 +277,13 @@ void _drawChar(Color c, uint32_t xPixel, uint32_t yPixel, unsigned char characte
             if(chr[j] & (1<<i)) {
                 //it draws rectangles in case size_mult > 1, which is currently not supported
                 //this was left as it is easier to adapt it in case it is supported again
-                drawColoredRectangle(c, (xPixel + i) * SIZE_MULT, (yPixel + j) * SIZE_MULT, SIZE_MULT, SIZE_MULT);
+                drawColoredSquare(c, (xPixel + i) * SIZE_MULT, (yPixel + j) * SIZE_MULT, SIZE_MULT);
+
+                // drawColoredRectangle(c, (xPixel + i) * SIZE_MULT, (yPixel + j) * SIZE_MULT, SIZE_MULT, SIZE_MULT);
             }
             else {
-                drawColoredRectangle(BLACK, (xPixel + i) * SIZE_MULT, (yPixel + j) * SIZE_MULT, SIZE_MULT, SIZE_MULT);
+                drawColoredSquare(BLACK, (xPixel + i) * SIZE_MULT, (yPixel + j) * SIZE_MULT, SIZE_MULT);
+                // drawColoredRectangle(BLACK, (xPixel + i) * SIZE_MULT, (yPixel + j) * SIZE_MULT, SIZE_MULT, SIZE_MULT);
                 //turns the pixel "off"
             }
         }
