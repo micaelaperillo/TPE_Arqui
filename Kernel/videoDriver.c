@@ -56,16 +56,16 @@ VBEInfoPtr VBE_mode_info = (VBEInfoPtr) 0x0000000000005C00;
 
 #define CHAR_WIDTH 8
 #define CHAR_HEIGHT 8
-#define SIZE_MULT 1
+#define SIZE_MULT 2
 
 #define WIDTH_PADDING 2
 #define HEIGHT_PADDING 6
 
-#define XDIM 96
-#define YDIM 48
-
 #define X_MARGIN 32
 #define Y_MARGIN 48
+
+#define XDIM SCREEN_WIDTH / (CHAR_WIDTH*SIZE_MULT) - X_MARGIN 
+#define YDIM SCREEN_HEIGHT / (CHAR_HEIGHT*SIZE_MULT) - Y_MARGIN
 
 #define TRUE 1
 #define FALSE 0
@@ -223,7 +223,6 @@ void drawColoredRectangle(Color c, uint32_t x, uint32_t y, uint32_t width, uint3
 }
 
 void drawColoredSquare(Color c, uint32_t x, uint32_t y, uint32_t side) {
-    // drawColoredRectangle(c, x, y, side, side);
     for (int i = 0; i < side; i++) {
         for (int j = 0; j < side; j++) {
             putPixel(c, x + i, y + j);
