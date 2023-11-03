@@ -53,5 +53,5 @@ void scrollCharArea();
 
 uint32_t getXCharSlots();
 uint32_t getYCharSlots();
-
+uint32_t getSizemult();
 #endif //TPE_ARQUI_VIDEODRIVER_H

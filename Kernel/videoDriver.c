@@ -3,6 +3,7 @@
 #include <videoDriver.h>
 #include <lib.h>
 
+
 // codigo dado por la cátedra de Arquitectura de Computadoras
 
 struct vbe_mode_info_structure {
@@ -56,13 +57,13 @@ VBEInfoPtr VBE_mode_info = (VBEInfoPtr) 0x0000000000005C00;
 
 #define CHAR_WIDTH 8
 #define CHAR_HEIGHT 8
-#define SIZE_MULT 1
+uint32_t SIZE_MULT= 2;
 
 #define WIDTH_PADDING 2
 #define HEIGHT_PADDING 6
 
-#define XDIM 96
-#define YDIM 48
+#define XDIM (96 / SIZE_MULT)
+#define YDIM (48 / SIZE_MULT)
 
 #define X_MARGIN 32
 #define Y_MARGIN 48
@@ -83,6 +84,9 @@ void disableDoubleBuffering() {
     doubleBufferingEnabled = FALSE;
 }
 
+
+uint32_t getSizemult(){return SIZE_MULT;}
+
 void drawBuffer() {
     memcut(VBE_mode_info->framebuffer, videoBuffer,
            VBE_mode_info->width * (VBE_mode_info->bpp / 8) * VBE_mode_info->height);
@@ -94,14 +98,14 @@ void clearBuffer() {
 
 void scrollCharArea() {
     //currently only scrolls up the area reserved by the chars, excluding the margins
-    uint32_t vPixels = CHAR_HEIGHT + HEIGHT_PADDING;
-    uint64_t xLen = (XDIM * (CHAR_WIDTH + WIDTH_PADDING)) * (VBE_mode_info->bpp / 8);
+    uint32_t vPixels = (CHAR_HEIGHT + HEIGHT_PADDING) * SIZE_MULT;
+    uint64_t xLen = (XDIM * (CHAR_WIDTH + WIDTH_PADDING) * SIZE_MULT) * (VBE_mode_info->bpp / 8);
     //goes to the first pixel in the char area
     uint64_t currMem = VBE_mode_info->framebuffer + (VBE_mode_info->bpp/8) * (X_MARGIN + VBE_mode_info->width * Y_MARGIN);
     uint64_t offset = VBE_mode_info->width * vPixels * (VBE_mode_info->bpp / 8);
     for(int i=0; i<YDIM + 1; i++) {
         for(int j=0; j<vPixels; j++) {
-            memcpy(currMem, currMem + offset, xLen);
+            memcpy((void*)currMem, (void*)(currMem + offset), xLen);
             currMem += VBE_mode_info->width * (VBE_mode_info->bpp / 8);//jumps to the pixels below
         }
         //once it finishes it has copied an entire block of characters
@@ -121,7 +125,7 @@ void putPixel(Color c, uint32_t x, uint32_t y) {
         return;
     }
     //double buffering is disabled, it paints directly to the screen
-    uint8_t * videoPtr = VBE_mode_info->framebuffer;
+    uint8_t* videoPtr = (uint8_t*)VBE_mode_info->framebuffer;
     int offset = y * VBE_mode_info->pitch + x * (VBE_mode_info->bpp / 8);
     videoPtr[offset] = c.b;
     videoPtr[offset+1] = c.g;
@@ -222,15 +226,6 @@ void drawColoredRectangle(Color c, uint32_t x, uint32_t y, uint32_t width, uint3
     }
 }
 
-void drawColoredSquare(Color c, uint32_t x, uint32_t y, uint32_t side) {
-    // drawColoredRectangle(c, x, y, side, side);
-    for (int i = 0; i < side; i++) {
-        for (int j = 0; j < side; j++) {
-            putPixel(c, x + i, y + j);
-        }
-    }
-}
-
 void drawHexRectangle(uint32_t hexColor, uint32_t x, uint32_t y, uint32_t width, uint32_t height) {
     Color c;
     hexToColor(hexColor, &c);
@@ -277,13 +272,10 @@ void _drawChar(Color c, uint32_t xPixel, uint32_t yPixel, unsigned char characte
             if(chr[j] & (1<<i)) {
                 //it draws rectangles in case size_mult > 1, which is currently not supported
                 //this was left as it is easier to adapt it in case it is supported again
-                drawColoredSquare(c, (xPixel + i) * SIZE_MULT, (yPixel + j) * SIZE_MULT, SIZE_MULT);
-
-                // drawColoredRectangle(c, (xPixel + i) * SIZE_MULT, (yPixel + j) * SIZE_MULT, SIZE_MULT, SIZE_MULT);
+                drawColoredRectangle(c, (xPixel + (i * SIZE_MULT)), (yPixel + (j * SIZE_MULT)), SIZE_MULT, SIZE_MULT);
             }
             else {
-                drawColoredSquare(BLACK, (xPixel + i) * SIZE_MULT, (yPixel + j) * SIZE_MULT, SIZE_MULT);
-                // drawColoredRectangle(BLACK, (xPixel + i) * SIZE_MULT, (yPixel + j) * SIZE_MULT, SIZE_MULT, SIZE_MULT);
+                drawColoredRectangle(BLACK, (xPixel + (i * SIZE_MULT)), (yPixel + (j * SIZE_MULT)), SIZE_MULT, SIZE_MULT);
                 //turns the pixel "off"
             }
         }
@@ -294,8 +286,8 @@ void putColoredCharAt(Color c, uint32_t x, uint32_t y, char character) {
     if (x > XDIM || y > YDIM || x < 0 || y < 0) {
         return;
     }
-    uint32_t xCoord = (x * (CHAR_WIDTH + WIDTH_PADDING)) + X_MARGIN;
-    uint32_t yCoord = (y * (CHAR_HEIGHT + HEIGHT_PADDING)) + Y_MARGIN;
+    uint32_t xCoord = (x * (CHAR_WIDTH + WIDTH_PADDING) * SIZE_MULT) + X_MARGIN;
+    uint32_t yCoord = (y * (CHAR_HEIGHT + HEIGHT_PADDING) * SIZE_MULT) + Y_MARGIN;
     _drawChar(c, xCoord, yCoord, character);
 }
 

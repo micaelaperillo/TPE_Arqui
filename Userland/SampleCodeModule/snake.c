@@ -33,7 +33,7 @@ typedef struct game{
     food food;
 } game;
 
-static uint32_t seed = 12345; // Initial seed value
+static uint32_t seed; // Initial seed value
 
 // Custom random number generator function
 uint32_t customRandom() {
@@ -127,7 +127,7 @@ void updateSnake(snakey * s){
 }
 
 void updateSnake2(snakey * s){
-    if(isCharPressed('i')|| isCharPressed('I'))
+    if(isCharPressed('h')|| isCharPressed('H'))
         if(s->dir!=DOWN)
             s->dir = UP;
     if (isCharPressed('k')|| isCharPressed('K'))
