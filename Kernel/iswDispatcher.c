@@ -17,15 +17,15 @@ void sys_get_time(BASE_PARAMS);//code 4
 void sys_detect_key_press(BASE_PARAMS);//code 5
 void sys_wait(BASE_PARAMS);//code 6
 void sys_sound(BASE_PARAMS); // code 7
-void sys_is_char_pressed(BASE_PARAMS); // code 9
-
+void sys_is_char_pressed(BASE_PARAMS); // code 8
+void sys_toggle_font(BASE_PARAMS); // code 9
 extern uint64_t* current_regs();
 
 extern void _sti();
 
 FunctionPtr interruptions[] = {sys_write, sys_read, sys_draw, sys_double_buffer,
                                sys_get_time, sys_detect_key_press,
-                               sys_wait, sys_sound,sys_is_char_pressed};
+                               sys_wait, sys_sound,sys_is_char_pressed,sys_toggle_font};
 
 void swInterruptDispatcher(COMPLETE_PARAMS) {
     if(rdi >= sizeof(interruptions)) {
@@ -163,4 +163,9 @@ void sys_sound(BASE_PARAMS) {
 //code 8
 void sys_is_char_pressed(BASE_PARAMS) {
     *(uint8_t*) rsi = isCharPressed(rdx);
+}
+
+//code 10
+void sys_toggle_font(BASE_PARAMS){
+    toggleFont();
 }

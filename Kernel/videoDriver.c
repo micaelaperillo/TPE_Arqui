@@ -294,6 +294,13 @@ void putColoredCharAt(Color c, uint32_t x, uint32_t y, char character) {
 void putCharAt(uint32_t x, uint32_t y, char character) {
     putColoredCharAt(WHITE, x, y, character);
 }
+void toggleFont(){
+    if(SIZE_MULT==1){
+        SIZE_MULT=2;
+    }else{
+        SIZE_MULT=1;
+    }
+}
 
 void clearScreen() {
     uint8_t * videoPtr = VBE_mode_info->framebuffer;

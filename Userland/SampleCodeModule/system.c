@@ -4,7 +4,7 @@
 #define SYS_DETECT_KEY_PRESS_ID 5
 #define SYS_WAIT_ID 6
 #define SYS_SOUND_ID 7
-
+#define SYS_TOGGLE_FONT_ID 9
 
 
 extern uint64_t* current_regs();
@@ -17,6 +17,9 @@ uint8_t keyPress() {
 
 void wait(uint64_t milliseconds) {
     interrupt(SYS_WAIT_ID, milliseconds, 0, 0, 0, 0);
+}
+void toggleFont(){
+    interrupt(SYS_TOGGLE_FONT_ID,0,0,0,0,0);
 }
 
 void play_beep(uint32_t frequency, uint32_t duration) {

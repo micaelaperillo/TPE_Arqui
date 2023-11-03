@@ -19,7 +19,7 @@ extern void invalidOp();
 
 void unknownCommand(char* str);
 
-void help(), testException0(),testException6(), displayTime(), displayDate(), playBubbles(), playPong(), playBeep(),playSnakegame();
+void help(), testException0(),testException6(), displayTime(), displayDate(), playBubbles(), playPong(), playBeep(),playSnakegame(),toggleFontSize();
 
 static Program pArr[] = {
         &(struct PROGRAM_STRUCT){"help", "displays all available commands", help},
@@ -31,6 +31,7 @@ static Program pArr[] = {
         &(struct PROGRAM_STRUCT){"pong", "runs a virtual ping pong match against the computer", playPong},
         &(struct PROGRAM_STRUCT){"beep", "produces a 'beep' sound", playBeep},
         &(struct PROGRAM_STRUCT){"snake","SNAAAAAKE",playSnakegame},
+        &(struct PROGRAM_STRUCT){"toggle-font","toggles the font size",toggleFontSize},
         null //marks the end of the array
         };
 
@@ -46,6 +47,10 @@ void parseCommand(char* str) {
 
 void unknownCommand(char* str) {
     printFormat("\nUnknown command:\n\t'%s'\nType 'help' for a list of available commands.\n\n", str);
+}
+
+void toggleFontSize(){
+    toggleFont();
 }
 
 void help() {
