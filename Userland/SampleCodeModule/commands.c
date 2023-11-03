@@ -51,6 +51,8 @@ void unknownCommand(char* str) {
 
 void toggleFontSize(){
     toggleFont();
+
+
 }
 
 void help() {
