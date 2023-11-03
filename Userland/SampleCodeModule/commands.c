@@ -51,7 +51,7 @@ void unknownCommand(char* str) {
 
 void toggleFontSize(){
     toggleFont();
-
+    clearScreen();
 
 }
 

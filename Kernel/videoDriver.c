@@ -2,7 +2,7 @@
 #include <stdint.h>
 #include <videoDriver.h>
 #include <lib.h>
-
+#include <console.h>
 
 // codigo dado por la cátedra de Arquitectura de Computadoras
 
@@ -57,7 +57,7 @@ VBEInfoPtr VBE_mode_info = (VBEInfoPtr) 0x0000000000005C00;
 
 #define CHAR_WIDTH 8
 #define CHAR_HEIGHT 8
-uint32_t SIZE_MULT= 2;
+uint32_t SIZE_MULT= 1;
 
 #define WIDTH_PADDING 2
 #define HEIGHT_PADDING 6
@@ -300,6 +300,7 @@ void toggleFont(){
     }else{
         SIZE_MULT=1;
     }
+    initializeConsole();
 }
 
 void clearScreen() {

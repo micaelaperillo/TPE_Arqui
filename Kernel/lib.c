@@ -100,6 +100,6 @@ void displayRegs(uint64_t* exregs) {
         gPrint(regs[i]);
         gPrint("0x");
         gPrintHex(exregs[i]);
-        gPrint("\n");
+        gPrint(" ");
     }
 }
