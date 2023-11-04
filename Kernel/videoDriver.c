@@ -57,13 +57,17 @@ VBEInfoPtr VBE_mode_info = (VBEInfoPtr) 0x0000000000005C00;
 
 #define CHAR_WIDTH 8
 #define CHAR_HEIGHT 8
-uint32_t SIZE_MULT= 1;
 
 #define WIDTH_PADDING 2
 #define HEIGHT_PADDING 6
 
-#define XDIM (96 / SIZE_MULT)
-#define YDIM (48 / SIZE_MULT)
+uint32_t SIZE_MULT = 1;
+
+// #define XDIM (96 / SIZE_MULT);
+// #define YDIM = (48 / SIZE_MULT);
+
+#define XDIM 96
+#define YDIM 48
 
 #define X_MARGIN 32
 #define Y_MARGIN 48
@@ -84,8 +88,9 @@ void disableDoubleBuffering() {
     doubleBufferingEnabled = FALSE;
 }
 
-
-uint32_t getSizemult(){return SIZE_MULT;}
+uint32_t getSizemult(){
+    return SIZE_MULT;
+}
 
 void drawBuffer() {
     memcut(VBE_mode_info->framebuffer, videoBuffer,
@@ -99,11 +104,11 @@ void clearBuffer() {
 void scrollCharArea() {
     //currently only scrolls up the area reserved by the chars, excluding the margins
     uint32_t vPixels = (CHAR_HEIGHT + HEIGHT_PADDING) * SIZE_MULT;
-    uint64_t xLen = (XDIM * (CHAR_WIDTH + WIDTH_PADDING) * SIZE_MULT) * (VBE_mode_info->bpp / 8);
+    uint64_t xLen = (getXCharSlots() * (CHAR_WIDTH + WIDTH_PADDING) * SIZE_MULT) * (VBE_mode_info->bpp / 8);
     //goes to the first pixel in the char area
     uint64_t currMem = VBE_mode_info->framebuffer + (VBE_mode_info->bpp/8) * (X_MARGIN + VBE_mode_info->width * Y_MARGIN);
     uint64_t offset = VBE_mode_info->width * vPixels * (VBE_mode_info->bpp / 8);
-    for(int i=0; i<YDIM + 1; i++) {
+    for(int i=0; i<getYCharSlots() +1; i++) {
         for(int j=0; j<vPixels; j++) {
             memcpy((void*)currMem, (void*)(currMem + offset), xLen);
             currMem += VBE_mode_info->width * (VBE_mode_info->bpp / 8);//jumps to the pixels below
@@ -283,7 +288,7 @@ void _drawChar(Color c, uint32_t xPixel, uint32_t yPixel, unsigned char characte
 }
 
 void putColoredCharAt(Color c, uint32_t x, uint32_t y, char character) {
-    if (x > XDIM || y > YDIM || x < 0 || y < 0) {
+    if (x > getXCharSlots() || y > getYCharSlots() || x < 0 || y < 0) {
         return;
     }
     uint32_t xCoord = (x * (CHAR_WIDTH + WIDTH_PADDING) * SIZE_MULT) + X_MARGIN;
@@ -315,9 +320,9 @@ void hexToColor(uint32_t hexColor, Color* c) {
 }
 
 uint32_t getXCharSlots() {
-    return XDIM;
+    return (XDIM / SIZE_MULT);
 }
 
 uint32_t getYCharSlots() {
-    return YDIM;
+    return (YDIM / SIZE_MULT);
 }
