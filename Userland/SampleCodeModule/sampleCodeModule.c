@@ -8,7 +8,7 @@
 int main() {
     //in case an exception happens when using double buffering
     disableDoubleBuffering();
-    printFormat("Initializing Shell\n");
+    printFormat("\nInitializing Shell\n");
     startShell();
     return 0;
 }

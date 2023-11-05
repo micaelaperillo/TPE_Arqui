@@ -78,7 +78,7 @@ void gPrintColoredChar(Color c, char character) {
             globalCursorX = 0;
             globalCursorY++;
         }
-        return;
+        //return;
     }
     if (character == '\t') {
         //tab

@@ -70,7 +70,7 @@ g->food.radius=8;
 }
 
 void welcomeSnake(){
-printFormat("Welcome to Snake! press 1 for single player, 2 for multiplayer \n");
+printFormat("Welcome to Snake! press 1 for single player\n 2 for multiplayer \n");
 swapBuffer();
 while((playercant=getChar())!='1' && playercant!='2');
 }
@@ -127,13 +127,13 @@ void updateSnake(snakey * s){
 }
 
 void updateSnake2(snakey * s){
-    if(isCharPressed('h')|| isCharPressed('H'))
+    if(isCharPressed('k')|| isCharPressed('K'))
         if(s->dir!=DOWN)
             s->dir = UP;
-    if (isCharPressed('k')|| isCharPressed('K'))
+    if (isCharPressed('j')|| isCharPressed('J'))
         if(s->dir!=UP)
             s->dir = DOWN;
-    if(isCharPressed('j')|| isCharPressed('J'))
+    if(isCharPressed('h')|| isCharPressed('H'))
         if(s->dir!=RIGHT)
                 s->dir = LEFT;
     if (isCharPressed('l')|| isCharPressed('L'))
