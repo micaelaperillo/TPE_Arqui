@@ -90,8 +90,8 @@ void * memcut(void * destination, void * source, uint64_t length)
 void displayRegs(uint64_t* exregs) {
     int linesToWrite = 17;
     int margin = 3;
-    moveGlobalCursor(0, linesToWrite+margin);
-    clearScreen();
+    moveGlobalCursor(0, (linesToWrite+margin)*getSizemult());
+    //clearScreen();
     while(!(getGlobalCursorX() == 0 && getGlobalCursorY() == 0)) {
         //clears the screen that is going to be written at
         gErase();

@@ -24,13 +24,11 @@ static void * const sampleDataModuleAddress = (void*)0x500000;
 typedef int (*EntryPoint)();
 
 
-void clearBSS(void * bssAddress, uint64_t bssSize)
-{
+void clearBSS(void * bssAddress, uint64_t bssSize){
 	memset(bssAddress, 0, bssSize);
 }
 
-void * getStackBase()
-{
+void * getStackBase(){
 	return (void*)(
 		(uint64_t)&endOfKernel
 		+ PageSize * 8				//The size of the stack itself, 32KiB
@@ -38,8 +36,7 @@ void * getStackBase()
 	);
 }
 
-void * initializeKernelBinary()
-{
+void * initializeKernelBinary(){
 	char buffer[10];
 
 	ncPrint("[x64BareBones]");
@@ -85,8 +82,7 @@ void * initializeKernelBinary()
 	return getStackBase();
 }
 
-int main()
-{
+int main(){
     initializeConsole();
     cPrint("[Kernel Main]");
     cNewline();
