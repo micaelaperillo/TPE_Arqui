@@ -12,11 +12,11 @@
 extern unsigned char clock(unsigned char mode);
 
 /*
- * Primero se extrae la primera cifra multiplicando el valor del 
- * primer nibble (los primeros 4 bits) por 10. 
- * Luego, se extrae la segunda cifra tomando 
- * el valor del segundo nibble (los últimos 4 bits) y 
- * se suma al valor de la primera cifra convertida a decimal. 
+ * Primero se extrae la primera cifra multiplicando el valor del
+ * primer nibble (los primeros 4 bits) por 10.
+ * Luego, se extrae la segunda cifra tomando
+ * el valor del segundo nibble (los últimos 4 bits) y
+ * se suma al valor de la primera cifra convertida a decimal.
  */
 static unsigned  int decode(unsigned char time){
     return (time >> 4) * 10 + (time & 0x0F);
@@ -34,7 +34,10 @@ unsigned int minutes(){
 }
 
 unsigned int hours(){
-    return decode(clock(HOURS)) + TIME_ZONE;
+    int h=decode(clock(HOURS)) + TIME_ZONE;
+    if(h<0)
+        h+=24;
+    return h;
 }
 
 unsigned int year(){
