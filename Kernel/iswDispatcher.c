@@ -160,12 +160,11 @@ void sys_sound(BASE_PARAMS) {
     _sti();
     play_beep(rsi, rdx);
 }
-//code 8
+// ID = 8
 void sys_is_char_pressed(BASE_PARAMS) {
     *(uint8_t*) rsi = isCharPressed(rdx);
 }
-
-//code 10
+// ID = 9
 void sys_toggle_font(BASE_PARAMS){
     toggleFont();
 }
