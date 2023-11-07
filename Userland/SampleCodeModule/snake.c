@@ -178,7 +178,7 @@ void drawscore2(snakey *s){
 }
 
 void pauseGame(){
-    printFormat("\nPress any key to return");
+    printFormat("\nPress any key to return\n");
     swapBuffer();
     disableDoubleBuffering();
     while (!getChar()){}
